@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ffffff">
+<title>Garagenmanager – Entwurf Pro</title>
+<style>
+:root{
+  --weiss:#FFFFFF; --hell:#F5F5F7; --ink:#1D1D1F; --mittel:#6E6E73; --linie:#D2D2D7;
+  --gruen:#1F7A5C; --gruen-hell:#34C38F; --schwarz:#000000;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI Variable Display","Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);color:var(--ink);background:var(--weiss);font-size:19px;line-height:1.47;-webkit-font-smoothing:antialiased;letter-spacing:-.011em;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gruen);outline-offset:3px;border-radius:4px}
+.wrap{width:min(1040px,calc(100% - 40px));margin:0 auto}
+
+/* Navigation */
+.nav{position:fixed;inset:0 0 auto;z-index:50;height:52px;background:rgba(255,255,255,.72);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.06)}
+.nav .wrap{height:100%;display:flex;align-items:center;gap:30px;font-size:14px}
+.nav .logo{font-weight:600;font-size:17px;text-decoration:none;letter-spacing:-.02em}
+.nav nav{margin-left:auto;display:flex;gap:26px;color:#424245}
+.nav nav a{text-decoration:none}.nav nav a:hover{color:var(--ink)}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;text-decoration:none;border-radius:980px;padding:7px 15px;font-size:14px;font-weight:500;white-space:nowrap}
+.pill.gruen{background:var(--gruen)}
+.pill.gross{padding:14px 26px;font-size:17px}
+.pill svg{width:15px;height:15px}
+.link{color:var(--gruen);text-decoration:none;font-size:17px}
+.link:hover{text-decoration:underline}
+@media (max-width:760px){.nav nav{display:none}.nav .pill{margin-left:auto}}
+
+/* Hero */
+.hero{padding-top:100px;text-align:center;overflow:hidden;background:linear-gradient(var(--weiss) 55%,var(--hell))}
+.hero .eyebrow{font-size:21px;font-weight:600;color:var(--gruen)}
+.hero h1{font-size:clamp(48px,9vw,104px);line-height:1.02;font-weight:700;letter-spacing:-.045em;margin-top:6px}
+.hero .sub{font-size:clamp(20px,2.4vw,28px);line-height:1.2;color:var(--mittel);font-weight:500;margin:18px auto 0;max-width:24ch;letter-spacing:-.02em}
+.hero .aktionen{margin-top:30px;display:flex;gap:26px;justify-content:center;align-items:center;flex-wrap:wrap}
+.buehne{perspective:1400px;margin-top:44px;height:min(640px,78vh);display:flex;justify-content:center;align-items:flex-start}
+.glow{position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(52,195,143,.28),rgba(52,195,143,0) 65%);filter:blur(10px);transform:translateY(60px)}
+
+/* Handy */
+.handy{--b:300px;width:var(--b);aspect-ratio:9/19.3;position:relative;border-radius:calc(var(--b)*.16);background:linear-gradient(145deg,#3a3a3c,#1c1c1e 40%,#2c2c2e);padding:calc(var(--b)*.035);box-shadow:0 0 0 1.5px #5b5b5f inset,0 50px 100px -30px rgba(0,0,0,.45),0 30px 60px -40px rgba(31,122,92,.5);transform-style:preserve-3d}
+.handy::before{content:"";position:absolute;right:-3px;top:22%;width:3px;height:12%;background:#3a3a3c;border-radius:0 2px 2px 0}
+.handy::after{content:"";position:absolute;left:-3px;top:18%;width:3px;height:7%;background:#3a3a3c;border-radius:2px 0 0 2px;box-shadow:0 calc(var(--b)*.12) 0 #3a3a3c}
+.display{position:relative;width:100%;height:100%;border-radius:calc(var(--b)*.13);overflow:hidden;background:var(--hell)}
+.kamera{position:absolute;top:2%;left:50%;width:6.5%;aspect-ratio:1;margin-left:-3.25%;background:#000;border-radius:50%;z-index:5}
+.app{position:absolute;inset:0;padding:14% 6% 6%;display:flex;flex-direction:column;gap:3.2%;font-size:calc(var(--b)*.042);opacity:0;transition:opacity .5s ease}
+.app.an{opacity:1}
+.app .titel{font-size:2em;font-weight:700;letter-spacing:-.03em;margin-bottom:2%}
+.app .klein{color:var(--mittel);font-size:.9em}
+.karte{background:#fff;border-radius:1.1em;padding:5% 6%}
+.ring{display:flex;align-items:center;gap:7%}
+.ring svg{width:34%;flex:none}
+.ring b{display:block;font-size:2.1em;letter-spacing:-.04em;line-height:1.05}
+.zeile{display:flex;justify-content:space-between;align-items:center;padding:3.6% 0;border-bottom:1px solid #EEE}
+.zeile:last-child{border-bottom:0}
+.chip{font-size:.8em;font-weight:600;padding:.2em .7em;border-radius:1em}
+.chip.ok{background:#E2F5EC;color:#14724F}.chip.offen{background:#FDECEA;color:#B42318}
+.balken{height:.5em;background:#EAEAEC;border-radius:1em;overflow:hidden;margin-top:4%}
+.balken span{display:block;height:100%;width:62%;background:linear-gradient(90deg,var(--gruen),var(--gruen-hell));border-radius:1em}
+.zeitachse{position:relative;padding-left:9%}
+.zeitachse::before{content:"";position:absolute;left:2.4%;top:6%;bottom:6%;width:2px;background:#DADADF}
+.ver{position:relative;padding:4% 0}
+.ver::before{content:"";position:absolute;left:-8.6%;top:42%;width:.7em;height:.7em;border-radius:50%;background:#C7C7CC}
+.ver.aktiv::before{background:var(--gruen);box-shadow:0 0 0 .3em rgba(31,122,92,.18)}
+.ver b{display:block}
+.zahl{font-size:2.8em;font-weight:700;letter-spacing:-.04em;text-align:center;padding:4% 0;font-variant-numeric:tabular-nums}
+.tasten{display:grid;grid-template-columns:repeat(3,1fr);gap:3%}
+.tasten span{background:#fff;border-radius:.8em;text-align:center;padding:7% 0;font-size:1.25em;font-weight:500}
+.knopf{background:var(--gruen);color:#fff;text-align:center;border-radius:1em;padding:5%;font-weight:600;margin-top:auto}
+.datei{display:flex;align-items:center;gap:6%}
+.datei i{width:2.6em;height:3.2em;border-radius:.4em;background:linear-gradient(#fff,#F0F0F2);box-shadow:0 0 0 1px #E2E2E6;display:flex;align-items:flex-end;justify-content:center;font-style:normal;font-size:.7em;font-weight:700;padding-bottom:.4em;color:var(--gruen)}
+
+/* Story mit angepinntem Handy */
+.story{background:var(--hell)}
+.story-pin{height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:40px;width:min(1040px,calc(100% - 40px));margin:0 auto}
+.story .buehne2{display:flex;justify-content:center}
+.texte{position:relative;height:340px}
+.text{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;opacity:0;transform:translateY(24px);transition:opacity .5s,transform .5s}
+.text.an{opacity:1;transform:none}
+.text .kat{font-size:17px;font-weight:600;color:var(--gruen);margin-bottom:10px}
+.text h2{font-size:clamp(34px,4.4vw,56px);line-height:1.05;letter-spacing:-.035em;font-weight:700}
+.text p{color:var(--mittel);font-size:clamp(17px,1.6vw,21px);margin-top:16px;max-width:30ch}
+.punkte{display:flex;gap:8px;margin-top:28px}
+.punkte span{width:8px;height:8px;border-radius:4px;background:#C7C7CC;transition:width .3s,background .3s}
+.punkte span.an{width:26px;background:var(--ink)}
+@media (max-width:820px){
+  .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:12px;padding-top:70px;align-items:start}
+  .story .handy{--b:min(210px,52vw)}
+  .texte{height:220px;text-align:center}
+  .text p{margin-left:auto;margin-right:auto}
+  .punkte{justify-content:center}
+}
+
+/* Leseblock, Wörter hellen beim Scrollen auf */
+.privat{background:var(--schwarz);color:#fff;padding:160px 0 140px}
+.privat .kat{font-size:21px;font-weight:600;color:var(--gruen-hell);margin-bottom:22px}
+.lesen{font-size:clamp(32px,4.8vw,62px);line-height:1.12;font-weight:700;letter-spacing:-.035em;max-width:20ch}
+.lesen .w{color:rgba(255,255,255,.18);transition:color .2s}
+.lesen .w.an{color:#fff}
+.fakten{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:110px}
+.fakten b{display:block;font-size:clamp(44px,6vw,80px);font-weight:700;letter-spacing:-.05em;line-height:1;background:linear-gradient(180deg,#fff 30%,#8E8E93);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fakten p{color:#A1A1A6;margin-top:12px;font-size:17px;max-width:24ch}
+@media (max-width:760px){.fakten{grid-template-columns:1fr;gap:44px}}
+
+/* Karussell */
+.wer{padding:130px 0 120px;background:var(--weiss)}
+.wer h2,.ende h2{font-size:clamp(36px,5vw,64px);line-height:1.05;letter-spacing:-.04em;font-weight:700;max-width:16ch}
+.schiene{margin-top:48px;display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px max(20px,calc((100% - 1040px)/2)) 30px;scrollbar-width:none}
+.schiene::-webkit-scrollbar{display:none}
+.kachel{flex:0 0 min(400px,82vw);scroll-snap-align:center;background:var(--hell);border-radius:28px;padding:36px 32px;min-height:440px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.kachel .kat{font-size:15px;font-weight:600;color:var(--mittel)}
+.kachel h3{font-size:30px;line-height:1.1;letter-spacing:-.03em;margin-top:8px}
+.kachel p{color:var(--mittel);margin-top:10px;font-size:17px}
+.tore{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px}
+.tore span{width:46px;height:38px;border-radius:6px 6px 2px 2px;background:repeating-linear-gradient(#2E8566 0 6px,#246C53 6px 8px)}
+.tore.viele span{width:22px;height:18px;border-radius:3px 3px 1px 1px;background:repeating-linear-gradient(#2E8566 0 3px,#246C53 3px 4px)}
+.tore.platz span{background:none;border-left:4px solid #F2B705;border-right:4px solid #F2B705;border-radius:0;height:46px}
+.tore.platz span.lager{background:#C9CCD1;border:0;border-radius:6px}
+.schiene-nav{display:flex;gap:12px;justify-content:flex-end;width:min(1040px,calc(100% - 40px));margin:0 auto}
+.schiene-nav button{width:40px;height:40px;border-radius:50%;border:0;background:var(--hell);cursor:pointer;font-size:20px;color:var(--ink)}
+.schiene-nav button:hover{background:#E8E8ED}
+
+/* Schluss */
+.ende{background:var(--hell);padding:130px 0 50px;text-align:center;overflow:hidden}
+.ende h2{margin:0 auto}
+.ende .sub{color:var(--mittel);font-size:21px;margin:16px auto 30px;max-width:34ch}
+.ende .handy{--b:240px;margin:70px auto 0;transform:translateY(30%)}
+footer{background:var(--hell);border-top:1px solid var(--linie);padding:22px 0 40px;font-size:13px;color:var(--mittel)}
+footer .wrap{display:flex;gap:22px;flex-wrap:wrap}
+footer span{margin-right:auto}
+footer a{text-decoration:none}footer a:hover{text-decoration:underline}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#">Garagenmanager</a>
+    <nav><a href="#funktionen">Funktionen</a><a href="#datenschutz">Datenschutz</a><a href="#fuer-wen">Für wen</a></nav>
+    <a class="pill gruen" href="#">Laden</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Garagenmanager</p>
+    <h1>Vermieten.<br>Ganz entspannt.</h1>
+    <p class="sub">Garagen, Stellplätze und Lager. Alles in einer App.</p>
+    <div class="aktionen">
+      <a class="pill gruen gross" href="#">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.6v18.8c0 .4.4.6.7.4l10.6-9.4c.2-.2.2-.6 0-.8L4.7 2.2c-.3-.2-.7 0-.7.4zm12.6 7.6 2.9-2.6-11-6.3 8.1 8.9zm0 3.6-8.1 8.9 11-6.3-2.9-2.6zm4.2-3.8-2.9-1.7-3 2.7 3 2.7 2.9-1.7c.8-.5.8-1.5 0-2z"/></svg>
+        Bei Google Play laden</a>
+      <a class="link" href="#funktionen">Mehr erfahren ›</a>
+    </div>
+  </div>
+  <div class="buehne">
+    <span class="glow" aria-hidden="true"></span>
+    <div class="handy" id="heroHandy" role="img" aria-label="Garagenmanager auf einem Smartphone, Übersicht mit Rendite und Mieten">
+      <div class="display"><span class="kamera"></span>
+        <div class="app an">
+          <div class="klein">Oktober 2026</div>
+          <div class="titel">Übersicht</div>
+          <div class="karte ring">
+            <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#EAEAEC" stroke-width="5"/><circle cx="20" cy="20" r="16" fill="none" stroke="#1F7A5C" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.3 100.5" transform="rotate(-90 20 20)"/></svg>
+            <div><span class="klein">Amortisiert</span><b>62 %</b></div>
+          </div>
+          <div class="karte"><span class="klein">Nettorendite</span><b style="display:block;font-size:2em;letter-spacing:-.04em">6,8 %</b></div>
+          <div class="karte">
+            <div class="zeile"><span>Garage 1</span><span class="chip ok">bezahlt</span></div>
+            <div class="zeile"><span>Garage 2</span><span class="chip ok">bezahlt</span></div>
+            <div class="zeile"><span>Garage 3</span><span class="chip offen">offen</span></div>
+            <div class="zeile"><span>Stellplatz 4</span><span class="chip ok">bezahlt</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="story" id="funktionen">
+  <div class="story-pin" id="storyPin">
+    <div class="buehne2">
+      <div class="handy" role="img" aria-label="App-Bildschirme zu den Funktionen">
+        <div class="display"><span class="kamera"></span>
+          <div class="app an" data-s="0">
+            <div class="klein">Garagenpark Hofstraße</div>
+            <div class="titel">Rendite</div>
+            <div class="karte"><span class="klein">Amortisation</span><b style="display:block;font-size:2em;letter-spacing:-.04em">62 %</b><div class="balken"><span></span></div></div>
+            <div class="karte"><span class="klein">Prognose 2027</span><b style="display:block;font-size:2em;letter-spacing:-.04em">9.360 €</b></div>
+            <div class="karte"><div class="zeile"><span>Einnahmen</span><b>8.940 €</b></div><div class="zeile"><span>Ausgaben</span><b>1.210 €</b></div></div>
+          </div>
+          <div class="app" data-s="1">
+            <div class="klein">Garage 1 · K. Brandt</div>
+            <div class="titel">Verträge</div>
+            <div class="karte zeitachse">
+              <div class="ver aktiv"><b>Vertrag 2026</b><span class="klein">65 € · aktiv</span></div>
+              <div class="ver"><b>Vertrag 2023</b><span class="klein">58 € · archiviert</span></div>
+              <div class="ver"><b>Vertrag 2020</b><span class="klein">52 € · archiviert</span></div>
+            </div>
+            <div class="karte"><div class="zeile"><span>Mietvertrag.pdf</span><span class="klein">gescannt</span></div></div>
+          </div>
+          <div class="app" data-s="2">
+            <div class="klein">Garage 3 · Zähler</div>
+            <div class="titel">Strom</div>
+            <div class="karte"><span class="klein">Neuer Zählerstand</span><div class="zahl" id="zaehler">5.107</div></div>
+            <div class="tasten" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+            <div class="knopf">295 kWh · 100,30 €</div>
+          </div>
+          <div class="app" data-s="3">
+            <div class="klein">Jahr 2026</div>
+            <div class="titel">Export</div>
+            <div class="karte"><div class="datei"><i>CSV</i><div><b>EXTF_Buchungen_2026</b><div class="klein">DATEV-Format</div></div></div></div>
+            <div class="karte"><div class="datei"><i>PDF</i><div><b>Jahresbericht 2026</b><div class="klein">12 Seiten</div></div></div></div>
+            <div class="knopf">An Steuerberater senden</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="texte">
+        <div class="text an"><span class="kat">Dashboard</span><h2>Deine Rendite. Immer aktuell.</h2><p>Nettorendite, Amortisation und Umsatzprognose rechnet die App selbst aus. Offene Mieten siehst du sofort.</p></div>
+        <div class="text"><span class="kat">Verträge</span><h2>Jede Erhöhung. Lückenlos.</h2><p>Bei einer Mieterhöhung wird der alte Vertrag archiviert und ein neuer angelegt. Mit Mieterdaten und Scans.</p></div>
+        <div class="text"><span class="kat">Strom</span><h2>Ablesen. Fertig.</h2><p>Zählerstand vor Ort eintippen, die App rechnet mit deinem Tarif. Alte Abrechnungen stimmen auch nach Preiserhöhungen.</p></div>
+        <div class="text"><span class="kat">Steuer</span><h2>DATEV auf Knopfdruck.</h2><p>Einnahmen und Ausgaben als DATEV-Export (EXTF) oder als PDF-Jahresbericht für deine Unterlagen.</p></div>
+      </div>
+      <div class="punkte" aria-hidden="true"><span class="an"></span><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="privat" id="datenschutz">
+  <div class="wrap">
+    <p class="kat">Datenschutz</p>
+    <p class="lesen" id="lesen">Keine Registrierung. Keine Cloud. Deine Mieter, Verträge und Zahlen bleiben auf deinem Handy, und nur du entscheidest, wohin ein Backup geht.</p>
+    <div class="fakten">
+      <div><b>100 %</b><p>offline. Alles bleibt auf deinem Smartphone.</p></div>
+      <div><b>AES</b><p>verschlüsselte Backups, manuell oder über Google Drive.</p></div>
+      <div><b>0 €</b><p>im Monat. Einmal zahlen, dauerhaft nutzen.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="wer" id="fuer-wen">
+  <div class="wrap"><h2>Passt zu deinem Bestand.</h2></div>
+  <div class="schiene" id="schiene" tabindex="0" aria-label="Für wen die App ist">
+    <article class="kachel"><span class="kat">Einzelvermieter</span><h3>Eine oder zwei Garagen.</h3><p>Schluss mit Zetteln und Excel-Listen.</p>
+      <div class="tore" aria-hidden="true"><span></span><span></span></div></article>
+    <article class="kachel"><span class="kat">Investoren</span><h3>Ganze Garagenparks.</h3><p>Rendite und Amortisation für jede Einheit im Blick.</p>
+      <div class="tore viele" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></article>
+    <article class="kachel"><span class="kat">Stellplätze und Lager</span><h3>Miete und Strom, einfach.</h3><p>Für Stellplätze, Lagerboxen und alles dazwischen.</p>
+      <div class="tore platz" aria-hidden="true"><span></span><span></span><span></span><span class="lager"></span><span class="lager"></span></div></article>
+  </div>
+  <div class="schiene-nav"><button type="button" id="zurueck" aria-label="Zurück">‹</button><button type="button" id="weiter" aria-label="Weiter">›</button></div>
+</section>
+
+<section class="ende">
+  <div class="wrap">
+    <h2>Bereit, wenn du es bist.</h2>
+    <p class="sub">Für Android im Google Play Store. Ohne Abo.</p>
+    <a class="pill gruen gross" href="#">Bei Google Play laden</a>
+  </div>
+  <div class="handy" aria-hidden="true"><div class="display"><span class="kamera"></span>
+    <div class="app an"><div class="klein">Oktober 2026</div><div class="titel">Übersicht</div>
+      <div class="karte ring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#EAEAEC" stroke-width="5"/><circle cx="20" cy="20" r="16" fill="none" stroke="#1F7A5C" stroke-width="5" stroke-linecap="round" stroke-dasharray="62.3 100.5" transform="rotate(-90 20 20)"/></svg><div><span class="klein">Amortisiert</span><b>62 %</b></div></div>
+      <div class="karte"><div class="zeile"><span>Garage 1</span><span class="chip ok">bezahlt</span></div><div class="zeile"><span>Garage 2</span><span class="chip ok">bezahlt</span></div><div class="zeile"><span>Garage 3</span><span class="chip ok">bezahlt</span></div><div class="zeile"><span>Stellplatz 4</span><span class="chip ok">bezahlt</span></div></div>
+    </div></div></div>
+</section>
+<footer><div class="wrap"><span>Entwurf · © Garagenmanager</span><a href="https://www.garagenmanager.de/impressum">Impressum</a><a href="https://www.garagenmanager.de/datenschutzerkl%C3%A4rung">Datenschutzerklärung</a></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+const ruhig=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Text zum Aufhellen in Wörter zerlegen
+const lesen=document.getElementById('lesen');
+const woerter=lesen.textContent.trim().split(/\s+/);
+lesen.innerHTML=woerter.map(w=>`<span class="w">${w}</span>`).join(' ');
+const ws=[...lesen.querySelectorAll('.w')];
+
+// Karussell-Knöpfe
+const schiene=document.getElementById('schiene');
+const schritt=()=>schiene.querySelector('.kachel').offsetWidth+20;
+document.getElementById('weiter').onclick=()=>schiene.scrollBy({left:schritt(),behavior:ruhig?'auto':'smooth'});
+document.getElementById('zurueck').onclick=()=>schiene.scrollBy({left:-schritt(),behavior:ruhig?'auto':'smooth'});
+
+const apps=[...document.querySelectorAll('.story .app')];
+const texte=[...document.querySelectorAll('.story .text')];
+const punkte=[...document.querySelectorAll('.punkte span')];
+let aktiv=0;
+function zeige(i){
+  if(i===aktiv)return; aktiv=i;
+  apps.forEach((a,j)=>a.classList.toggle('an',j===i));
+  texte.forEach((t,j)=>t.classList.toggle('an',j===i));
+  punkte.forEach((p,j)=>p.classList.toggle('an',j===i));
+}
+
+if(window.gsap&&!ruhig){
+  gsap.registerPlugin(ScrollTrigger);
+  if(window.Lenis){const l=new Lenis({lerp:.09});l.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>l.raf(t*1000));gsap.ticker.lagSmoothing(0);}
+
+  // Handy liegt gekippt und richtet sich beim Scrollen auf
+  gsap.fromTo('#heroHandy',{rotateX:38,scale:.84,y:40},{rotateX:0,scale:1,y:0,ease:'none',
+    scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom 40%',scrub:.5}});
+  gsap.from('.hero .wrap > *',{opacity:0,y:18,duration:.9,stagger:.08,ease:'power3.out'});
+
+  // Funktionen: Handy bleibt stehen, Bildschirm und Text wechseln
+  ScrollTrigger.create({trigger:'#storyPin',start:'top top',end:'+=300%',pin:true,
+    onUpdate:s=>zeige(Math.min(3,Math.floor(s.progress*4)))});
+
+  // Wörter hellen beim Lesen auf
+  ScrollTrigger.create({trigger:lesen,start:'top 80%',end:'bottom 45%',scrub:true,
+    onUpdate:s=>{const n=Math.round(s.progress*ws.length);ws.forEach((w,i)=>w.classList.toggle('an',i<n))}});
+
+  // Schluss-Handy fährt hoch
+  gsap.fromTo('.ende .handy',{y:'45%'},{y:'18%',ease:'none',scrollTrigger:{trigger:'.ende',start:'top bottom',end:'bottom bottom',scrub:.5}});
+}else{
+  // Ohne Animation: Funktionen per Tippen wechseln, Text sofort lesbar
+  ws.forEach(w=>w.classList.add('an'));
+  punkte.forEach((p,i)=>{p.style.cursor='pointer';p.onclick=()=>zeige(i)});
+  let i=0;if(!ruhig)setInterval(()=>zeige(i=(i+1)%4),4000);
+  document.querySelector('.punkte').removeAttribute('aria-hidden');
+}
+</script>
+</body>
+</html>
