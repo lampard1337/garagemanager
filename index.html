@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Garagenmanager – Entwürfe</title>
+<style>
+:root{--bg:#F2F3F4;--ink:#1C1F24;--mittel:#5A616C;--linie:#D5D8DC}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;font-size:18px}
+main{width:min(760px,calc(100% - 32px));margin:0 auto;padding:72px 0}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.1;letter-spacing:-.02em}
+p.lead{color:var(--mittel);margin-top:12px;max-width:52ch}
+ul{list-style:none;margin-top:44px;border-top:1px solid var(--linie)}
+li a{display:grid;grid-template-columns:72px 1fr;gap:20px;align-items:center;padding:22px 0;border-bottom:1px solid var(--linie);text-decoration:none;color:inherit}
+li a:hover h2{text-decoration:underline}
+li a:focus-visible{outline:3px solid #1E4FB8;outline-offset:4px}
+.farbe{height:56px;border-radius:8px}
+h2{font-size:21px}
+li p{color:var(--mittel);font-size:16px}
+footer{margin-top:40px;font-size:14px;color:var(--mittel)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Garagenmanager: drei Entwürfe</h1>
+  <p class="lead">Vorschläge für eine neue Webseite. Inhalte stammen von der aktuellen Seite, App-Ansichten und Zahlen sind Beispiele.</p>
+  <ul>
+    <li><a href="entwurf-1-garagenhof.html">
+      <span class="farbe" style="background:repeating-linear-gradient(#2F4B42 0 12px,#24392F 12px 14px)"></span>
+      <span><h2>Garagenhof</h2><p>Garagentore auf Asphalt, beim Scrollen fährt ein Tor hoch und zeigt die App.</p></span>
+    </a></li>
+    <li><a href="entwurf-2-zaehler.html">
+      <span class="farbe" style="background:#1E4FB8;box-shadow:inset -18px 0 0 #D3262E"></span>
+      <span><h2>Zählerstand</h2><p>Hell und sachlich, ein Stromzähler zählt hoch, Schwerpunkt Stromabrechnung.</p></span>
+    </a></li>
+    <li><a href="entwurf-3-schluesselbrett.html">
+      <span class="farbe" style="background:linear-gradient(90deg,#D8432F 25%,#EFB91F 0 50%,#2E6DB4 0 75%,#3F8A5C 0)"></span>
+      <span><h2>Schlüsselbrett</h2><p>Schlüssel mit Anhängern zum Antippen, daneben öffnet sich die Akte der Garage.</p></span>
+    </a></li>
+  </ul>
+  <footer>Entwürfe, nicht die offizielle Seite.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Garagenmanager – Entwurf Garagenhof</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --beton:#D7D5D0; --beton-dk:#BDBAB3; --tor:#2F4B42; --tor-lt:#3C5E53;
+  --asphalt:#34373C; --gelb:#F2B705; --weiss:#FBFBF8; --ink:#1F2226;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Archivo",system-ui,sans-serif;font-variation-settings:"wdth" 100;color:var(--ink);background:var(--beton);line-height:1.5;font-size:18px}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gelb);outline-offset:3px}
+.wrap{width:min(1180px,calc(100% - 32px));margin:0 auto}
+
+/* Kopf */
+header{position:fixed;inset:0 0 auto;z-index:20;padding:14px 0;transition:background .3s}
+header.solid{background:rgba(215,213,208,.92);backdrop-filter:blur(8px)}
+.bar{display:flex;align-items:center;gap:28px}
+.logo{font-weight:800;font-variation-settings:"wdth" 125;font-size:20px;letter-spacing:-.01em;text-decoration:none;display:flex;align-items:center;gap:10px}
+.logo i{width:22px;height:18px;background:repeating-linear-gradient(var(--tor) 0 3px,var(--tor-lt) 3px 5px);border-radius:3px 3px 0 0;display:block}
+nav{margin-left:auto;display:flex;gap:24px;font-size:16px}
+nav a{text-decoration:none;opacity:.8}
+nav a:hover{opacity:1;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;gap:0 10px;white-space:nowrap;background:var(--ink);color:var(--weiss);text-decoration:none;font-weight:600;padding:12px 20px;border-radius:6px;font-size:16px}
+.btn svg{width:18px;height:18px}.btn span{display:inline}
+.btn.gelb{background:var(--gelb);color:var(--ink)}
+@media (max-width:760px){nav{display:none}.bar .btn{margin-left:auto;padding:10px 14px;font-size:14px}.bar .btn .lang{display:none}}
+
+/* Hero mit Garagenhof */
+.hero{height:100svh;min-height:640px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.hero-text{padding-top:clamp(96px,14vh,150px)}
+h1{font-size:clamp(46px,6.4vw,100px);line-height:.9;font-weight:850;font-stretch:70%;font-variation-settings:"wdth" 70;letter-spacing:-.02em;max-width:11ch}
+.lead{max-width:44ch;margin-top:22px;font-size:clamp(17px,1.5vw,20px)}
+.hero-cta{margin-top:26px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;font-size:15px}
+.hof{margin-top:auto;position:relative}
+.wand{background:var(--beton-dk);border-top:10px solid #A9A69F;padding:26px 0 0}
+.tore{display:grid;grid-template-columns:repeat(5,1fr);gap:clamp(10px,2vw,26px);width:min(1180px,calc(100% - 32px));margin:0 auto}
+.box{position:relative;height:clamp(150px,26vh,250px);background:#15171a;border:8px solid #E7E5E1;border-bottom:0;overflow:hidden}
+.nr{position:absolute;top:-34px;left:50%;transform:translateX(-50%);font-weight:800;font-variation-settings:"wdth" 125;font-size:15px;color:#6b6862}
+.lampe{position:absolute;top:-22px;left:50%;width:34px;height:8px;margin-left:-17px;background:#FFF6D8;border-radius:0 0 8px 8px;box-shadow:0 10px 30px 6px rgba(255,236,170,.5)}
+.panel{position:absolute;inset:0;background:repeating-linear-gradient(var(--tor) 0 calc(25% - 3px),#24392F calc(25% - 3px) 25%);transform-origin:top;z-index:2}
+.panel::after{content:"";position:absolute;bottom:9%;left:50%;width:22%;height:5px;margin-left:-11%;background:#9AA59F;border-radius:3px}
+.box:nth-child(2) .panel{background:repeating-linear-gradient(#5B6B78 0 calc(25% - 3px),#4A5864 calc(25% - 3px) 25%)}
+.box:nth-child(4) .panel{background:repeating-linear-gradient(#8C8A84 0 calc(25% - 3px),#77756F calc(25% - 3px) 25%)}
+.inside{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:14px}
+.boden{height:clamp(60px,9vh,96px);background:var(--asphalt);position:relative}
+.boden::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(20% - 4px),var(--gelb) calc(20% - 4px) 20%);opacity:.9;width:min(1180px,calc(100% - 32px));margin:0 auto;left:0;right:0}
+
+/* Handy */
+.phone{width:min(230px,78%);aspect-ratio:9/18.5;background:#0d0e10;border-radius:26px;padding:7px;transform:translateY(105%);box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.screen{width:100%;height:100%;background:#F3F5F4;border-radius:20px;overflow:hidden;font-size:9.5px;color:var(--ink);padding:14px 11px;display:flex;flex-direction:column;gap:8px}
+.screen .t{font-weight:800;font-size:13px;font-variation-settings:"wdth" 110}
+.kpi{background:#fff;border-radius:10px;padding:9px}
+.kpi b{display:block;font-size:20px;font-variation-settings:"wdth" 80;font-weight:800;color:var(--tor)}
+.amort{height:6px;background:#E2E6E4;border-radius:3px;margin-top:6px;overflow:hidden}
+.amort span{display:block;height:100%;width:62%;background:var(--tor)}
+.zeile{display:flex;justify-content:space-between;background:#fff;border-radius:8px;padding:7px 9px}
+.ok{color:#2D7A4F;font-weight:700}.offen{color:#B5541C;font-weight:700}
+
+/* Funktionen als Stellplätze */
+.platz{background:var(--asphalt);color:var(--weiss);padding:110px 0 40px}
+.platz h2,.sicher h2,.wer h2,.ende h2{font-size:clamp(36px,5.4vw,72px);font-weight:850;font-stretch:72%;font-variation-settings:"wdth" 72;line-height:.95;letter-spacing:-.015em;max-width:16ch}
+.platz .intro{max-width:52ch;margin-top:18px;opacity:.85}
+.bays{display:grid;grid-template-columns:repeat(2,1fr);margin-top:70px;border-top:5px solid var(--gelb)}
+.bay{padding:44px 40px 56px;border-right:5px solid var(--gelb);border-bottom:5px solid var(--gelb);position:relative;min-height:330px}
+.bay:nth-child(2n){border-right:0}
+.bay h3{font-size:clamp(26px,2.6vw,34px);font-weight:800;font-variation-settings:"wdth" 90;line-height:1.05;margin-bottom:14px;max-width:18ch}
+.bay p{opacity:.82;max-width:44ch}
+.bay .mark{position:absolute;right:28px;bottom:22px;font-size:76px;font-weight:900;font-variation-settings:"wdth" 62;color:rgba(255,255,255,.07);line-height:1}
+@media (max-width:760px){.bays{grid-template-columns:1fr}.bay{border-right:0;padding:36px 4px 48px;min-height:0}}
+
+/* Sicherheit */
+.sicher{padding:120px 0;background:var(--weiss)}
+.sicher-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:start}
+.sicher ul{list-style:none;display:grid;gap:30px;margin-top:8px}
+.sicher li{padding-left:56px;position:relative}
+.sicher li strong{display:block;font-size:22px;font-variation-settings:"wdth" 95;margin-bottom:4px}
+.sicher li svg{position:absolute;left:0;top:2px;width:36px;height:36px;color:var(--tor)}
+@media (max-width:860px){.sicher-grid{grid-template-columns:1fr}}
+
+/* Für wen */
+.wer{padding:120px 0}
+.wer-list{margin-top:56px;display:grid;gap:0;border-top:2px solid var(--ink)}
+.wer-row{display:grid;grid-template-columns:minmax(220px,1fr) 1.4fr;gap:40px;padding:34px 0;border-bottom:2px solid var(--ink);align-items:center}
+.reihe{display:flex;gap:5px;flex-wrap:wrap}
+.reihe span{width:28px;height:24px;background:repeating-linear-gradient(var(--tor) 0 5px,#24392F 5px 6px);border:3px solid #E7E5E1;border-bottom:0}
+.reihe.klein span{width:14px;height:12px;border-width:2px}
+.reihe .p{background:none;border:0;border-left:3px solid var(--gelb);border-right:3px solid var(--gelb);height:30px;width:22px}
+.wer-row h3{font-size:24px;font-variation-settings:"wdth" 95;margin-bottom:4px}
+@media (max-width:760px){.wer-row{grid-template-columns:1fr;gap:16px}}
+
+/* Ende */
+.ende{background:var(--tor);color:var(--weiss);padding:110px 0 60px}
+.ende p{max-width:46ch;margin:18px 0 30px;opacity:.9}
+footer{margin-top:90px;display:flex;gap:24px;font-size:15px;opacity:.75;flex-wrap:wrap}
+footer span{margin-right:auto}
+
+@media (max-width:760px){.tore{grid-template-columns:.8fr 1.7fr .8fr}.screen{font-size:8.5px}.screen .t{font-size:11px}.kpi b{font-size:16px}.tore .box:first-child,.tore .box:last-child{display:none}.box{height:clamp(200px,34vh,300px)}.phone{width:88%}.boden::before{background:repeating-linear-gradient(90deg,transparent 0 calc(33.33% - 4px),var(--gelb) calc(33.33% - 4px) 33.33%)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header id="kopf">
+  <div class="wrap bar">
+    <a class="logo" href="#"><i></i>Garagenmanager</a>
+    <nav>
+      <a href="#funktionen">Funktionen</a>
+      <a href="#sicherheit">Datenschutz</a>
+      <a href="#fuer-wen">Für wen</a>
+    </nav>
+    <a class="btn" href="#">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.6v18.8c0 .4.4.6.7.4l10.6-9.4c.2-.2.2-.6 0-.8L4.7 2.2c-.3-.2-.7 0-.7.4zm12.6 7.6 2.9-2.6-11-6.3 8.1 8.9zm0 3.6-8.1 8.9 11-6.3-2.9-2.6zm4.2-3.8-2.9-1.7-3 2.7 3 2.7 2.9-1.7c.8-.5.8-1.5 0-2z"/></svg>
+      <span>Laden<span class="lang"> bei Google Play</span></span>
+    </a>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="wrap hero-text">
+    <h1>Deine Garagen. Ohne Zettel&shy;wirtschaft.</h1>
+    <p class="lead">Mieten, Verträge und Strom für Garagen, Stellplätze und Lagereinheiten in einer App. Alles bleibt auf deinem Handy.</p>
+    <div class="hero-cta">
+      <a class="btn gelb" href="#">Bei Google Play laden</a>
+      <span>Kein Abo. Keine Registrierung.</span>
+    </div>
+  </div>
+  <div class="hof" aria-hidden="true">
+    <div class="wand">
+      <div class="tore">
+        <div class="box"><span class="nr">1</span><div class="panel"></div></div>
+        <div class="box"><span class="nr">2</span><div class="panel"></div></div>
+        <div class="box" id="tor3"><span class="nr">3</span><span class="lampe"></span>
+          <div class="inside">
+            <div class="phone" id="phone"><div class="screen">
+              <div class="t">Übersicht</div>
+              <div class="kpi">Nettorendite 2026<b>6,8 %</b></div>
+              <div class="kpi">Amortisation<b>62 %</b><div class="amort"><span></span></div></div>
+              <div class="zeile"><span>Garage 1</span><span class="ok">bezahlt</span></div>
+              <div class="zeile"><span>Garage 2</span><span class="ok">bezahlt</span></div>
+              <div class="zeile"><span>Garage 3</span><span class="offen">offen</span></div>
+              <div class="zeile"><span>Stellplatz 4</span><span class="ok">bezahlt</span></div>
+            </div></div>
+          </div>
+          <div class="panel" id="panel3"></div>
+        </div>
+        <div class="box"><span class="nr">4</span><div class="panel"></div></div>
+        <div class="box"><span class="nr">5</span><div class="panel"></div></div>
+      </div>
+    </div>
+    <div class="boden"></div>
+  </div>
+</section>
+
+<section class="platz" id="funktionen">
+  <div class="wrap">
+    <h2>Was hinter dem Tor alles anfällt</h2>
+    <p class="intro">Garagen vermieten klingt einfach, bis die erste Mieterhöhung kommt, der Strom abgerechnet werden muss oder der Steuerberater nach Belegen fragt. Der Garagenmanager ist genau für diese Nische gebaut.</p>
+    <div class="bays">
+      <article class="bay">
+        <h3>Rendite und Einnahmen im Blick</h3>
+        <p>Die App rechnet deine Nettorendite und den Amortisationsfortschritt aus und zeigt eine Umsatzprognose. Du siehst sofort, welche Mieten da sind und wo noch etwas fehlt.</p>
+        <span class="mark" aria-hidden="true">%</span>
+      </article>
+      <article class="bay">
+        <h3>Verträge mit lückenloser Historie</h3>
+        <p>Mieterdaten, Verträge und gescannte Dokumente an einem Ort. Bei einer Mieterhöhung wird der alte Vertrag automatisch archiviert und ein neuer angelegt.</p>
+        <span class="mark" aria-hidden="true">§</span>
+      </article>
+      <article class="bay">
+        <h3>Stromabrechnung direkt am Zähler</h3>
+        <p>Zählerstand vor Ort eintragen, die App rechnet mit deinem Tarif und erstellt die Abrechnung. Ob Pauschale oder exakt nach Verbrauch. Alte Abrechnungen bleiben auch nach einer Preiserhöhung richtig.</p>
+        <span class="mark" aria-hidden="true">kWh</span>
+      </article>
+      <article class="bay">
+        <h3>DATEV-Export für den Steuerberater</h3>
+        <p>Einnahmen und Ausgaben im DATEV-Format (EXTF) exportieren oder einen PDF-Jahresbericht erzeugen. Das spart Zeit und Geld beim Steuerberater.</p>
+        <span class="mark" aria-hidden="true">PDF</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="sicher" id="sicherheit">
+  <div class="wrap sicher-grid">
+    <h2>Deine Daten bleiben in deiner Garage.</h2>
+    <ul>
+      <li>
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="7" y="4" width="22" height="28" rx="4"/><path d="M15 27h6"/></svg>
+        <strong>100 % offline</strong>Kein Konto, keine Cloud. Alles bleibt auf deinem Smartphone.
+      </li>
+      <li>
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="7" y="15" width="22" height="17" rx="3"/><path d="M12 15v-4a6 6 0 0 1 12 0v4"/></svg>
+        <strong>Verschlüsselte Backups</strong>Manuell oder über Google Drive sichern, mit AES verschlüsselt.
+      </li>
+      <li>
+        <svg viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="18" r="13"/><path d="M12 18.5l4 4 8-9"/></svg>
+        <strong>Einmal kaufen</strong>Kein Abo und keine versteckten monatlichen Kosten.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="wer" id="fuer-wen">
+  <div class="wrap">
+    <h2>Egal, wie groß dein Hof ist</h2>
+    <div class="wer-list">
+      <div class="wer-row">
+        <div class="reihe" aria-hidden="true"><span></span><span></span></div>
+        <div><h3>Eine oder zwei Garagen</h3><p>Für Privatvermieter, die keine Lust mehr auf Excel-Listen haben.</p></div>
+      </div>
+      <div class="wer-row">
+        <div class="reihe klein" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div><h3>Ganze Garagenparks</h3><p>Für Investoren, die viele Einheiten und ihre Rendite im Blick behalten wollen.</p></div>
+      </div>
+      <div class="wer-row">
+        <div class="reihe" aria-hidden="true"><span class="p"></span><span class="p"></span><span class="p"></span><span></span></div>
+        <div><h3>Stellplätze und Lager</h3><p>Für alle, die eine einfache Lösung für Miete und Strom suchen.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ende">
+  <div class="wrap">
+    <h2>Tor auf, Überblick da.</h2>
+    <p>Der Garagenmanager ist für Android im Google Play Store erhältlich.</p>
+    <a class="btn gelb" href="#">Bei Google Play laden</a>
+    <footer><span>© Garagenmanager</span><a href="https://www.garagenmanager.de/impressum">Impressum</a><a href="https://www.garagenmanager.de/datenschutzerkl%C3%A4rung">Datenschutz</a></footer>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+const kopf=document.getElementById('kopf');
+addEventListener('scroll',()=>kopf.classList.toggle('solid',scrollY>40),{passive:true});
+const ruhig=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(window.gsap&&!ruhig){
+  gsap.registerPlugin(ScrollTrigger);
+  if(window.Lenis){const l=new Lenis();l.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>l.raf(t*1000));gsap.ticker.lagSmoothing(0);}
+  // Ein Moment: Tor 3 fährt beim Scrollen hoch, das Handy kommt raus
+  const tl=gsap.timeline({scrollTrigger:{trigger:'#hero',start:'top top',end:'+=110%',scrub:.6,pin:true}});
+  tl.to('#panel3',{scaleY:.06,ease:'none',duration:1})
+    .to('#phone',{y:'0%',ease:'power2.out',duration:.8},'-=.45')
+    .to('.hero-text',{opacity:.25,duration:.6},'<');
+}else{
+  document.getElementById('panel3').style.transform='scaleY(.06)';
+  document.getElementById('phone').style.transform='none';
+}
+</script>
+</body>
+</html>

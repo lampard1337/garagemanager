@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Garagenmanager – Entwurf Schlüsselbrett</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brett:#DCE3E8; --loch:#B9C4CD; --ink:#1D2633; --mittel:#526070; --weiss:#FFFFFF;
+  --messing:#B8892B; --rot:#D8432F; --gelb:#EFB91F; --blau:#2E6DB4; --gruen:#3F8A5C;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Hanken Grotesk",system-ui,sans-serif;color:var(--ink);background:var(--weiss);font-size:18px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blau);outline-offset:3px}
+.wrap{width:min(1180px,calc(100% - 32px));margin:0 auto}
+h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;letter-spacing:-.02em}
+
+header{position:absolute;inset:0 0 auto;z-index:5;padding:20px 0}
+.bar{display:flex;align-items:center;gap:26px}
+.logo{font-family:"Bricolage Grotesque";font-weight:750;font-size:21px;text-decoration:none}
+nav{margin-left:auto;display:flex;gap:24px;font-size:16px}
+nav a{text-decoration:none;color:var(--mittel)}nav a:hover{color:var(--ink)}
+.btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;font-weight:600;padding:13px 22px;border-radius:12px;font-size:16px}
+@media (max-width:760px){nav{display:none}.bar .btn{margin-left:auto;padding:10px 14px;font-size:14px}.logo small{display:none}.bar .btn .lang{display:none}}
+
+/* Hero: Lochwand mit Schlüsseln */
+.hero{background-color:var(--brett);background-image:radial-gradient(circle,var(--loch) 3px,transparent 3.5px);background-size:28px 28px;background-position:14px 14px;padding:130px 0 90px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+h1{font-size:clamp(42px,6vw,82px);line-height:.98;font-weight:780;font-variation-settings:"opsz" 96}
+.lead{font-size:clamp(18px,1.6vw,21px);max-width:40ch;margin-top:22px;color:#33404f}
+.cta{margin-top:30px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;font-size:15px;color:var(--mittel)}
+.text-col{background:rgba(220,227,232,.85);padding:10px 10px 10px 0}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}}
+
+.brett{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-top:10px}
+.haken{position:relative;height:270px;display:flex;justify-content:center}
+.haken::before{content:"";position:absolute;top:0;width:14px;height:22px;border:4px solid #7D8792;border-top:0;border-radius:0 0 8px 8px}
+.schluessel{position:absolute;top:14px;background:none;border:0;cursor:pointer;transform-origin:50% 0;display:flex;flex-direction:column;align-items:center;font:inherit;color:inherit}
+.ring{width:34px;height:34px;border:4px solid #9AA3AC;border-radius:50%}
+.key{width:60px;height:130px;margin-top:-6px}
+.anh{margin-top:-4px;width:104px;padding:14px 8px 16px;border-radius:10px 10px 22px 22px;color:#fff;font-family:"Bricolage Grotesque";font-weight:700;font-size:17px;line-height:1.1;text-align:center;box-shadow:0 10px 18px -8px rgba(29,38,51,.45);position:relative}
+.anh::before{content:"";position:absolute;top:6px;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%;background:rgba(0,0,0,.25)}
+.anh span{display:block;margin-top:8px}
+.anh small{display:block;font-family:"Hanken Grotesk";font-weight:500;font-size:12px;opacity:.85;margin-top:4px}
+.schluessel[aria-pressed="true"] .anh{outline:3px solid var(--ink);outline-offset:3px}
+.hint{grid-column:1/-1;font-size:15px;color:var(--mittel);text-align:center;margin-top:-6px}
+
+/* Akte, die sich beim Schlüssel öffnet */
+.akte{background:var(--weiss);border-radius:18px;padding:28px;margin-top:18px;box-shadow:0 30px 60px -30px rgba(29,38,51,.4)}
+.akte-kopf{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.dot{width:16px;height:16px;border-radius:50%}
+.akte h3{font-size:26px;font-weight:720}
+.akte .sub{color:var(--mittel);font-size:15px;margin-left:auto}
+.akte dl{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px}
+.akte dt{font-size:14px;color:var(--mittel)}
+.akte dd{font-weight:650;font-size:18px}
+.verlauf{margin-top:20px;border-top:1px solid #E3E8EC;padding-top:16px;font-size:15px}
+.verlauf p{display:flex;justify-content:space-between;padding:4px 0;color:var(--mittel)}
+.verlauf p:first-child{color:var(--ink);font-weight:600}
+.badge{display:inline-block;font-size:13px;font-weight:700;padding:3px 9px;border-radius:999px}
+.badge.ok{background:#E3F2E8;color:#2B6B43}.badge.offen{background:#FBE6E2;color:#A3311F}
+
+/* Funktionen */
+.funktionen{padding:120px 0}
+h2{font-size:clamp(34px,4.6vw,60px);line-height:1.02;font-weight:760;max-width:18ch}
+.f-list{margin-top:60px;display:grid;grid-template-columns:repeat(2,1fr);gap:60px 70px}
+.f-list article{display:grid;grid-template-columns:20px 1fr;gap:20px}
+.f-list .farbe{width:20px;height:56px;border-radius:4px 4px 10px 10px}
+.f-list h3{font-size:25px;font-weight:700;margin-bottom:8px;line-height:1.15}
+.f-list p{color:var(--mittel);max-width:44ch}
+@media (max-width:820px){.f-list{grid-template-columns:1fr}}
+
+/* Vorher / nachher */
+.zettel{background:#F3F5F7;padding:110px 0}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:50px}
+.vs > div{border-radius:18px;padding:34px}
+.vorher{background:#fff;border:2px dashed #C3CCD4}
+.nachher{background:var(--ink);color:#fff}
+.vs h3{font-size:22px;margin-bottom:14px}
+.vs ul{list-style:none;display:grid;gap:12px}
+.vorher li{color:var(--mittel);text-decoration:line-through;text-decoration-color:rgba(216,67,47,.6)}
+.nachher li{opacity:.92}
+@media (max-width:820px){.vs{grid-template-columns:1fr}}
+
+.wer{padding:110px 0}
+.wer-grid{margin-top:50px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.wer-grid div{border-top:4px solid var(--ink);padding-top:20px}
+.wer-grid h3{font-size:23px;margin-bottom:6px}
+.wer-grid p{color:var(--mittel)}
+@media (max-width:820px){.wer-grid{grid-template-columns:1fr}}
+
+.ende{background-color:var(--brett);background-image:radial-gradient(circle,var(--loch) 3px,transparent 3.5px);background-size:28px 28px;padding:100px 0 50px}
+.ende-box{background:var(--weiss);border-radius:22px;padding:56px;max-width:720px}
+.ende p{color:var(--mittel);margin:14px 0 28px}
+footer{display:flex;gap:24px;margin-top:60px;font-size:15px;color:var(--mittel);flex-wrap:wrap}
+footer span{margin-right:auto}
+@media (max-width:600px){.ende-box{padding:32px 22px}.brett{grid-template-columns:repeat(2,1fr)}.haken{height:270px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#">Garagenmanager</a>
+    <nav><a href="#funktionen">Funktionen</a><a href="#datenschutz">Datenschutz</a><a href="#fuer-wen">Für wen</a></nav>
+    <a class="btn" href="#">Laden<span class="lang"> bei Google Play</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="text-col">
+      <h1>Zu jedem Schlüssel die passende Akte.</h1>
+      <p class="lead">Mieter, Vertrag, Miete und Stromzähler für jede Garage, jeden Stellplatz und jedes Lager. In einer App, offline auf deinem Handy.</p>
+      <div class="cta"><a class="btn" href="#">Bei Google Play laden</a><span>Einmal kaufen, kein Abo</span></div>
+
+    </div>
+
+    <div class="rechts">
+      <div class="brett" id="brett">
+        <p class="hint">Tippe auf einen Anhänger.</p>
+      </div>
+        <div class="akte" id="akte" aria-live="polite">
+          <div class="akte-kopf"><span class="dot" id="a-dot"></span><h3 id="a-titel"></h3><span class="sub" id="a-status"></span></div>
+          <dl>
+            <div><dt>Mieter</dt><dd id="a-mieter"></dd></div>
+            <div><dt>Miete</dt><dd id="a-miete"></dd></div>
+            <div><dt>Strom</dt><dd id="a-strom"></dd></div>
+            <div><dt>Rendite</dt><dd id="a-rendite"></dd></div>
+          </dl>
+          <div class="verlauf" id="a-verlauf"></div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<section class="funktionen" id="funktionen">
+  <div class="wrap">
+    <h2>Was die App für dich übernimmt</h2>
+    <div class="f-list">
+      <article><span class="farbe" style="background:var(--rot)"></span><div><h3>Rendite und Einnahmen</h3><p>Nettorendite, Amortisationsfortschritt und Umsatzprognose werden automatisch berechnet. Offene Mieten fallen sofort auf.</p></div></article>
+      <article><span class="farbe" style="background:var(--gelb)"></span><div><h3>Verträge mit Historie</h3><p>Mieterdaten, Verträge und gescannte Dokumente an einem Ort. Bei einer Mieterhöhung wird der alte Vertrag archiviert und ein neuer angelegt.</p></div></article>
+      <article><span class="farbe" style="background:var(--blau)"></span><div><h3>Stromabrechnung</h3><p>Zählerstand vor Ort eintragen, die App rechnet mit deinem Tarif. Pauschal oder exakt. Alte Abrechnungen bleiben nach Preiserhöhungen korrekt.</p></div></article>
+      <article><span class="farbe" style="background:var(--gruen)"></span><div><h3>DATEV-Export und Jahresbericht</h3><p>Einnahmen und Ausgaben im DATEV-Format (EXTF) für den Steuerberater oder als PDF-Jahresbericht.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="zettel" id="datenschutz">
+  <div class="wrap">
+    <h2>Weniger Zettel. Keine Cloud.</h2>
+    <div class="vs">
+      <div class="vorher">
+        <h3>Bisher</h3>
+        <ul><li>Excel-Liste mit fünf Versionen</li><li>Zählerstände auf einem Notizzettel</li><li>Alter Mietvertrag irgendwo im Ordner</li><li>Belege für den Steuerberater zusammensuchen</li></ul>
+      </div>
+      <div class="nachher">
+        <h3>Mit dem Garagenmanager</h3>
+        <ul><li>Alles bleibt auf deinem Smartphone, ohne Registrierung</li><li>Backups manuell oder über Google Drive, AES-verschlüsselt</li><li>Einmal zahlen, keine monatlichen Kosten</li><li>Export auf Knopfdruck</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wer" id="fuer-wen">
+  <div class="wrap">
+    <h2>Für wen die App gedacht ist</h2>
+    <div class="wer-grid">
+      <div><h3>Einzelvermieter</h3><p>Mit einer oder zwei Garagen, die es einfach ordentlich haben wollen.</p></div>
+      <div><h3>Investoren</h3><p>Die ganze Garagenparks verwalten und die Rendite pro Objekt sehen wollen.</p></div>
+      <div><h3>Stellplätze und Lager</h3><p>Für alle, die Miete und Strom einfach abrechnen möchten.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ende">
+  <div class="wrap">
+    <div class="ende-box">
+      <h2>Schlüssel ans Brett, Rest in die App.</h2>
+      <p>Der Garagenmanager ist für Android im Google Play Store erhältlich.</p>
+      <a class="btn" href="#">Bei Google Play laden</a>
+    </div>
+    <footer><span>© Garagenmanager</span><a href="https://www.garagenmanager.de/impressum">Impressum</a><a href="https://www.garagenmanager.de/datenschutzerkl%C3%A4rung">Datenschutzerklärung</a></footer>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+const objekte=[
+  {name:'Garage 1',ort:'Hofstraße',farbe:'var(--rot)',mieter:'K. Brandt',miete:'65 € / Monat',strom:'Pauschal 8 €',rendite:'7,1 %',status:['ok','Oktober bezahlt'],
+   verlauf:[['Vertrag 2026','65 €'],['Vertrag 2023','58 € · archiviert'],['Vertrag 2020','52 € · archiviert']]},
+  {name:'Garage 2',ort:'Hofstraße',farbe:'var(--gelb)',mieter:'S. Okafor',miete:'65 € / Monat',strom:'nach Zähler',rendite:'6,4 %',status:['offen','Oktober offen'],
+   verlauf:[['Vertrag 2025','65 €'],['Vertrag 2021','55 € · archiviert']]},
+  {name:'Stellplatz 7',ort:'Parkdeck',farbe:'var(--blau)',mieter:'M. Lindqvist',miete:'35 € / Monat',strom:'kein Strom',rendite:'8,2 %',status:['ok','Oktober bezahlt'],
+   verlauf:[['Vertrag 2024','35 €']]},
+  {name:'Lager B',ort:'Halle Nord',farbe:'var(--gruen)',mieter:'Fa. Henke',miete:'120 € / Monat',strom:'nach Zähler',rendite:'5,9 %',status:['ok','Oktober bezahlt'],
+   verlauf:[['Vertrag 2026','120 €'],['Vertrag 2022','105 € · archiviert']]}
+];
+const brett=document.getElementById('brett');
+const keySvg=`<svg class="key" viewBox="0 0 60 130" aria-hidden="true"><rect x="22" y="0" width="16" height="34" rx="6" fill="#C9A24A"/><rect x="26" y="30" width="8" height="96" fill="#B8892B"/><path d="M34 84h12v8h-6v6h6v8h-12z" fill="#B8892B"/><circle cx="30" cy="12" r="4" fill="#8F6A1F"/></svg>`;
+const knoepfe=objekte.map((o,i)=>{
+  const h=document.createElement('div');h.className='haken';
+  const b=document.createElement('button');b.className='schluessel';b.type='button';b.setAttribute('aria-pressed','false');
+  b.setAttribute('aria-label',`${o.name} öffnen`);
+  b.innerHTML=`<span class="ring"></span>${keySvg}<span class="anh" style="background:${o.farbe}"><span>${o.name}</span><small>${o.ort}</small></span>`;
+  b.addEventListener('click',()=>waehle(i,true));
+  h.appendChild(b);brett.insertBefore(h,brett.querySelector('.hint'));
+  return b;
+});
+const $=id=>document.getElementById(id);
+const ruhig=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function waehle(i,klick){
+  const o=objekte[i];
+  knoepfe.forEach((k,j)=>k.setAttribute('aria-pressed',j===i));
+  $('a-dot').style.background=o.farbe;$('a-titel').textContent=o.name;
+  $('a-status').innerHTML=`<span class="badge ${o.status[0]}">${o.status[1]}</span>`;
+  $('a-mieter').textContent=o.mieter;$('a-miete').textContent=o.miete;$('a-strom').textContent=o.strom;$('a-rendite').textContent=o.rendite;
+  $('a-verlauf').innerHTML=o.verlauf.map(v=>`<p><span>${v[0]}</span><span>${v[1]}</span></p>`).join('');
+  if(klick&&window.gsap&&!ruhig){
+    gsap.fromTo(knoepfe[i],{rotation:0},{keyframes:[{rotation:14,duration:.18},{rotation:-9,duration:.3},{rotation:4,duration:.3},{rotation:0,duration:.4}],ease:'sine.inOut'});
+    gsap.fromTo('#akte',{y:8,opacity:.4},{y:0,opacity:1,duration:.35,ease:'power2.out'});
+  }
+}
+waehle(0,false);
+// Ein Moment beim Laden: die Schlüssel schaukeln einmal nach, als hätte jemand das Brett angestoßen
+if(window.gsap&&!ruhig){
+  knoepfe.forEach((k,i)=>gsap.fromTo(k,{rotation:i%2?-12:12},{rotation:0,duration:2.2,ease:'elastic.out(1,0.25)',delay:.15+i*.06}));
+}
+</script>
+</body>
+</html>

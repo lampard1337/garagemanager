@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Garagenmanager – Entwurf Zählerstand</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --weiss:#FFFFFF; --grau:#E8EAEC; --grau-dk:#C9CDD2; --blau:#1E4FB8; --blau-dk:#163C8C;
+  --rot:#D3262E; --ink:#1A1D22; --mittel:#5B6270;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:"Schibsted Grotesk",system-ui,sans-serif;color:var(--ink);background:var(--weiss);font-size:18px;line-height:1.55}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blau);outline-offset:3px}
+.wrap{width:min(1160px,calc(100% - 32px));margin:0 auto}
+.tab{font-variant-numeric:tabular-nums}
+
+header{padding:22px 0;border-bottom:1px solid var(--grau)}
+.bar{display:flex;align-items:center;gap:30px}
+.logo{font-weight:800;font-size:19px;text-decoration:none}
+.logo small{font-weight:500;color:var(--mittel);font-size:14px;margin-left:8px}
+nav{margin-left:auto;display:flex;gap:26px;font-size:16px;color:var(--mittel)}
+nav a{text-decoration:none}nav a:hover{color:var(--ink)}
+.btn{display:inline-block;background:var(--blau);color:#fff;text-decoration:none;font-weight:650;padding:13px 22px;border-radius:999px;font-size:16px}
+.btn:hover{background:var(--blau-dk)}
+.btn.hell{background:#fff;color:var(--blau)}
+@media (max-width:760px){nav{display:none}.bar .btn{margin-left:auto;padding:10px 16px;font-size:14px}.logo small{display:none}.bar .btn .lang{display:none}}
+
+/* Hero */
+.hero{padding:clamp(56px,9vh,110px) 0 90px}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}
+h1{font-size:clamp(42px,6.2vw,84px);line-height:1;font-weight:800;letter-spacing:-.03em}
+.lead{font-size:clamp(18px,1.6vw,21px);color:var(--mittel);max-width:40ch;margin-top:24px}
+.cta{display:flex;gap:20px;align-items:center;margin-top:32px;flex-wrap:wrap;font-size:15px;color:var(--mittel)}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}}
+
+/* Ferraris-Zähler */
+.zaehler{background:linear-gradient(#F4F5F6,#DDE0E3);border-radius:22px;padding:28px 26px 30px;box-shadow:inset 0 0 0 1px var(--grau-dk),0 30px 60px -30px rgba(26,29,34,.35);max-width:440px;margin-left:auto;width:100%}
+.schild{display:flex;justify-content:space-between;font-size:13px;color:var(--mittel);margin-bottom:16px}
+.schild b{color:var(--ink)}
+.fenster{background:#2A2D33;border-radius:10px;padding:14px 14px 18px;box-shadow:inset 0 3px 8px rgba(0,0,0,.5)}
+.walzen{display:flex;gap:4px;justify-content:center}
+.walze{width:44px;height:62px;background:#111316;border-radius:4px;overflow:hidden;position:relative;box-shadow:inset 0 8px 10px -6px rgba(255,255,255,.12),inset 0 -8px 10px -6px rgba(0,0,0,.8)}
+.walze.rot{background:var(--rot)}
+.walze .band{position:absolute;left:0;right:0;top:0;display:flex;flex-direction:column}
+.walze .band span{height:62px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:38px;font-weight:700}
+.einheit{color:#AEB3BB;font-size:13px;text-align:right;margin-top:8px}
+.scheibe-wrap{margin:20px auto 0;height:28px;background:#2A2D33;border-radius:6px;overflow:hidden;position:relative;width:70%}
+.scheibe{position:absolute;inset:9px 0;background:linear-gradient(#C3C7CC,#8E949B);}
+.scheibe::before{content:"";position:absolute;top:0;bottom:0;width:14%;background:var(--rot);left:-14%;animation:dreh 2.6s linear infinite}
+@keyframes dreh{to{left:100%}}
+.zaehler figcaption{font-size:14px;color:var(--mittel);margin-top:18px;text-align:center}
+.walze-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Ablauf Stromabrechnung */
+.ablauf{background:var(--grau);padding:110px 0}
+h2{font-size:clamp(34px,4.6vw,60px);line-height:1.03;font-weight:800;letter-spacing:-.025em;max-width:18ch}
+.ablauf-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;margin-top:60px;align-items:start}
+.schritte{list-style:none;counter-reset:s}
+.schritte li{counter-increment:s;display:grid;grid-template-columns:52px 1fr;gap:18px;padding:26px 0;border-top:1px solid var(--grau-dk)}
+.schritte li::before{content:counter(s);width:40px;height:40px;border-radius:50%;background:var(--blau);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.schritte h3{font-size:21px;margin-bottom:4px}
+.schritte p{color:var(--mittel)}
+.beleg{background:#fff;border-radius:6px;padding:34px 32px;box-shadow:0 1px 0 var(--grau-dk),0 24px 50px -28px rgba(26,29,34,.3);position:sticky;top:30px}
+.beleg h3{font-size:20px}
+.beleg .meta{color:var(--mittel);font-size:15px;margin:4px 0 22px}
+.beleg table{width:100%;border-collapse:collapse;font-size:16px}
+.beleg td{padding:9px 0;border-bottom:1px dashed var(--grau-dk)}
+.beleg td:last-child{text-align:right}
+.beleg tr.summe td{border-bottom:0;border-top:2px solid var(--ink);font-weight:800;font-size:20px;padding-top:14px}
+.beleg .hinweis{margin-top:20px;font-size:14px;color:var(--mittel);background:var(--grau);padding:12px 14px;border-radius:4px}
+@media (max-width:900px){.ablauf-grid{grid-template-columns:1fr}.beleg{position:static}}
+
+/* Weitere Funktionen */
+.mehr{padding:110px 0}
+.mehr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:60px}
+.mehr article h3{font-size:22px;margin:22px 0 8px;line-height:1.2}
+.mehr article p{color:var(--mittel)}
+.bild{height:150px;background:var(--grau);border-radius:6px;padding:22px;display:flex;flex-direction:column;justify-content:flex-end}
+.balken{display:flex;align-items:flex-end;gap:8px;height:100%}
+.balken span{flex:1;background:var(--blau);border-radius:2px 2px 0 0;opacity:.35}
+.balken span.jetzt{opacity:1}
+.stapel{position:relative;height:100%}
+.stapel div{position:absolute;left:0;right:20%;height:62px;background:#fff;border-radius:4px;box-shadow:0 1px 0 var(--grau-dk);padding:10px 12px;font-size:13px;color:var(--mittel)}
+.stapel div:nth-child(1){bottom:28px;left:16%;right:4%;opacity:.55}
+.stapel div:nth-child(2){bottom:14px;left:8%;right:12%;opacity:.8}
+.stapel div:nth-child(3){bottom:0;color:var(--ink)}
+.stapel b{display:block;font-size:15px}
+.datei{background:#fff;border-radius:4px;padding:12px 14px;font-size:14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 0 var(--grau-dk)}
+.datei+.datei{margin-top:8px}
+.datei em{font-style:normal;color:var(--blau);font-weight:700}
+@media (max-width:900px){.mehr-grid{grid-template-columns:1fr;gap:56px}}
+
+/* Datenschutz */
+.privat{background:var(--blau);color:#fff;padding:110px 0}
+.privat-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+.privat dl{display:grid;gap:30px}
+.privat dt{font-weight:750;font-size:22px}
+.privat dd{opacity:.85}
+@media (max-width:860px){.privat-grid{grid-template-columns:1fr}}
+
+.wer{padding:110px 0}
+.wer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:56px;border-top:1px solid var(--grau-dk)}
+.wer-grid div{padding:30px 30px 10px 0}
+.wer-grid div+div{padding-left:30px;border-left:1px solid var(--grau-dk)}
+.wer-grid b{display:block;font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1;margin-bottom:12px}
+.wer-grid p{color:var(--mittel)}
+@media (max-width:860px){.wer-grid{grid-template-columns:1fr}.wer-grid div+div{border-left:0;padding-left:0;border-top:1px solid var(--grau-dk)}}
+
+.ende{border-top:1px solid var(--grau);padding:90px 0 50px;text-align:left}
+.ende p{color:var(--mittel);margin:16px 0 28px;max-width:44ch}
+footer{display:flex;gap:24px;margin-top:80px;font-size:15px;color:var(--mittel);flex-wrap:wrap}
+footer span{margin-right:auto}
+@media (prefers-reduced-motion:reduce){.scheibe::before{animation:none;left:40%}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="#">Garagenmanager<small>für Android</small></a>
+    <nav><a href="#strom">Stromabrechnung</a><a href="#funktionen">Funktionen</a><a href="#datenschutz">Datenschutz</a></nav>
+    <a class="btn" href="#">Laden<span class="lang"> bei Google Play</span></a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Zählerstand ablesen, Abrechnung fertig.</h1>
+      <p class="lead">Die App für private Vermieter von Garagen, Stellplätzen und Lagereinheiten. Mieten, Verträge, Strom und Steuer ohne Excel-Liste.</p>
+      <div class="cta"><a class="btn" href="#">Bei Google Play laden</a><span>Einmal kaufen, kein Abo</span></div>
+    </div>
+    <figure class="zaehler" aria-label="Stromzähler, der hochzählt">
+      <div class="schild"><span><b>Garage 3</b> · Unterzähler</span><span>Tarif 2026</span></div>
+      <div class="fenster">
+        <div class="walzen" id="walzen" aria-hidden="true"></div>
+        <div class="einheit">kWh</div>
+        <div class="scheibe-wrap"><div class="scheibe"></div></div>
+      </div>
+      <figcaption>Stand vor Ort eintippen, den Rest rechnet die App.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="ablauf" id="strom">
+  <div class="wrap">
+    <h2>Stromabrechnung, ohne nachzurechnen</h2>
+    <div class="ablauf-grid">
+      <ol class="schritte">
+        <li><div><h3>Zählerstand erfassen</h3><p>Direkt an der Garage ins Handy tippen. Der letzte Stand ist schon hinterlegt.</p></div></li>
+        <li><div><h3>Tarif wird angewendet</h3><p>Pauschale oder exakt nach Verbrauch. Wenn sich der Strompreis ändert, bleibt der alte Tarif für alte Zeiträume gespeichert.</p></div></li>
+        <li><div><h3>Abrechnung fertig</h3><p>Die App erstellt die Abrechnung für den Mieter. Alte Abrechnungen stimmen auch nach einer Preiserhöhung noch.</p></div></li>
+      </ol>
+      <div class="beleg tab">
+        <h3>Stromabrechnung Garage 3</h3>
+        <p class="meta">01.01.–31.12.2026 · Mieter: K. Brandt</p>
+        <table>
+          <tr><td>Zählerstand alt</td><td>4.812 kWh</td></tr>
+          <tr><td>Zählerstand neu</td><td>5.107 kWh</td></tr>
+          <tr><td>Verbrauch</td><td>295 kWh</td></tr>
+          <tr><td>Arbeitspreis</td><td>0,34 €/kWh</td></tr>
+          <tr class="summe"><td>Betrag</td><td>100,30 €</td></tr>
+        </table>
+        <p class="hinweis">Beispielwerte. Der Preis kommt aus deinem hinterlegten Tarif.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mehr" id="funktionen">
+  <div class="wrap">
+    <h2>Und der Rest der Vermietung</h2>
+    <div class="mehr-grid">
+      <article>
+        <div class="bild"><div class="balken" aria-hidden="true"><span style="height:30%"></span><span style="height:42%"></span><span style="height:51%"></span><span style="height:63%"></span><span class="jetzt" style="height:74%"></span></div></div>
+        <h3>Rendite und Amortisation</h3>
+        <p>Nettorendite, Amortisationsfortschritt und Umsatzprognose rechnet die App selbst. Offene Mieten siehst du auf einen Blick.</p>
+      </article>
+      <article>
+        <div class="bild"><div class="stapel" aria-hidden="true"><div>Vertrag 2022</div><div>Vertrag 2024</div><div><b>Vertrag 2026</b>65 € Miete · aktiv</div></div></div>
+        <h3>Verträge mit Historie</h3>
+        <p>Bei einer Mieterhöhung archiviert die App den alten Vertrag und legt einen neuen an. Mieterdaten und gescannte Dokumente liegen dabei.</p>
+      </article>
+      <article>
+        <div class="bild"><div class="datei"><span>EXTF_Buchungen_2026.csv</span><em>DATEV</em></div><div class="datei"><span>Jahresbericht_2026.pdf</span><em>PDF</em></div></div>
+        <h3>Export für den Steuerberater</h3>
+        <p>Einnahmen und Ausgaben im DATEV-Format exportieren oder als PDF-Jahresbericht ablegen.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="privat" id="datenschutz">
+  <div class="wrap privat-grid">
+    <h2>Deine Zahlen gehen niemanden etwas an.</h2>
+    <dl>
+      <div><dt>Komplett offline</dt><dd>Keine Registrierung, keine Cloud. Alle Daten bleiben auf deinem Smartphone.</dd></div>
+      <div><dt>Verschlüsselte Sicherung</dt><dd>Backups manuell oder über Google Drive, mit AES verschlüsselt.</dd></div>
+      <div><dt>Kein Abo</dt><dd>Einmal zahlen und dauerhaft nutzen.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="wer">
+  <div class="wrap">
+    <h2>Für jede Größe</h2>
+    <div class="wer-grid">
+      <div><b>1–2</b><p>Garagen als Einzelvermieter, die bisher im Notizbuch stehen.</p></div>
+      <div><b>50+</b><p>Einheiten in einem Garagenpark, mit Rendite pro Objekt.</p></div>
+      <div><b>P</b><p>Stellplätze und Lagereinheiten mit Miete und Strom.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ende">
+  <div class="wrap">
+    <h2>Schluss mit Zettelwirtschaft.</h2>
+    <p>Der Garagenmanager ist für Android im Google Play Store erhältlich.</p>
+    <a class="btn" href="#">Bei Google Play laden</a>
+    <footer><span>© Garagenmanager</span><a href="https://www.garagenmanager.de/impressum">Impressum</a><a href="https://www.garagenmanager.de/datenschutzerkl%C3%A4rung">Datenschutzerklärung</a></footer>
+  </div>
+</section>
+
+<script>
+// Zählwerk: 5 schwarze Walzen + 1 rote, zählt von 04812,0 hoch
+const W=document.getElementById('walzen');
+const stellen=6, walzen=[];
+for(let i=0;i<stellen;i++){
+  const w=document.createElement('div');w.className='walze'+(i===stellen-1?' rot':'');
+  const b=document.createElement('div');b.className='band';
+  for(let d=0;d<=10;d++){const s=document.createElement('span');s.textContent=d%10;b.appendChild(s)}
+  w.appendChild(b);W.appendChild(w);walzen.push(b);
+}
+const ruhig=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let wert=48120; // Zehntel-kWh
+function zeige(v){
+  let r=v;
+  for(let i=stellen-1;i>=0;i--){
+    const ziffer=r%10; r=Math.floor(r/10);
+    // letzte Walze dreht weich, die anderen springen sauber
+    walzen[i].style.transition=ruhig?'none':'transform .5s cubic-bezier(.3,.7,.3,1)';
+    walzen[i].style.transform=`translateY(${-ziffer*62}px)`;
+  }
+}
+zeige(wert);
+if(!ruhig){setInterval(()=>{wert++;zeige(wert)},900);}
+</script>
+</body>
+</html>
