@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#17191B">
+<title>Garagenmanager – Entwurf Garagenzeile</title>
+<meta name="description" content="Garagenmanager: Mieter, Verträge, Strom und Steuer für Garagen, Stellplätze und Lager. Offline auf deinem Android-Handy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{
+  --asphalt:#17191B; --asphalt-2:#212427; --kreide:#F1F1EE; --kreide-2:#B9BCB8;
+  --beton:#CDD0CC; --beton-hell:#E3E5E2; --ink:#141618; --ink-2:#464A4D;
+  --gelb:#F2C230; --gelb-tief:#D9A814;
+  --rand:clamp(16px,2.6vw,40px);
+  --font:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --ease-out:cubic-bezier(.22,1,.36,1); --ease-expo:cubic-bezier(.16,1,.3,1); --ease-in-out:cubic-bezier(.76,0,.24,1);
+  --t-press:140ms; --t-hover:180ms;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scrollbar-color:#5a5e61 var(--asphalt);background:var(--asphalt)}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{font-family:var(--font);font-size:clamp(17px,1.25vw,19px);line-height:1.5;color:var(--kreide);background:var(--asphalt);-webkit-font-smoothing:antialiased;font-variation-settings:"wdth" 100;overflow-x:clip}
+::selection{background:var(--gelb);color:var(--ink)}
+input{caret-color:var(--ink)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gelb);outline-offset:3px}
+.hell :focus-visible,.gelb :focus-visible{outline-color:var(--ink)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* Schrift */
+.display,h1,h2{font-weight:800;font-variation-settings:"wdth" 112;letter-spacing:-.03em;line-height:.95;text-wrap:balance}
+h1{font-size:clamp(40px,8.6vw,138px)}
+h2{font-size:clamp(36px,4.6vw,72px)}
+h3{font-size:clamp(24px,2.2vw,32px);font-weight:700;font-variation-settings:"wdth" 108;letter-spacing:-.02em;line-height:1.05}
+.lead{font-size:clamp(19px,1.6vw,23px);line-height:1.4;max-width:34ch;text-wrap:pretty}
+
+/* Knöpfe und Links */
+.knopf{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 24px;background:var(--gelb);color:var(--ink);font-weight:700;font-size:17px;text-decoration:none;border:0;cursor:pointer;
+  transition:transform var(--t-press) var(--ease-out),background-color var(--t-hover) ease}
+.knopf:active{transform:scale(.97)}
+.knopf svg{width:18px;height:18px;flex:none}
+.knopf.dunkel{background:var(--ink);color:var(--kreide)}
+.textlink{font-weight:600;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:.22em;text-decoration-thickness:.08em;transition:text-decoration-color var(--t-hover) ease}
+@media (hover:hover) and (pointer:fine){
+  .knopf:hover{background:#FFD24A}
+  .knopf.dunkel:hover{background:#2c3033}
+  .textlink:hover{text-decoration-color:currentColor}
+}
+
+/* Navigation */
+.nav{position:absolute;inset:0 0 auto;z-index:5;display:flex;align-items:center;gap:32px;padding:20px var(--rand)}
+.wortmarke{font-weight:800;font-variation-settings:"wdth" 118;font-size:20px;letter-spacing:-.02em;text-decoration:none}
+.nav ul{display:flex;gap:28px;list-style:none;margin-left:auto;font-size:16px}
+.nav ul a{text-decoration:none;color:var(--kreide)}
+.nav .knopf{min-height:44px;padding:0 18px;font-size:15px}
+@media (hover:hover) and (pointer:fine){.nav ul a:hover{text-decoration:underline;text-underline-offset:.25em}}
+@media (max-width:820px){.nav ul{display:none}.nav .knopf{margin-left:auto}}
+
+/* Bühne mit der 3D-Garagenzeile */
+.zeile{position:relative}
+main>section,.schluss{position:relative;z-index:2}
+.buehne{position:sticky;top:0;height:100svh;margin-bottom:-100svh;overflow:clip;background:var(--asphalt)}
+.buehne__bild{position:absolute;inset:0}
+.buehne__bild canvas{display:block;width:100%;height:100%}
+.buehne__ersatz{display:none;position:absolute;inset:auto 0 0;height:40%}
+.buehne__ersatz svg{width:100%;height:100%}
+.kein-3d .buehne__bild canvas{display:none}
+.kein-3d .buehne__ersatz{display:block}
+
+.hero{position:relative;z-index:1;min-height:100svh;padding:clamp(108px,15vh,150px) var(--rand) 40px;display:flex;flex-direction:column;align-items:flex-start}
+.hero .lead{margin-top:clamp(20px,2.4vw,32px)}
+.hero .aktionen{margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px}
+
+.zeilen .zeile-maske{display:block;overflow:clip;padding-bottom:.08em;margin-bottom:-.08em}
+.zeilen [data-line]{display:block}
+@media (prefers-reduced-motion:no-preference){
+  .js .hero [data-line]{transform:translateY(105%);animation:hoch 900ms var(--ease-expo) forwards;animation-delay:calc(120ms + var(--i)*100ms)}
+  .js .hero [data-load]{opacity:0;transform:translateY(14px);animation:auf 600ms var(--ease-out) forwards;animation-delay:var(--d)}
+}
+@keyframes hoch{to{transform:none}}
+@keyframes auf{to{opacity:1;transform:none}}
+
+/* Schritte: hinter jedem Tor eine Funktion */
+.schritt{position:relative;z-index:1;min-height:100svh;display:flex;align-items:center;padding:96px var(--rand)}
+.schritt__inhalt{width:min(500px,36vw)}
+.schritt__zahl{font-size:15px;color:var(--kreide-2);margin-bottom:18px}
+.schritt h2{font-size:clamp(36px,4vw,64px)}
+.schritt p.text{margin-top:18px;max-width:34ch}
+.schritt .ui{margin-top:30px}
+@media (max-width:899px){
+  .schritt{align-items:flex-start;padding:0;min-height:72svh}
+  .schritt__inhalt{width:100%;padding:32px var(--rand) 56px}
+  .zeile::after{content:"";display:block;height:44svh}
+  .buehne.oben{z-index:3;background:transparent;pointer-events:none}
+}
+
+/* App-Ausschnitte (echte Oberfläche, eigene Regeln) */
+.ui{background:#F3F3F0;color:var(--ink);border-radius:14px;padding:16px 18px 14px;width:min(380px,100%);font-size:15px;line-height:1.35;font-variant-numeric:tabular-nums;font-variation-settings:"wdth" 100}
+.ui__kopf{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px}
+.ui__titel{font-weight:700;font-size:18px;letter-spacing:-.01em}
+.ui__klein{color:#5F6468;font-size:13.5px}
+.ui__zeile{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-top:1px solid #E0E1DC}
+.ui__zeile b{font-weight:600}
+.ui__rechts{display:flex;align-items:center;gap:10px}
+.chip{font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:20px}
+.chip.ok{background:#DDEEE5;color:#1C6447}.chip.offen{background:#FBE3DF;color:#A52A1A}.chip.alt{background:#E7E7E3;color:#555A5E}
+.ui__summe{display:flex;justify-content:space-between;padding-top:11px;margin-top:2px;border-top:1px solid #CFD0CA;font-weight:700}
+.ui__knopf{margin-top:12px;background:#1F2326;color:#F3F3F0;border-radius:10px;text-align:center;padding:10px;font-weight:600}
+
+/* Stromrechner */
+.hell{background:var(--beton-hell);color:var(--ink)}
+.strom{padding:clamp(96px,14vw,200px) var(--rand);display:grid;grid-template-columns:5fr 6fr;gap:clamp(40px,6vw,110px);align-items:start}
+.strom .lead{margin-top:20px}
+.felder{margin-top:36px;display:grid;gap:18px;max-width:420px}
+.feld label{display:block;font-weight:600;font-size:16px;margin-bottom:6px}
+.feld input{width:100%;font:inherit;font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink);background:#FFF;border:2px solid #B9BCB6;border-radius:0;padding:10px 14px;transition:border-color var(--t-hover) ease}
+.feld input:focus{outline:none;border-color:var(--ink)}
+.feld input[aria-invalid="true"]{border-color:#B3261E}
+.feld small{display:block;margin-top:5px;font-size:14px;color:var(--ink-2)}
+.ergebnis{background:var(--ink);color:var(--kreide);padding:clamp(28px,3.4vw,48px);font-variant-numeric:tabular-nums}
+.ergebnis__name{font-size:16px;color:var(--kreide-2)}
+.ergebnis__werte{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:22px}
+.ergebnis__werte dt{font-size:16px;color:var(--kreide-2)}
+.ergebnis__werte dd{font-size:clamp(40px,5vw,76px);font-weight:800;font-variation-settings:"wdth" 108;letter-spacing:-.03em;line-height:1;margin-top:6px;white-space:nowrap}
+.ergebnis__rechnung{margin-top:28px;font-size:17px}
+.ergebnis__fehler{margin-top:14px;color:#FFB4A8;font-weight:600;min-height:1.5em}
+.ergebnis__hinweis{margin-top:22px;padding:18px 20px;background:#24282B;color:var(--kreide);font-size:17px;max-width:52ch}
+.strom>*{min-width:0}
+@media (max-width:899px){.strom{grid-template-columns:1fr}}
+@media (max-width:560px){.ergebnis__werte{grid-template-columns:1fr;gap:14px}.ergebnis__werte dd{font-size:clamp(40px,13vw,60px)}}
+
+/* Datenschutz */
+.gelb{background:var(--gelb);color:var(--ink)}
+.daten{padding:clamp(96px,14vw,200px) var(--rand);display:grid;grid-template-columns:6fr 6fr;gap:clamp(40px,6vw,110px)}
+.daten h2{font-size:clamp(36px,3.9vw,60px)}
+.satz{font-size:clamp(24px,2.5vw,36px);line-height:1.25;font-weight:600;font-variation-settings:"wdth" 104;letter-spacing:-.015em;max-width:26ch}
+.daten dl{margin-top:clamp(48px,6vw,80px);display:grid;grid-template-columns:auto 1fr;gap:22px 40px;align-items:baseline}
+.daten dt{font-size:clamp(24px,2.2vw,32px);font-weight:800;font-variation-settings:"wdth" 112;letter-spacing:-.02em}
+.daten dd{max-width:36ch}
+[data-fill]{--fill:var(--ink);color:var(--fill)}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .is-filling>span{display:inline-block;color:color-mix(in oklab,var(--fill) 45%,transparent);animation:tinte linear both;animation-timeline:view();animation-range:cover 18% cover 45%}
+  }
+}
+@keyframes tinte{to{color:var(--fill)}}
+@media (max-width:899px){.daten{grid-template-columns:1fr}.daten dl{grid-template-columns:1fr;gap:6px}.daten dd{margin-bottom:18px}}
+
+/* Für wen */
+.beton{background:var(--beton);color:var(--ink)}
+.wer{padding:clamp(96px,14vw,200px) var(--rand)}
+.wer ul{list-style:none;margin-top:clamp(40px,5vw,72px);display:grid;gap:12px}
+.wer li{display:grid;grid-template-columns:4fr 4fr 5fr;gap:clamp(20px,4vw,64px);align-items:center;padding:clamp(22px,2.6vw,36px);background:var(--beton-hell)}
+.wer li:nth-child(2){background:#D9DBD7}
+.wer li p{max-width:32ch}
+.wer svg{width:100%;height:auto;max-height:150px}
+@media (max-width:899px){.wer li{grid-template-columns:1fr;gap:12px}.wer svg{max-width:420px}}
+
+/* Schluss */
+.schluss{padding:clamp(96px,12vw,170px) var(--rand) 32px;overflow:clip}
+.schluss__oben{display:grid;grid-template-columns:1fr auto;gap:28px 60px;align-items:end}
+.schluss .lead{margin-top:16px;max-width:none}
+.riesig{display:block;margin-top:clamp(70px,9vw,140px);font-weight:800;font-variation-settings:"wdth" 125;font-size:min(9.3vw,170px);letter-spacing:-.045em;line-height:.8;white-space:nowrap;color:var(--kreide)}
+.fuss{margin-top:40px;display:flex;flex-wrap:wrap;gap:12px 28px;font-size:15px;color:var(--kreide-2)}
+.fuss a{color:var(--kreide)}
+.fuss span{margin-left:auto}
+@media (max-width:899px){.schluss__oben{grid-template-columns:1fr}.fuss span{margin-left:0;flex-basis:100%}}
+</style>
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.min.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.0/examples/jsm/"
+}}
+</script>
+</head>
+<body>
+
+<main>
+<div class="zeile" id="funktionen">
+  <div class="buehne" aria-hidden="true">
+    <div class="buehne__bild">
+      <canvas></canvas>
+      <div class="buehne__ersatz">
+        <svg viewBox="0 0 1400 400" preserveAspectRatio="xMidYMax slice">
+          <defs><pattern id="rippen" width="20" height="22" patternUnits="userSpaceOnUse"><rect width="20" height="22" fill="none"/><rect y="18" width="20" height="4" fill="#000" opacity=".22"/></pattern></defs>
+          <rect x="0" y="330" width="1400" height="70" fill="#25282A"/>
+          <rect x="120" y="96" width="1160" height="234" fill="#8E8F8A"/>
+          <rect x="100" y="80" width="1200" height="22" fill="#3B3E40"/>
+          <g>
+            <rect x="150" y="150" width="130" height="180" fill="#8F969A"/><rect x="150" y="150" width="130" height="180" fill="url(#rippen)"/>
+            <rect x="315" y="150" width="130" height="180" fill="#3F5A4C"/><rect x="315" y="150" width="130" height="180" fill="url(#rippen)"/>
+            <rect x="480" y="150" width="130" height="180" fill="#7A3E31"/><rect x="480" y="150" width="130" height="180" fill="url(#rippen)"/>
+            <rect x="645" y="150" width="130" height="180" fill="#FFC977"/>
+            <rect x="810" y="150" width="130" height="180" fill="#3D5873"/><rect x="810" y="150" width="130" height="180" fill="url(#rippen)"/>
+            <rect x="975" y="150" width="130" height="180" fill="#A9A08A"/><rect x="975" y="150" width="130" height="180" fill="url(#rippen)"/>
+            <rect x="1140" y="150" width="130" height="180" fill="#3A3D40"/><rect x="1140" y="150" width="130" height="180" fill="url(#rippen)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero">
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a class="wortmarke" href="#">Garagenmanager</a>
+      <ul>
+        <li><a href="#funktionen-start">Funktionen</a></li>
+        <li><a href="#stromrechner">Stromrechner</a></li>
+        <li><a href="#datenschutz">Datenschutz</a></li>
+      </ul>
+      <a class="knopf" href="#laden">Laden</a>
+    </nav>
+    <h1 class="zeilen">
+      <span class="zeile-maske"><span data-line style="--i:0">Deine Garagen.</span></span>
+      <span class="zeile-maske"><span data-line style="--i:1">Im Griff.</span></span>
+    </h1>
+    <p class="lead" data-load style="--d:420ms">Der Garagenmanager verwaltet Mieter, Verträge, Strom und Steuer für Garagen, Stellplätze und Lager. Komplett offline, auf deinem Android-Handy.</p>
+    <div class="aktionen" data-load style="--d:520ms">
+      <a class="knopf" href="#laden"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 2.6v18.8c0 .5.5.8.9.6l16.3-9.4a.7.7 0 0 0 0-1.2L4.9 2a.6.6 0 0 0-.9.6Z"/></svg>Bei Google Play laden</a>
+      <a class="textlink" href="#funktionen-start">So funktioniert's</a>
+    </div>
+  </header>
+
+  <section class="schritt" id="funktionen-start" aria-labelledby="s1" data-auftritt>
+    <div class="schritt__inhalt">
+      <p class="schritt__zahl" data-teil>Garage 2 · 1 von 4</p>
+      <h2 id="s1" data-teil>Wer hat bezahlt?</h2>
+      <p class="text" data-teil>Die Übersicht zeigt jede Einheit mit ihrer Miete. Offene Beträge fallen sofort auf, ohne Kontoauszug und ohne Excel-Liste.</p>
+      <div class="ui" data-ui data-teil>
+        <div class="ui__kopf"><span class="ui__titel">Mieten</span><span class="ui__klein">Oktober 2026</span></div>
+        <div class="ui__zeile"><span>Garage 1</span><span class="ui__rechts">65 €<span class="chip ok">bezahlt</span></span></div>
+        <div class="ui__zeile"><span>Garage 2</span><span class="ui__rechts">65 €<span class="chip ok">bezahlt</span></span></div>
+        <div class="ui__zeile"><span>Garage 3</span><span class="ui__rechts">65 €<span class="chip offen">offen</span></span></div>
+        <div class="ui__zeile"><span>Garage 4</span><span class="ui__rechts">58 €<span class="chip ok">bezahlt</span></span></div>
+        <div class="ui__summe"><span>Eingegangen</span><span>188 € von 253 €</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="schritt" aria-labelledby="s2" data-auftritt>
+    <div class="schritt__inhalt">
+      <p class="schritt__zahl" data-teil>Garage 3 · 2 von 4</p>
+      <h2 id="s2" data-teil>Jede Erhöhung lückenlos.</h2>
+      <p class="text" data-teil>Erhöhst du die Miete, archiviert die App den alten Vertrag und legt einen neuen an. Mit Mieterdaten und eingescanntem Vertrag.</p>
+      <div class="ui" data-ui data-teil>
+        <div class="ui__kopf"><span class="ui__titel">Garage 3</span><span class="ui__klein">K. Brandt</span></div>
+        <div class="ui__zeile"><span><b>Vertrag 2026</b></span><span class="ui__rechts">65 €<span class="chip ok">aktiv</span></span></div>
+        <div class="ui__zeile"><span>Vertrag 2023</span><span class="ui__rechts">58 €<span class="chip alt">archiviert</span></span></div>
+        <div class="ui__zeile"><span>Vertrag 2020</span><span class="ui__rechts">52 €<span class="chip alt">archiviert</span></span></div>
+        <div class="ui__zeile"><span>Mietvertrag_2026.pdf</span><span class="ui__klein">gescannt</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="schritt" aria-labelledby="s3" data-auftritt>
+    <div class="schritt__inhalt">
+      <p class="schritt__zahl" data-teil>Garage 4 · 3 von 4</p>
+      <h2 id="s3" data-teil>Ablesen. Fertig.</h2>
+      <p class="text" data-teil>Zählerstand vor Ort eintippen, die App rechnet mit deinem Tarif. Alte Abrechnungen stimmen auch nach einer Preiserhöhung.</p>
+      <div class="ui" data-ui data-teil>
+        <div class="ui__kopf"><span class="ui__titel">Garage 4 · Strom</span><span class="ui__klein">23.10.2026</span></div>
+        <div class="ui__zeile"><span>Letzter Stand</span><span>4.812 kWh</span></div>
+        <div class="ui__zeile"><span>Neuer Stand</span><span><b>5.107 kWh</b></span></div>
+        <div class="ui__zeile"><span>Verbrauch × Tarif</span><span>295 kWh × 0,34 €</span></div>
+        <div class="ui__summe"><span>Abrechnung</span><span>100,30 €</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="schritt" aria-labelledby="s4" data-auftritt>
+    <div class="schritt__inhalt">
+      <p class="schritt__zahl" data-teil>Garage 5 · 4 von 4</p>
+      <h2 id="s4" data-teil>DATEV auf Knopfdruck.</h2>
+      <p class="text" data-teil>Einnahmen und Ausgaben gehen als DATEV-Export an deinen Steuerberater. Dazu ein Jahresbericht als PDF für deine Unterlagen.</p>
+      <div class="ui" data-ui data-teil>
+        <div class="ui__kopf"><span class="ui__titel">Export 2026</span><span class="ui__klein">Jahr 2026</span></div>
+        <div class="ui__zeile"><span>Einnahmen</span><span>8.940 €</span></div>
+        <div class="ui__zeile"><span>Ausgaben</span><span>1.210 €</span></div>
+        <div class="ui__zeile"><span>EXTF_Buchungen_2026.csv</span><span class="ui__klein">DATEV</span></div>
+        <div class="ui__zeile"><span>Jahresbericht_2026.pdf</span><span class="ui__klein">12 Seiten</span></div>
+        <div class="ui__knopf">An Steuerberater senden</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="hell strom" id="stromrechner" aria-labelledby="strom-titel" data-auftritt>
+  <div>
+    <h2 id="strom-titel" data-teil>Rechne selbst nach.</h2>
+    <p class="lead" data-teil>So rechnet die App eine Stromabrechnung für eine Garage. Tipp einen Zählerstand ein.</p>
+    <form class="felder" id="rechner" novalidate data-teil>
+      <div class="feld"><label for="alt">Letzter Zählerstand in kWh</label><input id="alt" inputmode="decimal" autocomplete="off" value="4.812"></div>
+      <div class="feld"><label for="neu">Neuer Zählerstand in kWh</label><input id="neu" inputmode="decimal" autocomplete="off" value="5.107" aria-describedby="fehler"></div>
+      <div class="feld"><label for="preis">Preis je kWh in Euro</label><input id="preis" inputmode="decimal" autocomplete="off" value="0,34"><small>Dein Tarif aus dem Stromvertrag.</small></div>
+    </form>
+  </div>
+  <div class="ergebnis" data-teil aria-live="polite">
+    <p class="ergebnis__name">Garage 4 · Abrechnung</p>
+    <dl class="ergebnis__werte">
+      <div><dt>Verbrauch</dt><dd id="r-kwh">295 kWh</dd></div>
+      <div><dt>Betrag</dt><dd id="r-eur">100,30 €</dd></div>
+    </dl>
+    <p class="ergebnis__rechnung" id="r-rechnung">5.107 − 4.812 = 295 kWh, mal 0,34 € je kWh.</p>
+    <p class="ergebnis__fehler" id="fehler"></p>
+    <p class="ergebnis__hinweis">Ändert sich dein Tarif, gilt der neue Preis nur für neue Ablesungen. Alte Abrechnungen bleiben, wie sie waren.</p>
+  </div>
+</section>
+
+<section class="gelb daten" id="datenschutz" aria-labelledby="daten-titel" data-auftritt>
+  <h2 id="daten-titel" data-teil>Deine Daten bleiben bei dir.</h2>
+  <div>
+    <p class="satz" data-fill>Keine Registrierung, keine Cloud. Mieter, Verträge und Zahlen liegen auf deinem Handy, und nur du entscheidest, wohin ein Backup geht.</p>
+    <dl>
+      <dt data-teil>Offline</dt><dd data-teil>Die App braucht kein Konto und keinen Server. Alles läuft auf deinem Smartphone.</dd>
+      <dt data-teil>Verschlüsselt</dt><dd data-teil>Backups mit AES-Verschlüsselung, von Hand oder über dein eigenes Google Drive.</dd>
+      <dt data-teil>Ohne Abo</dt><dd data-teil>Einmal zahlen, dauerhaft nutzen.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="beton wer" aria-labelledby="wer-titel" data-auftritt>
+  <h2 id="wer-titel" data-teil>Passt zu deinem Bestand.</h2>
+  <ul>
+    <li data-teil>
+      <h3>Einzelvermieter</h3>
+      <p>Eine oder zwei Garagen. Schluss mit Zetteln und Excel-Listen.</p>
+      <svg viewBox="0 0 420 150" role="img" aria-label="Zwei Garagentore">
+        <rect x="0" y="138" width="420" height="12" fill="#9C9F9A"/>
+        <rect x="20" y="20" width="230" height="118" fill="#8E8F8A"/><rect x="12" y="12" width="246" height="12" fill="#3B3E40"/>
+        <rect x="36" y="44" width="92" height="94" fill="#3F5A4C"/><rect x="142" y="44" width="92" height="94" fill="#7A3E31"/>
+        <g fill="#000" opacity=".2"><rect x="36" y="64" width="198" height="3"/><rect x="36" y="86" width="198" height="3"/><rect x="36" y="108" width="198" height="3"/></g>
+        <rect x="128" y="44" width="14" height="94" fill="#8E8F8A"/>
+      </svg>
+    </li>
+    <li data-teil>
+      <h3>Investoren</h3>
+      <p>Ganze Garagenparks. Rendite und Amortisation für jede Einheit im Blick.</p>
+      <svg viewBox="0 0 420 150" role="img" aria-label="Zwei Reihen mit je sechs Garagentoren">
+        <rect x="0" y="138" width="420" height="12" fill="#9C9F9A"/>
+        <rect x="0" y="6" width="420" height="10" fill="#3B3E40"/><rect x="6" y="14" width="408" height="52" fill="#8E8F8A"/>
+        <rect x="0" y="76" width="420" height="10" fill="#3B3E40"/><rect x="6" y="84" width="408" height="54" fill="#8E8F8A"/>
+        <g fill="#8F969A"><rect x="16" y="26" width="54" height="40"/><rect x="84" y="26" width="54" height="40" fill="#3F5A4C"/><rect x="152" y="26" width="54" height="40"/><rect x="220" y="26" width="54" height="40" fill="#3D5873"/><rect x="288" y="26" width="54" height="40"/><rect x="356" y="26" width="54" height="40" fill="#A9A08A"/>
+        <rect x="16" y="96" width="54" height="42" fill="#7A3E31"/><rect x="84" y="96" width="54" height="42"/><rect x="152" y="96" width="54" height="42" fill="#3A3D40"/><rect x="220" y="96" width="54" height="42"/><rect x="288" y="96" width="54" height="42" fill="#3F5A4C"/><rect x="356" y="96" width="54" height="42"/></g>
+      </svg>
+    </li>
+    <li data-teil>
+      <h3>Stellplätze und Lager</h3>
+      <p>Miete und Strom, einfach. Für Stellplätze, Lagerboxen und alles dazwischen.</p>
+      <svg viewBox="0 0 420 150" role="img" aria-label="Drei Stellplätze und eine Lagerbox">
+        <rect x="0" y="40" width="420" height="110" fill="#3A3D40"/>
+        <g fill="#F2C230"><rect x="20" y="40" width="5" height="110"/><rect x="95" y="40" width="5" height="110"/><rect x="170" y="40" width="5" height="110"/><rect x="245" y="40" width="5" height="110"/></g>
+        <rect x="290" y="20" width="112" height="118" fill="#B8BAB4"/><rect x="304" y="44" width="84" height="94" fill="#3D5873"/>
+        <g fill="#000" opacity=".2"><rect x="304" y="66" width="84" height="3"/><rect x="304" y="90" width="84" height="3"/><rect x="304" y="114" width="84" height="3"/></g>
+      </svg>
+    </li>
+  </ul>
+</section>
+</main>
+
+<footer class="schluss" id="laden" data-auftritt>
+  <div class="schluss__oben">
+    <div>
+      <h2 data-teil>Bereit, wenn du es bist.</h2>
+      <p class="lead" data-teil>Für Android im Google Play Store. Ohne Abo.</p>
+    </div>
+    <a class="knopf" href="#laden" data-teil><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 2.6v18.8c0 .5.5.8.9.6l16.3-9.4a.7.7 0 0 0 0-1.2L4.9 2a.6.6 0 0 0-.9.6Z"/></svg>Bei Google Play laden</a>
+  </div>
+  <span class="riesig" aria-hidden="true" data-teil>Garagenmanager</span>
+  <div class="fuss">
+    <a href="https://www.garagenmanager.de/impressum">Impressum</a>
+    <a href="https://www.garagenmanager.de/datenschutzerkl%C3%A4rung">Datenschutzerklärung</a>
+    <span>Entwurf, nicht die offizielle Seite. App-Ansichten und Zahlen sind Beispiele.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js" defer></script>
+
+<script defer>
+document.addEventListener('DOMContentLoaded', () => {
+  const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fein = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* Stromrechner */
+  const zahl = (wert, istPreis) => {
+    let v = String(wert).trim().replace(/\s|€|kWh/gi, '');
+    if (v === '') return NaN;
+    if (v.includes(',')) v = v.replace(/\./g, '').replace(',', '.');
+    else if (istPreis ? /^\d*\.\d+$/.test(v) : /^\d+\.\d{1,2}$/.test(v)) { /* Punkt als Komma */ }
+    else v = v.replace(/\./g, '');
+    return Number(v);
+  };
+  const ganz = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 1 });
+  const euro = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+  const cent = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+  const f = { alt: document.getElementById('alt'), neu: document.getElementById('neu'), preis: document.getElementById('preis') };
+  const aus = { kwh: document.getElementById('r-kwh'), eur: document.getElementById('r-eur'), rechnung: document.getElementById('r-rechnung'), fehler: document.getElementById('fehler') };
+  const rechne = () => {
+    const a = zahl(f.alt.value), n = zahl(f.neu.value), p = zahl(f.preis.value, true);
+    let fehler = '';
+    f.neu.removeAttribute('aria-invalid'); f.preis.removeAttribute('aria-invalid'); f.alt.removeAttribute('aria-invalid');
+    if ([a, n].some(Number.isNaN)) { fehler = 'Bitte beide Zählerstände als Zahl eintragen.'; (Number.isNaN(a) ? f.alt : f.neu).setAttribute('aria-invalid', 'true'); }
+    else if (Number.isNaN(p)) { fehler = 'Bitte einen Preis je kWh eintragen, zum Beispiel 0,34.'; f.preis.setAttribute('aria-invalid', 'true'); }
+    else if (n < a) { fehler = 'Der neue Stand ist kleiner als der letzte. Prüf die Zahl noch mal.'; f.neu.setAttribute('aria-invalid', 'true'); }
+    aus.fehler.textContent = fehler;
+    if (fehler) { aus.kwh.textContent = '–'; aus.eur.textContent = '–'; aus.rechnung.textContent = ''; return; }
+    const kwh = Math.round((n - a) * 10) / 10;
+    aus.kwh.textContent = `${ganz.format(kwh)} kWh`;
+    aus.eur.textContent = euro.format(Math.round(kwh * p * 100) / 100);
+    aus.rechnung.textContent = `${ganz.format(n)} − ${ganz.format(a)} = ${ganz.format(kwh)} kWh, mal ${cent.format(p)} € je kWh.`;
+  };
+  Object.values(f).forEach((el) => el.addEventListener('input', rechne));
+  document.getElementById('rechner').addEventListener('submit', (e) => e.preventDefault());
+  rechne();
+
+  /* Tinte: der Satz im Datenschutz wird beim Lesen dunkel */
+  if (CSS.supports('animation-timeline: view()') && !ruhig) {
+    document.querySelectorAll('[data-fill]').forEach((el) => {
+      const worte = el.textContent.trim().split(/\s+/);
+      el.textContent = '';
+      worte.forEach((w, i) => { const s = document.createElement('span'); s.textContent = w; el.append(s, i < worte.length - 1 ? ' ' : ''); });
+      el.classList.add('is-filling');
+    });
+  }
+
+  /* Weiches Scrollen (Lenis) und Auftritte (GSAP) */
+  const gsap = window.gsap, ST = window.ScrollTrigger;
+  if (gsap && ST) {
+    gsap.registerPlugin(ST);
+    if (window.Lenis && fein && !ruhig) {
+      const lenis = new window.Lenis({ lerp: 0.12, smoothWheel: true });
+      lenis.on('scroll', ST.update);
+      gsap.ticker.add((t) => lenis.raf(t * 1000));
+      gsap.ticker.lagSmoothing(0);
+      window.__lenis = lenis;
+      document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener('click', (e) => {
+        const ziel = a.getAttribute('href');
+        if (ziel.length < 2) return;
+        e.preventDefault();
+        lenis.scrollTo(ziel, { duration: 1.2 });
+      }));
+    }
+    if (!ruhig) {
+      document.querySelectorAll('[data-auftritt]').forEach((bereich) => {
+        const teile = bereich.querySelectorAll('[data-teil]');
+        if (!teile.length) return;
+        const schritt = bereich.classList.contains('schritt');
+        gsap.from(teile, {
+          y: 26, opacity: 0, duration: 0.85, ease: 'expo.out', stagger: 0.08,
+          scrollTrigger: { trigger: schritt ? bereich.querySelector('.schritt__inhalt') : bereich, start: 'top 86%', once: true }
+        });
+        bereich.querySelectorAll('.ui__zeile').forEach((z, i) => {
+          gsap.from(z, { opacity: 0, x: -10, duration: 0.5, ease: 'power3.out', delay: 0.35 + i * 0.06,
+            scrollTrigger: { trigger: z.closest('.ui'), start: 'top 88%', once: true } });
+        });
+      });
+      const riesig = document.querySelector('.riesig');
+      gsap.fromTo(riesig, { yPercent: 18 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.schluss', start: 'top bottom', end: 'bottom bottom', scrub: true } });
+    }
+  }
+});
+</script>
+
+<script>
+/* Falls die 3D-Szene nicht lädt, zeigt die Bühne eine gezeichnete Garagenzeile. */
+setTimeout(() => { if (!window.__garagen3d) document.documentElement.classList.add('kein-3d'); }, 6000);
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+
+const html = document.documentElement;
+const wrap = document.querySelector('.zeile');
+const buehne = document.querySelector('.buehne');
+const bild = document.querySelector('.buehne__bild');
+const canvas = bild.querySelector('canvas');
+const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fein = matchMedia('(pointer: fine)').matches;
+
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+} catch (e) { html.classList.add('kein-3d'); }
+
+if (renderer) start();
+
+function start() {
+  renderer.setPixelRatio(Math.min(devicePixelRatio, fein ? 1.75 : 1.5));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.3;
+  renderer.localClippingEnabled = true;
+  renderer.shadowMap.enabled = fein;
+  renderer.shadowMap.type = THREE.PCFShadowMap;
+
+  const GRUND = new THREE.Color('#17191B');
+  const scene = new THREE.Scene();
+  scene.background = GRUND;
+  scene.fog = new THREE.Fog(GRUND, 18, 48);
+  const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 140);
+
+  /* Zufall mit festem Startwert, damit die Texturen immer gleich aussehen */
+  let seed = 7;
+  const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+  const leinwand = (w, h, malen, { wdh, farbe = true } = {}) => {
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    malen(c.getContext('2d'), w, h);
+    const t = new THREE.CanvasTexture(c);
+    if (farbe) t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = maxAniso;
+    if (wdh) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(wdh[0], wdh[1]); }
+    return t;
+  };
+  const koernung = (g, w, h, grund, toene, n) => {
+    g.fillStyle = grund; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < n; i++) { g.fillStyle = toene[(rnd() * toene.length) | 0]; const s = 1 + rnd() * 2.2; g.fillRect(rnd() * w, rnd() * h, s, s); }
+  };
+
+  /* Licht: Abenddämmerung */
+  scene.add(new THREE.HemisphereLight(0x8c9db2, 0x1a1b1d, 1.6));
+  const mond = new THREE.DirectionalLight(0xbccbe0, 1.9);
+  mond.position.set(-14, 20, 18);
+  mond.castShadow = fein;
+  mond.shadow.mapSize.set(2048, 2048);
+  Object.assign(mond.shadow.camera, { left: -18, right: 18, top: 12, bottom: -12, near: 1, far: 70 });
+  mond.shadow.bias = -0.0004;
+  scene.add(mond);
+
+  /* Boden: Asphalt mit gelben Linien */
+  const asphalt = leinwand(512, 512, (g, w, h) => koernung(g, w, h, '#2B2D2F', ['#36383A', '#232527', '#3D3F41', '#1F2123'], 9000), { wdh: [26, 18] });
+  const boden = new THREE.Mesh(new THREE.PlaneGeometry(130, 90), new THREE.MeshStandardMaterial({ map: asphalt, roughness: 0.96 }));
+  boden.rotation.x = -Math.PI / 2; boden.position.set(0, 0, 12); boden.receiveShadow = true;
+  scene.add(boden);
+
+  const ABSTAND = 3.1, ANZAHL = 7, TOR_B = 2.4, TOR_H = 2.1, WAND_H = 2.65, TIEFE = 6;
+  const L = ABSTAND * ANZAHL;
+  const xVon = (i) => (i - (ANZAHL - 1) / 2) * ABSTAND;
+
+  const linie = new THREE.MeshStandardMaterial({ color: 0xE0B53A, roughness: 0.75, emissive: 0x3a2c05, emissiveIntensity: 0.6 });
+  for (let i = 0; i <= ANZAHL; i++) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.01, 4.6), linie);
+    m.position.set(xVon(i) - ABSTAND / 2, 0.006, 2.6); m.receiveShadow = true; scene.add(m);
+  }
+
+  /* Garagenblock aus Beton */
+  const putz = leinwand(512, 512, (g, w, h) => koernung(g, w, h, '#9A9B96', ['#A6A7A2', '#8E8F8A', '#B0B1AC', '#878883'], 14000), { wdh: [6, 2] });
+  const beton = new THREE.MeshStandardMaterial({ map: putz, roughness: 0.95 });
+  const dachMat = new THREE.MeshStandardMaterial({ color: 0x3B3E40, roughness: 0.8 });
+  const kiste = (w, h, d, mat, x, y, z, schatten = true) => {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+    m.position.set(x, y, z); m.castShadow = schatten; m.receiveShadow = true; scene.add(m); return m;
+  };
+  const WAND = 0.25;
+  for (let i = 0; i <= ANZAHL; i++) kiste(ABSTAND - TOR_B, TOR_H, WAND, beton, xVon(i) - ABSTAND / 2, TOR_H / 2, -WAND / 2);
+  kiste(L + (ABSTAND - TOR_B), WAND_H - TOR_H, WAND, beton, 0, TOR_H + (WAND_H - TOR_H) / 2, -WAND / 2);
+  kiste(L + 0.7, WAND_H, WAND, beton, 0, WAND_H / 2, -TIEFE + WAND / 2);
+  kiste(WAND, WAND_H, TIEFE, beton, -L / 2 - 0.35 + WAND / 2, WAND_H / 2, -TIEFE / 2);
+  kiste(WAND, WAND_H, TIEFE, beton, L / 2 + 0.35 - WAND / 2, WAND_H / 2, -TIEFE / 2);
+  kiste(L + 1.3, 0.18, TIEFE + 0.5, dachMat, 0, WAND_H + 0.09, -TIEFE / 2 + 0.25);
+
+  /* Innenräume */
+  const innenMat = new THREE.MeshStandardMaterial({ color: 0x9C9B95, roughness: 0.92, side: THREE.BackSide });
+  const holz = new THREE.MeshStandardMaterial({ color: 0x8A6A45, roughness: 0.8 });
+  const pappe = [0xA9875A, 0xB89668, 0x9A7A50].map((c) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.9 }));
+  const stahl = new THREE.MeshStandardMaterial({ color: 0x6C7174, roughness: 0.45, metalness: 0.6 });
+  for (let i = 0; i < ANZAHL; i++) {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(ABSTAND - 0.25, WAND_H - 0.02, TIEFE - 2 * WAND), innenMat);
+    m.position.set(xVon(i), WAND_H / 2, -TIEFE / 2); m.receiveShadow = true; scene.add(m);
+  }
+
+  /* Tore: Sektionaltore mit Rippen, jedes in seiner Farbe */
+  const rippen = (g, w, h, hell, dunkel) => {
+    const felder = 4, proFeld = 5;
+    for (let f = 0; f < felder; f++) {
+      const y0 = (f / felder) * h;
+      g.fillStyle = dunkel; g.fillRect(0, y0, w, 3);
+      for (let r = 1; r < proFeld; r++) { const y = y0 + (r / proFeld) * (h / felder); g.fillStyle = hell; g.fillRect(0, y - 1, w, 2); g.fillStyle = dunkel; g.fillRect(0, y + 1, w, 2); }
+    }
+  };
+  const relief = leinwand(256, 448, (g, w, h) => { g.fillStyle = '#808080'; g.fillRect(0, 0, w, h); rippen(g, w, h, '#B0B0B0', '#404040'); }, { farbe: false });
+  const oben = new THREE.Plane(new THREE.Vector3(0, -1, 0), TOR_H + 0.01);
+  const farben = ['#8F969A', '#3F5A4C', '#7A3E31', '#6E7A72', '#3D5873', '#A9A08A', '#3A3D40'];
+  const tore = [];
+  farben.forEach((farbe, i) => {
+    const map = leinwand(256, 448, (g, w, h) => {
+      g.fillStyle = farbe; g.fillRect(0, 0, w, h);
+      rippen(g, w, h, 'rgba(255,255,255,.10)', 'rgba(0,0,0,.22)');
+      for (let k = 0; k < 900; k++) { g.fillStyle = rnd() > .5 ? 'rgba(255,255,255,.04)' : 'rgba(0,0,0,.05)'; g.fillRect(rnd() * w, rnd() * h, 2, 2); }
+      g.fillStyle = 'rgba(0,0,0,.35)'; g.fillRect(w / 2 - 14, h * 0.78, 28, 10);
+    });
+    const mat = new THREE.MeshStandardMaterial({ map, bumpMap: relief, bumpScale: 1.4, roughness: 0.5, metalness: 0.35, clippingPlanes: [oben], side: THREE.DoubleSide });
+    const tor = new THREE.Mesh(new THREE.PlaneGeometry(TOR_B, TOR_H), mat);
+    tor.position.set(xVon(i), TOR_H / 2, -0.14); tor.castShadow = true; tor.receiveShadow = true;
+    scene.add(tor); tore.push(tor);
+
+    /* Rahmen, Nummernschild, Lampe */
+    const rahmen = new THREE.MeshStandardMaterial({ color: 0x2C2F31, roughness: 0.6, metalness: 0.4 });
+    kiste(0.06, TOR_H, 0.06, rahmen, xVon(i) - TOR_B / 2 - 0.03, TOR_H / 2, -0.03, false);
+    kiste(0.06, TOR_H, 0.06, rahmen, xVon(i) + TOR_B / 2 + 0.03, TOR_H / 2, -0.03, false);
+    kiste(TOR_B + 0.12, 0.06, 0.06, rahmen, xVon(i), TOR_H + 0.03, -0.03, false);
+    const schild = leinwand(128, 96, (g, w, h) => { g.fillStyle = '#E9E9E4'; g.fillRect(0, 0, w, h); g.fillStyle = '#1D1F21'; g.font = '800 64px Archivo, Arial, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(String(i + 1), w / 2, h / 2 + 4); });
+    const nr = new THREE.Mesh(new THREE.PlaneGeometry(0.3, 0.225), new THREE.MeshStandardMaterial({ map: schild, roughness: 0.6 }));
+    nr.position.set(xVon(i) + 0.95, 2.38, 0.006); scene.add(nr);
+    const lampe = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.09, 0.12), new THREE.MeshStandardMaterial({ color: 0x222222, emissive: 0xFFCC88, emissiveIntensity: 2.4 }));
+    lampe.position.set(xVon(i) - 0.2, 2.4, 0.07); scene.add(lampe);
+  });
+
+  /* Lichtkegel der Lampen auf dem Boden */
+  const kegel = leinwand(256, 256, (g, w, h) => { const r = g.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2); r.addColorStop(0, 'rgba(255,205,140,.55)'); r.addColorStop(1, 'rgba(255,205,140,0)'); g.fillStyle = r; g.fillRect(0, 0, w, h); });
+  for (let i = 0; i < ANZAHL; i++) {
+    const p = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 3.4), new THREE.MeshBasicMaterial({ map: kegel, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, fog: true }));
+    p.rotation.x = -Math.PI / 2; p.position.set(xVon(i) - 0.2, 0.015, 1.0); scene.add(p);
+  }
+
+  /* Was hinter den Toren steht */
+  const innen = (i) => new THREE.Vector3(xVon(i), 0, -TIEFE / 2);
+  { // Garage 2: ein Auto
+    const g = new THREE.Group(); const lack = new THREE.MeshStandardMaterial({ color: 0x5A6C78, roughness: 0.32, metalness: 0.65 });
+    const glas = new THREE.MeshStandardMaterial({ color: 0x15191C, roughness: 0.15, metalness: 0.8 });
+    const reifen = new THREE.MeshStandardMaterial({ color: 0x141414, roughness: 0.9 });
+    const unten = new THREE.Mesh(new RoundedBoxGeometry(1.76, 0.62, 4.15, 4, 0.16), lack); unten.position.y = 0.58;
+    const kabine = new THREE.Mesh(new RoundedBoxGeometry(1.5, 0.52, 2.1, 4, 0.18), glas); kabine.position.set(0, 1.1, -0.25);
+    g.add(unten, kabine);
+    [[-0.86, 1.35], [0.86, 1.35], [-0.86, -1.3], [0.86, -1.3]].forEach(([x, z]) => { const r = new THREE.Mesh(new THREE.CylinderGeometry(0.33, 0.33, 0.24, 24), reifen); r.rotation.z = Math.PI / 2; r.position.set(x, 0.33, z); g.add(r); });
+    const licht = new THREE.MeshStandardMaterial({ color: 0x331111, emissive: 0x991111, emissiveIntensity: 0.6 });
+    [-0.62, 0.62].forEach((x) => { const r = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.1, 0.04), licht); r.position.set(x, 0.72, 2.08); g.add(r); });
+    g.traverse((o) => { o.castShadow = true; o.receiveShadow = true; });
+    g.position.copy(innen(1)); g.position.z += 0.2; scene.add(g);
+  }
+  { // Garage 3: Regal mit Ordnern und Kisten
+    const o = innen(2); const zx = o.x, hz = -TIEFE + WAND + 0.32;
+    [-1.15, 1.15].forEach((dx) => kiste(0.05, 2.0, 0.5, stahl, zx + dx, 1.0, hz));
+    [0.25, 0.85, 1.45, 1.98].forEach((y) => kiste(2.36, 0.04, 0.5, holz, zx, y, hz));
+    const ordner = [0x2F4E7A, 0x7A2F2F, 0x2F6A4E, 0xC9C9C2, 0x2F4E7A];
+    for (let k = 0; k < 14; k++) { const m = new THREE.MeshStandardMaterial({ color: ordner[k % ordner.length], roughness: 0.7 }); kiste(0.075, 0.34, 0.3, m, zx - 1.0 + k * 0.085, 1.04, hz + 0.05); }
+    for (let k = 0; k < 4; k++) kiste(0.46, 0.34, 0.4, pappe[k % 3], zx - 0.85 + k * 0.56, 0.44, hz);
+    for (let k = 0; k < 3; k++) kiste(0.6, 0.4, 0.42, pappe[(k + 1) % 3], zx - 0.7 + k * 0.7, 1.67, hz);
+  }
+  { // Garage 4: Zählerschrank mit Anzeige
+    const o = innen(3); const hz = -TIEFE + WAND + 0.13, sx = o.x - 0.55;
+    kiste(0.7, 1.0, 0.24, new THREE.MeshStandardMaterial({ color: 0xD4D5D0, roughness: 0.6 }), sx, 1.45, hz);
+    const anzeige = leinwand(256, 96, (g, w, h) => { g.fillStyle = '#0E1A12'; g.fillRect(0, 0, w, h); g.fillStyle = '#7CF0A4'; g.font = '700 60px Archivo, Arial, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('5107', w / 2, h / 2 + 3); });
+    const display = new THREE.Mesh(new THREE.PlaneGeometry(0.36, 0.135), new THREE.MeshStandardMaterial({ map: anzeige, emissive: 0xffffff, emissiveMap: anzeige, emissiveIntensity: 1.4 }));
+    display.position.set(sx, 1.62, hz + 0.125); scene.add(display);
+    kiste(0.5, 0.12, 0.02, new THREE.MeshStandardMaterial({ color: 0x9A9C97, roughness: 0.7 }), sx, 1.25, hz + 0.125, false);
+    kiste(0.05, 0.62, 0.05, new THREE.MeshStandardMaterial({ color: 0x222222 }), sx, 2.26, hz, false);
+    kiste(1.3, 0.06, 0.6, holz, o.x + 0.55, 0.9, -TIEFE + 0.75);
+    kiste(0.06, 0.88, 0.5, stahl, o.x + 0.0, 0.44, -TIEFE + 0.75);
+    kiste(0.06, 0.88, 0.5, stahl, o.x + 1.1, 0.44, -TIEFE + 0.75);
+    kiste(0.5, 0.36, 0.4, pappe[1], o.x + 0.75, 1.11, -TIEFE + 0.75);
+  }
+  { // Garage 5: Reifenstapel und Umzugskisten
+    const o = innen(4); const rmat = new THREE.MeshStandardMaterial({ color: 0x161616, roughness: 0.92 });
+    for (let k = 0; k < 4; k++) { const t = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.11, 14, 32), rmat); t.rotation.x = Math.PI / 2; t.position.set(o.x - 0.8, 0.12 + k * 0.22, -TIEFE + 1.0); t.castShadow = true; scene.add(t); }
+    [[0.2, 0.25, 0], [0.75, 0.25, 0.1], [0.45, 0.72, 0.05], [0.95, 0.72, 0.0]].forEach(([dx, y, dz], k) => kiste(0.52, 0.46, 0.46, pappe[k % 3], o.x + dx, y, -TIEFE + 0.9 + dz));
+  }
+
+  /* Licht hinter den vier Toren der Geschichte */
+  const STUFEN = [1, 2, 3, 4];
+  const innenLicht = STUFEN.map((i) => {
+    const l = new THREE.PointLight(0xFFD6A0, 0, 9, 2); l.position.set(xVon(i), 2.25, -2.0); scene.add(l);
+    const roehre = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.04, 0.08), new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xFFF1D6, emissiveIntensity: 0 }));
+    roehre.position.set(xVon(i), WAND_H - 0.08, -3.0); scene.add(roehre);
+    return { l, roehre };
+  });
+
+  /* Straßenlaterne links */
+  kiste(0.12, 5.2, 0.12, new THREE.MeshStandardMaterial({ color: 0x2A2C2E, roughness: 0.6 }), -L / 2 - 4.5, 2.6, 3.4);
+  const kopf = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.12, 0.3), new THREE.MeshStandardMaterial({ color: 0x222222, emissive: 0xFFC27A, emissiveIntensity: 3 }));
+  kopf.position.set(-L / 2 - 4.2, 5.2, 3.4); scene.add(kopf);
+  const laterne = new THREE.PointLight(0xFFB870, 22, 16, 2); laterne.position.set(-L / 2 - 4.2, 4.9, 3.4); scene.add(laterne);
+
+  /* Kamerafahrt */
+  const V = THREE.Vector3;
+  let hoch = false, breit = true;
+  const punkte = () => {
+    const k = [hoch ? { pos: new V(-6.5, 3.0, 13.5), ziel: new V(-2.2, 1.0, 0) } : { pos: new V(-11.5, 3.5, 14.5), ziel: new V(-0.6, 1.05, 0) }];
+    STUFEN.forEach((i) => { const x = xVon(i); k.push(hoch ? { pos: new V(x - 1.2, 1.8, 8.6), ziel: new V(x + 0.1, 1.2, -1.2) } : { pos: new V(x - 2.4, 1.75, 6.6), ziel: new V(x + 0.15, 1.15, -1.2) }); });
+    return k;
+  };
+  let K = punkte();
+
+  let breite = 0, hoehe = 0;
+  const groesse = () => {
+    const w = buehne.clientWidth, h = buehne.clientHeight;
+    if (w === breite && h === hoehe) return;
+    breite = w; hoehe = h;
+    hoch = w / h < 0.9; breit = w >= 900;
+    camera.fov = hoch ? 56 : 36; camera.aspect = w / h; camera.updateProjectionMatrix();
+    renderer.setSize(w, h, false);
+    K = punkte();
+  };
+  groesse();
+  addEventListener('resize', groesse);
+
+  const klemme = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const weich = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const stufe = (a, b, x) => { const t = klemme((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+
+  const kamPos = new V(), kamZiel = new V(), sollPos = new V(), sollZiel = new V();
+  const offen = [0, 0, 0, 0];
+  let ersterBild = true, sichtbar = true, zuletzt = performance.now();
+  const einflug = performance.now();
+  let alterClip = '';
+
+  const marken = [document.querySelector('.hero'), ...document.querySelectorAll('.schritt')];
+  new IntersectionObserver(([e]) => { sichtbar = e.isIntersecting; }).observe(wrap);
+
+  const bildchen = (jetzt) => {
+    requestAnimationFrame(bildchen);
+    if (!sichtbar && !ersterBild) return;
+    groesse();
+    const dt = Math.min(0.05, (jetzt - zuletzt) / 1000); zuletzt = jetzt;
+
+    const anker = breit ? 0 : hoehe * 0.44;
+    const tops = marken.map((m, k) => m.getBoundingClientRect().top - (k ? anker : 0));
+    let p = 0;
+    for (let k = tops.length - 1; k >= 0; k--) {
+      if (tops[k] > 0) continue;
+      p = k === tops.length - 1 ? k : k + klemme(-tops[k] / (tops[k + 1] - tops[k]));
+      break;
+    }
+    if (ruhig) p = Math.round(p);
+
+    const seg = Math.min(STUFEN.length - 1, Math.floor(p));
+    const t = weich(klemme((p - seg - 0.1) / 0.8));
+    sollPos.lerpVectors(K[seg].pos, K[seg + 1].pos, t);
+    sollZiel.lerpVectors(K[seg].ziel, K[seg + 1].ziel, t);
+
+    const ein = ruhig ? 1 : 1 - Math.pow(1 - klemme((jetzt - einflug) / 1600), 4);
+    sollPos.z += (1 - ein) * 4; sollPos.y += (1 - ein) * 1.2; sollPos.x -= (1 - ein) * 1.5;
+
+    const k = ruhig || ersterBild ? 1 : 1 - Math.exp(-dt * 7);
+    kamPos.lerp(sollPos, k); kamZiel.lerp(sollZiel, k);
+    if (ersterBild) { kamPos.copy(sollPos); kamZiel.copy(sollZiel); }
+    camera.position.copy(kamPos); camera.lookAt(kamZiel);
+
+    STUFEN.forEach((i, s) => {
+      const soll = 1 - stufe(0.2, 0.72, Math.abs(p - (s + 1)));
+      offen[s] += (soll - offen[s]) * (ruhig ? 1 : 1 - Math.exp(-dt * 6));
+      const o = offen[s];
+      tore[i].position.y = TOR_H / 2 + o * (TOR_H - 0.02);
+      tore[i].position.z = -0.14 - o * 0.1;
+      innenLicht[s].l.intensity = o * 20;
+      innenLicht[s].roehre.material.emissiveIntensity = o * 3.2;
+    });
+
+    /* Bildausschnitt: im Hero ganze Fläche, danach rechts (Desktop) oder oben (Handy) */
+    const e = weich(klemme(p / 0.55));
+    let ox = 0, oy, clip;
+    if (breit) { ox = (-0.16 * (1 - e) - 0.21 * e) * breite; oy = -0.3 * hoehe * (1 - e); clip = `inset(0 0 0 ${(42 * e).toFixed(2)}%)`; }
+    else { oy = (-0.24 * (1 - e) + 0.28 * e) * hoehe; clip = `inset(0 0 ${(56 * e).toFixed(2)}% 0)`; }
+    camera.setViewOffset(breite, hoehe, ox, oy, breite, hoehe);
+    const oben = !breit && p > 0.6 && wrap.getBoundingClientRect().bottom > hoehe;
+    if (oben !== buehne.classList.contains('oben')) buehne.classList.toggle('oben', oben);
+    if (clip !== alterClip) { bild.style.clipPath = clip; alterClip = clip; }
+
+    renderer.render(scene, camera);
+    if (ersterBild) { ersterBild = false; window.__garagen3d = true; html.classList.remove('kein-3d'); }
+  };
+  requestAnimationFrame(bildchen);
+}
+</script>
+</body>
+</html>
