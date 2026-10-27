@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FFFFFF">
+<title>Garagenmanager – Entwurf Marke</title>
+<meta name="description" content="Garagenmanager: Die App für private Vermieter von Garagen, Stellplätzen und Lagereinheiten. Mieten, Verträge, Strom und DATEV-Export. Komplett offline.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --orange:#FF5B14; --orange-hell:#FFE6DA; --orange-tief:#C9400A;
+  --ink:#14171C; --ink-2:#5C636E; --ink-3:#8B929C; --linie:#E4E6EA;
+  --grau:#F3F4F6; --weiss:#FFFFFF; --gruen:#15803D; --gruen-hell:#DCF5E5;
+  --r-gross:28px; --r-mittel:18px; --r-klein:10px;
+  --font:"Geist",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --rand:clamp(16px,4vw,56px); --breite:1200px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:80px}
+body{font-family:var(--font);font-size:17px;line-height:1.55;color:var(--ink);background:var(--weiss);-webkit-font-smoothing:antialiased;overflow-x:clip;font-feature-settings:"ss01"}
+a{color:inherit}
+img,svg{display:block}
+::selection{background:var(--orange);color:var(--ink)}
+:focus-visible{outline:2.5px solid var(--orange-tief);outline-offset:3px;border-radius:6px}
+.wrap{width:min(var(--breite),calc(100% - 2*var(--rand)));margin:0 auto}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+h1,h2,h3{letter-spacing:-.035em;line-height:1.02;font-weight:700;text-wrap:balance}
+h1{font-size:clamp(44px,4.9vw,72px);font-weight:750;letter-spacing:-.045em}
+h2{font-size:clamp(36px,4.4vw,60px)}
+h3{font-size:22px;letter-spacing:-.02em;line-height:1.2;font-weight:650}
+.lead{font-size:clamp(18px,1.5vw,21px);line-height:1.5;color:var(--ink-2);max-width:46ch;text-wrap:pretty}
+.kopfzeile{max-width:760px}
+.kopfzeile .lead{margin-top:18px}
+
+/* Knöpfe */
+.k{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;font-weight:600;font-size:16px;text-decoration:none;border:0;cursor:pointer;font-family:inherit;transition:transform 140ms var(--ease),background-color 180ms ease,box-shadow 180ms ease}
+.k:active{transform:scale(.97)}
+.k-dunkel{background:var(--ink);color:var(--weiss)}
+.k-hell{background:var(--weiss);color:var(--ink);box-shadow:inset 0 0 0 1px var(--linie)}
+.k-orange{background:var(--ink);color:var(--weiss)}
+.k svg{width:18px;height:18px;flex:none}
+.play{min-height:56px;padding:0 22px 0 18px;border-radius:14px;text-align:left;line-height:1.1}
+.play small{display:block;font-size:11px;font-weight:500;opacity:.75;letter-spacing:.01em}
+.play b{font-size:18px;font-weight:600;letter-spacing:-.01em}
+.play svg{width:26px;height:26px}
+@media (hover:hover){.k-dunkel:hover{background:#2A2F37}.k-hell:hover{box-shadow:inset 0 0 0 1px var(--ink-3)}}
+
+/* Hinweisleiste und Navigation */
+.leiste{background:var(--ink);color:#E9EBEE;font-size:14px;text-align:center;padding:10px var(--rand)}
+.leiste a{color:var(--weiss);font-weight:600;text-underline-offset:3px}
+.nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid transparent;transition:border-color 200ms ease}
+.nav.unten{border-bottom-color:var(--linie)}
+.nav .wrap{display:flex;align-items:center;gap:36px;height:68px}
+.marke{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.03em;text-decoration:none}
+.marke i{width:30px;height:30px;border-radius:9px;background:var(--orange);display:grid;place-items:center}
+.marke i svg{width:18px;height:18px}
+.nav ul{display:flex;gap:28px;list-style:none;font-size:15px;font-weight:500;color:var(--ink-2)}
+.nav ul a{text-decoration:none}
+@media (hover:hover){.nav ul a:hover{color:var(--ink)}}
+.nav .k{margin-left:auto;min-height:40px;padding:0 18px;font-size:15px}
+@media (max-width:860px){.nav ul{display:none}}
+
+/* Hero */
+.hero{padding:clamp(40px,6vw,80px) 0 0;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(32px,4vw,64px);align-items:center}
+.hero .lead{margin-top:24px}
+@media (min-width:981px){.hero h1 .z{display:block;white-space:nowrap}}
+.hero .aktionen{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px;align-items:center}
+.hero .fakten{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:30px;font-size:15px;color:var(--ink-2);list-style:none}
+.hero .fakten li{display:flex;align-items:center;gap:8px}
+.hero .fakten svg{width:18px;height:18px;color:var(--gruen)}
+
+.buehne{position:relative;height:clamp(560px,52vw,680px)}
+.flaeche{position:absolute;inset:8% 0 0 12%;background:var(--orange);border-radius:var(--r-gross) var(--r-gross) 0 0}
+.flaeche::after{content:"";position:absolute;inset:auto 0 0;height:46%;background:repeating-linear-gradient(var(--orange) 0 26px,var(--orange-tief) 26px 28px);opacity:.35;border-radius:0}
+.telefon{--b:288px;position:absolute;left:50%;bottom:-48px;transform:translateX(-46%);width:var(--b);aspect-ratio:9/19.4;background:#1B1E23;border-radius:calc(var(--b)*.15);padding:calc(var(--b)*.032);box-shadow:0 0 0 1.5px #3A3F47 inset,0 40px 80px -24px rgba(20,23,28,.45)}
+.telefon::before{content:"";position:absolute;top:calc(var(--b)*.055);left:50%;width:26%;height:calc(var(--b)*.07);margin-left:-13%;background:#000;border-radius:999px;z-index:3}
+.schirm{position:relative;width:100%;height:100%;border-radius:calc(var(--b)*.12);overflow:hidden;background:var(--grau)}
+
+/* App-Oberfläche im Telefon */
+.app{position:absolute;inset:0;padding:calc(var(--b)*.18) calc(var(--b)*.055) calc(var(--b)*.05);display:flex;flex-direction:column;gap:calc(var(--b)*.03);font-size:calc(var(--b)*.044);transition:opacity 380ms ease,transform 380ms var(--ease)}
+.app.weg{opacity:0;transform:translateY(10px);pointer-events:none}
+.app .oben{display:flex;justify-content:space-between;align-items:baseline}
+.app .titel{font-size:1.9em;font-weight:700;letter-spacing:-.04em;line-height:1}
+.app .klein{color:var(--ink-3);font-size:.86em}
+.kachel{background:var(--weiss);border-radius:1em;padding:.9em 1em}
+.kachel .wert{display:block;font-size:2em;font-weight:700;letter-spacing:-.045em;line-height:1.1;font-variant-numeric:tabular-nums}
+.zwei{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--b)*.03)}
+.zeile{display:flex;justify-content:space-between;align-items:center;padding:.62em 0;border-bottom:1px solid #EEF0F2}
+.zeile:last-child{border-bottom:0}
+.zeile b{font-weight:600}
+.chip{font-size:.78em;font-weight:600;padding:.18em .65em;border-radius:1em;background:var(--gruen-hell);color:var(--gruen)}
+.chip.offen{background:var(--orange-hell);color:var(--orange-tief)}
+.chip.neu{animation:neu 900ms var(--ease)}
+@keyframes neu{from{transform:scale(.6);opacity:0}}
+.balken{display:flex;align-items:flex-end;gap:5%;height:4.6em;margin-top:.7em}
+.balken span{flex:1;background:#E7E9EC;border-radius:.35em .35em .15em .15em}
+.balken span.an{background:var(--orange)}
+.fortschritt{height:.5em;border-radius:1em;background:#ECEEF1;overflow:hidden;margin-top:.6em}
+.fortschritt span{display:block;height:100%;width:62%;background:var(--ink);border-radius:1em}
+.verlauf{position:relative;padding-left:1.4em}
+.verlauf::before{content:"";position:absolute;left:.38em;top:.8em;bottom:.8em;width:2px;background:#E1E4E8}
+.verlauf .v{position:relative;padding:.55em 0}
+.verlauf .v::before{content:"";position:absolute;left:-1.25em;top:1em;width:.7em;height:.7em;border-radius:50%;background:#C9CED5}
+.verlauf .v.an::before{background:var(--orange);box-shadow:0 0 0 .28em var(--orange-hell)}
+.verlauf b{display:block;font-weight:600}
+.ziffern{font-size:2.4em;font-weight:700;letter-spacing:-.04em;text-align:center;padding:.3em 0 .15em;font-variant-numeric:tabular-nums}
+.tasten{display:grid;grid-template-columns:repeat(3,1fr);gap:.5em}
+.tasten span{background:var(--weiss);border-radius:.7em;text-align:center;padding:.55em 0;font-size:1.15em;font-weight:500}
+.app-knopf{margin-top:.4em;background:var(--ink);color:var(--weiss);text-align:center;border-radius:.9em;padding:.85em;font-weight:600}
+.datei{display:flex;align-items:center;gap:.8em}
+.datei i{flex:none;width:2.4em;height:2.9em;border-radius:.4em;background:var(--grau);display:grid;place-items:center;font-style:normal;font-size:.68em;font-weight:700;color:var(--orange-tief)}
+
+/* Schwebende Hinweise */
+.hinweis{position:absolute;z-index:4;background:var(--weiss);border-radius:16px;padding:12px 16px 12px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 2px rgba(20,23,28,.06),0 18px 40px -16px rgba(20,23,28,.3);font-size:14px;line-height:1.3;max-width:270px}
+.hinweis b{display:block;font-weight:600;font-size:15px}
+.hinweis span{color:var(--ink-2)}
+.hinweis .ico{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:var(--gruen-hell);color:var(--gruen)}
+.hinweis .ico.o{background:var(--orange-hell);color:var(--orange-tief)}
+.hinweis .ico svg{width:20px;height:20px}
+.h1{left:0;top:4%}
+.h2{right:-2%;bottom:30%}
+.h3{left:2%;bottom:9%}
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr}
+  .buehne{height:600px;margin-top:8px}
+  .flaeche{inset:10% 0 0 0}
+}
+@media (max-width:520px){
+  .telefon{--b:250px}
+  .buehne{height:540px}
+  .hinweis{max-width:220px;font-size:13px;padding:10px 12px 10px 10px}
+  .hinweis b{font-size:14px}
+  .h1{left:-4px;top:2%}.h2{right:-4px;bottom:34%}.h3{left:-4px;bottom:10%}
+}
+
+/* Faktenreihe */
+.reihe{border-top:1px solid var(--linie);border-bottom:1px solid var(--linie)}
+.reihe .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.reihe div{padding:30px 24px 30px 0}
+.reihe div+div{padding-left:24px;border-left:1px solid var(--linie)}
+.reihe b{display:block;font-size:clamp(28px,2.6vw,36px);font-weight:700;letter-spacing:-.04em;line-height:1.1}
+.reihe span{color:var(--ink-2);font-size:15px}
+@media (max-width:860px){.reihe b{font-size:24px}.reihe div{padding:22px 14px 22px 0}.reihe div+div{padding-left:14px}.reihe .wrap{grid-template-columns:1fr 1fr}.reihe div:nth-child(3){padding-left:0;border-left:0}.reihe div:nth-child(n+3){border-top:1px solid var(--linie)}}
+
+/* Produkttour */
+.tour{padding:clamp(88px,10vw,140px) 0}
+.tour-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);margin-top:clamp(40px,5vw,64px);align-items:center}
+.reiter{list-style:none;display:grid;gap:4px}
+.reiter button{all:unset;box-sizing:border-box;display:block;width:100%;padding:22px 24px;border-radius:var(--r-mittel);cursor:pointer;position:relative;transition:background-color 200ms ease}
+.reiter button:focus-visible{outline:2.5px solid var(--orange-tief);outline-offset:2px}
+.reiter h3{color:var(--ink-3);transition:color 200ms ease}
+.reiter p{display:grid;grid-template-rows:0fr;color:var(--ink-2);transition:grid-template-rows 320ms var(--ease)}
+.reiter p span{overflow:hidden}
+.reiter p span::before{content:"";display:block;height:8px}
+.reiter .lauf{position:absolute;left:24px;right:24px;bottom:10px;height:2px;background:var(--linie);border-radius:2px;overflow:hidden;opacity:0}
+.reiter .lauf i{display:block;height:100%;width:0;background:var(--ink)}
+.reiter [aria-selected="true"]{background:var(--grau)}
+.reiter [aria-selected="true"] h3{color:var(--ink)}
+.reiter [aria-selected="true"] p{grid-template-rows:1fr}
+.reiter [aria-selected="true"] .lauf{opacity:1}
+@media (hover:hover){.reiter [aria-selected="false"]:hover h3{color:var(--ink-2)}}
+.tour-buehne{position:relative;background:var(--grau);border-radius:var(--r-gross);height:clamp(560px,48vw,640px);overflow:hidden}
+.tour-buehne .telefon{--b:280px;bottom:-60px;transform:translateX(-50%)}
+@media (max-width:900px){.tour-grid{grid-template-columns:1fr}.tour-buehne{order:-1;height:520px}.tour-buehne .telefon{--b:250px}}
+
+/* Funktionsraster */
+.raster-bereich{padding:0 0 clamp(88px,10vw,140px)}
+.raster{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(28px,3vw,48px) clamp(24px,3vw,40px);margin-top:clamp(40px,5vw,60px)}
+.raster article{padding-top:22px;border-top:1px solid var(--linie)}
+.raster .ico{width:44px;height:44px;border-radius:12px;background:var(--grau);display:grid;place-items:center;margin-bottom:18px}
+.raster .ico svg{width:22px;height:22px}
+.raster p{color:var(--ink-2);margin-top:8px;max-width:36ch}
+@media (max-width:900px){.raster{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.raster{grid-template-columns:1fr}}
+
+/* Datenschutz */
+.privat{background:var(--ink);color:var(--weiss);padding:clamp(88px,10vw,140px) 0;overflow:hidden}
+.privat-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,96px);align-items:center}
+.privat .lead{color:#B4BAC3;margin-top:20px}
+.privat ul{list-style:none;margin-top:40px;display:grid;gap:0;border-top:1px solid #2C313A}
+.privat li{display:grid;grid-template-columns:28px 1fr;gap:16px;padding:20px 0;border-bottom:1px solid #2C313A}
+.privat li svg{width:22px;height:22px;color:var(--orange);margin-top:2px}
+.privat li b{display:block;font-weight:600;font-size:18px}
+.privat li span{color:#B4BAC3}
+.tresor{position:relative;aspect-ratio:1;max-width:520px;width:100%;justify-self:center}
+.tresor svg{width:100%;height:100%}
+@media (max-width:900px){.privat-grid{grid-template-columns:1fr}.tresor{max-width:420px}}
+
+/* Vergleich */
+.vergleich{padding:clamp(88px,10vw,140px) 0}
+.tabelle{margin-top:clamp(36px,4vw,56px);border:1px solid var(--linie);border-radius:var(--r-gross);overflow:hidden}
+.tabelle table{width:100%;border-collapse:collapse;font-size:16px}
+.tabelle th,.tabelle td{padding:18px 24px;text-align:left;border-bottom:1px solid var(--linie);vertical-align:middle}
+.tabelle tr:last-child td{border-bottom:0}
+.tabelle thead th{font-weight:600;font-size:15px;color:var(--ink-2);background:var(--grau)}
+.tabelle thead th.wir{color:var(--ink)}
+.tabelle td.wir{background:#FFF8F4}
+.tabelle td:not(:first-child),.tabelle th:not(:first-child){text-align:center;width:22%}
+.ja,.nein{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%}
+.ja{background:var(--ink);color:var(--weiss)}
+.nein{background:var(--grau);color:var(--ink-3)}
+.ja svg,.nein svg{width:14px;height:14px}
+@media (max-width:640px){.tabelle th,.tabelle td{padding:14px 12px;font-size:14px}}
+
+/* Für wen */
+.wer{padding:0 0 clamp(88px,10vw,140px)}
+.wer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:clamp(36px,4vw,56px)}
+.wer-grid article{background:var(--grau);border-radius:var(--r-gross);padding:30px 28px 32px;display:flex;flex-direction:column;min-height:330px}
+.wer-grid .bild{height:120px;display:flex;align-items:flex-end;gap:6px;margin-bottom:auto;flex-wrap:wrap;align-content:flex-end}
+.wer-grid .bild i{display:block;background:repeating-linear-gradient(var(--ink) 0 5px,#2A2F37 5px 7px);border-radius:5px 5px 2px 2px}
+.wer-grid .bild i.o{background:repeating-linear-gradient(var(--orange) 0 5px,var(--orange-tief) 5px 7px)}
+.wer-grid .bild i.p{background:none;border-left:3px solid var(--ink-3);border-right:3px solid var(--ink-3);border-radius:0}
+.wer-grid h3{margin-top:28px}
+.wer-grid p{color:var(--ink-2);margin-top:8px}
+@media (max-width:900px){.wer-grid{grid-template-columns:1fr}.wer-grid article{min-height:0}}
+
+/* Preis */
+.preis{padding:0 0 clamp(88px,10vw,140px)}
+.preis-karte{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-radius:var(--r-gross);overflow:hidden;border:1px solid var(--linie)}
+.preis-links{padding:clamp(32px,4vw,56px)}
+.preis-links .lead{margin-top:16px}
+.preis-links .aktionen{margin-top:30px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.preis-links .klein{font-size:14px;color:var(--ink-3)}
+.preis-rechts{background:var(--grau);padding:clamp(32px,4vw,56px)}
+.preis-rechts h3{font-size:17px;color:var(--ink-2);font-weight:600}
+.preis-rechts ul{list-style:none;margin-top:18px;display:grid;gap:14px}
+.preis-rechts li{display:flex;gap:12px;align-items:flex-start}
+.preis-rechts li svg{width:20px;height:20px;flex:none;margin-top:3px;color:var(--gruen)}
+@media (max-width:860px){.preis-karte{grid-template-columns:1fr}}
+
+/* Fragen */
+.fragen{padding:0 0 clamp(88px,10vw,140px)}
+.fragen-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(32px,5vw,80px)}
+.fragen details{border-bottom:1px solid var(--linie)}
+.fragen details:first-of-type{border-top:1px solid var(--linie)}
+.fragen summary{list-style:none;cursor:pointer;padding:22px 44px 22px 0;font-weight:600;font-size:18px;letter-spacing:-.015em;position:relative}
+.fragen summary::-webkit-details-marker{display:none}
+.fragen summary::after{content:"";position:absolute;right:6px;top:50%;width:12px;height:12px;margin-top:-8px;border-right:2px solid var(--ink-2);border-bottom:2px solid var(--ink-2);transform:rotate(45deg);transition:transform 220ms var(--ease)}
+.fragen details[open] summary::after{transform:rotate(225deg);margin-top:-2px}
+.fragen details p{color:var(--ink-2);padding:0 44px 24px 0;max-width:62ch}
+@media (max-width:860px){.fragen-grid{grid-template-columns:1fr}}
+
+/* Schlussband */
+.band{padding:0 0 clamp(64px,8vw,104px)}
+.band-innen{background:var(--orange);border-radius:var(--r-gross);padding:clamp(40px,6vw,88px);position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:end}
+.band-innen::after{content:"";position:absolute;right:-4%;top:0;bottom:0;width:42%;background:repeating-linear-gradient(transparent 0 30px,rgba(0,0,0,.09) 30px 33px)}
+.band-innen > *{position:relative;z-index:1}
+.band h2{font-size:clamp(40px,5.4vw,76px)}
+.band p{font-size:19px;margin-top:16px;max-width:36ch}
+.band .aktionen{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}
+@media (max-width:860px){.band-innen{grid-template-columns:1fr}.band .aktionen{justify-content:flex-start}}
+
+/* Fuß */
+.fuss{border-top:1px solid var(--linie);padding:56px 0 40px;font-size:15px}
+.fuss-grid{display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:32px}
+.fuss h4{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:14px}
+.fuss ul{list-style:none;display:grid;gap:10px;color:var(--ink-2)}
+.fuss a{text-decoration:none}
+@media (hover:hover){.fuss a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}}
+.fuss .claim{color:var(--ink-2);margin-top:14px;max-width:32ch}
+.fuss-unten{margin-top:48px;padding-top:22px;border-top:1px solid var(--linie);display:flex;flex-wrap:wrap;gap:12px 24px;color:var(--ink-3);font-size:14px}
+.fuss-unten span{margin-right:auto}
+@media (max-width:860px){.fuss-grid{grid-template-columns:1fr 1fr}.fuss-grid > div:first-child{grid-column:1/-1}}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="leiste">Der Garagenmanager ist für Android im Google Play Store erhältlich. <a href="#">Jetzt laden</a></div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="marke" href="#" aria-label="Garagenmanager Startseite">
+      <i><svg viewBox="0 0 18 18" fill="none" stroke="#14171C" stroke-width="2" aria-hidden="true"><path d="M2 16V7l7-4 7 4v9"/><path d="M5 16V9.5h8V16M5 12h8M5 14.2h8" stroke-width="1.6"/></svg></i>
+      Garagenmanager
+    </a>
+    <ul>
+      <li><a href="#funktionen">Funktionen</a></li>
+      <li><a href="#datenschutz">Datenschutz</a></li>
+      <li><a href="#preis">Preis</a></li>
+      <li><a href="#fragen">Fragen</a></li>
+    </ul>
+    <a class="k k-dunkel" href="#">App laden</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="titel">
+  <div class="wrap hero-grid">
+    <div>
+      <h1 id="titel"><span class="z">Garagen vermieten.</span> <span class="z">Ohne Papierkram.</span></h1>
+      <p class="lead">Mieten, Verträge, Stromabrechnung und DATEV-Export für Garagen, Stellplätze und Lagereinheiten. In einer App, die komplett offline auf deinem Handy läuft.</p>
+      <div class="aktionen">
+        <a class="k k-dunkel play" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.6v18.8c0 .4.4.6.7.4l10.6-9.4c.2-.2.2-.6 0-.8L4.7 2.2c-.3-.2-.7 0-.7.4zm12.6 7.6 2.9-2.6-11-6.3 8.1 8.9zm0 3.6-8.1 8.9 11-6.3-2.9-2.6zm4.2-3.8-2.9-1.7-3 2.7 3 2.7 2.9-1.7c.8-.5.8-1.5 0-2z"/></svg>
+          <span><small>Jetzt bei</small><b>Google Play</b></span>
+        </a>
+        <a class="k k-hell" href="#funktionen">So funktioniert es</a>
+      </div>
+      <ul class="fakten">
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>Kein Konto nötig</li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>Kein Abo</li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>Daten bleiben auf dem Handy</li>
+      </ul>
+    </div>
+
+    <div class="buehne" aria-hidden="true">
+      <div class="flaeche"></div>
+      <div class="telefon"><div class="schirm">
+        <div class="app">
+          <div class="oben"><span class="titel">Übersicht</span><span class="klein">Okt. 2026</span></div>
+          <div class="kachel"><span class="klein">Eingegangen im Oktober</span><span class="wert" id="summe">1.015 €</span>
+            <div class="balken"><span style="height:46%"></span><span style="height:58%"></span><span style="height:52%"></span><span style="height:64%"></span><span style="height:70%"></span><span class="an" style="height:84%"></span></div>
+          </div>
+          <div class="kachel">
+            <div class="zeile"><b>Garage 1</b><span class="chip">bezahlt</span></div>
+            <div class="zeile"><b>Garage 2</b><span class="chip">bezahlt</span></div>
+            <div class="zeile"><b>Garage 3</b><span class="chip offen" id="chip3">offen</span></div>
+            <div class="zeile"><b>Stellplatz 4</b><span class="chip">bezahlt</span></div>
+          </div>
+        </div>
+      </div></div>
+      <div class="hinweis h1"><span class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span><b>Miete eingegangen</b><span>Garage 3, S. Okafor, 65 €</span></span></div>
+      <div class="hinweis h2"><span class="ico o"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 2L4 11h5l-1 7 7-9h-5z"/></svg></span><span><b>Stromabrechnung fertig</b><span>295 kWh, 100,30 €</span></span></div>
+      <div class="hinweis h3"><span class="ico o"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 2h7l4 4v12H5z"/><path d="M12 2v4h4M8 11h6M8 14h4"/></svg></span><span><b>DATEV-Export bereit</b><span>Buchungen 2026, EXTF</span></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="reihe" aria-label="Der Garagenmanager in Zahlen">
+  <div class="wrap">
+    <div><b>100 % offline</b><span>Funktioniert ohne Internet</span></div>
+    <div><b>0 Konten</b><span>Keine Registrierung, keine Cloud</span></div>
+    <div><b>1× zahlen</b><span>Kein Abo, keine Folgekosten</span></div>
+    <div><b>DATEV</b><span>Export im EXTF-Format</span></div>
+  </div>
+</section>
+
+<section class="tour" id="funktionen" aria-labelledby="tour-titel">
+  <div class="wrap">
+    <div class="kopfzeile">
+      <h2 id="tour-titel">Alles, was zur Vermietung gehört.</h2>
+      <p class="lead">Garagen vermieten klingt einfach, bis die erste Mieterhöhung kommt, der Strom abgerechnet werden muss oder der Steuerberater nach Belegen fragt.</p>
+    </div>
+    <div class="tour-grid">
+      <ul class="reiter" role="tablist" aria-label="Funktionen">
+        <li><button role="tab" id="t0" aria-controls="tp" aria-selected="true"><h3>Rendite im Blick</h3><p><span>Nettorendite, Amortisationsfortschritt und Umsatzprognose rechnet die App automatisch. Offene Mieten fallen sofort auf.</span></p><span class="lauf"><i></i></span></button></li>
+        <li><button role="tab" id="t1" aria-controls="tp" aria-selected="false" tabindex="-1"><h3>Verträge mit Historie</h3><p><span>Mieterdaten, Verträge und gescannte Dokumente an einem Ort. Bei einer Mieterhöhung archiviert die App den alten Vertrag und legt einen neuen an.</span></p><span class="lauf"><i></i></span></button></li>
+        <li><button role="tab" id="t2" aria-controls="tp" aria-selected="false" tabindex="-1"><h3>Stromabrechnung vor Ort</h3><p><span>Zählerstand eintippen, die App rechnet mit deinem Tarif. Pauschal oder exakt. Alte Abrechnungen bleiben auch nach Preiserhöhungen korrekt.</span></p><span class="lauf"><i></i></span></button></li>
+        <li><button role="tab" id="t3" aria-controls="tp" aria-selected="false" tabindex="-1"><h3>Export für den Steuerberater</h3><p><span>Einnahmen und Ausgaben im DATEV-Format (EXTF) exportieren oder einen PDF-Jahresbericht für deine Unterlagen erstellen.</span></p><span class="lauf"><i></i></span></button></li>
+      </ul>
+      <div class="tour-buehne" id="tp" role="tabpanel" aria-labelledby="t0">
+        <div class="telefon"><div class="schirm">
+          <div class="app" data-s="0">
+            <div class="oben"><span class="titel">Rendite</span><span class="klein">2026</span></div>
+            <div class="zwei">
+              <div class="kachel"><span class="klein">Nettorendite</span><span class="wert">6,8 %</span></div>
+              <div class="kachel"><span class="klein">Prognose 2027</span><span class="wert">9.360 €</span></div>
+            </div>
+            <div class="kachel"><span class="klein">Amortisiert</span><span class="wert">62 %</span><div class="fortschritt"><span></span></div></div>
+            <div class="kachel"><div class="zeile"><span>Einnahmen</span><b>8.940 €</b></div><div class="zeile"><span>Ausgaben</span><b>1.210 €</b></div></div>
+          </div>
+          <div class="app weg" data-s="1">
+            <div class="oben"><span class="titel">Verträge</span><span class="klein">Garage 1</span></div>
+            <div class="kachel"><span class="klein">Mieter</span><span class="wert" style="font-size:1.5em">K. Brandt</span></div>
+            <div class="kachel verlauf">
+              <div class="v an"><b>Vertrag 2026</b><span class="klein">65 € im Monat, aktiv</span></div>
+              <div class="v"><b>Vertrag 2023</b><span class="klein">58 €, archiviert</span></div>
+              <div class="v"><b>Vertrag 2020</b><span class="klein">52 €, archiviert</span></div>
+            </div>
+            <div class="kachel"><div class="datei"><i>PDF</i><span><b>Mietvertrag_2026.pdf</b><br><span class="klein">gescannt</span></span></div></div>
+          </div>
+          <div class="app weg" data-s="2">
+            <div class="oben"><span class="titel">Strom</span><span class="klein">Garage 3</span></div>
+            <div class="kachel"><span class="klein">Neuer Zählerstand in kWh</span><div class="ziffern">5.107</div></div>
+            <div class="tasten"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+            <div class="app-knopf">295 kWh, 100,30 €</div>
+          </div>
+          <div class="app weg" data-s="3">
+            <div class="oben"><span class="titel">Export</span><span class="klein">2026</span></div>
+            <div class="kachel"><div class="datei"><i>CSV</i><span><b>EXTF_Buchungen_2026</b><br><span class="klein">DATEV-Format</span></span></div></div>
+            <div class="kachel"><div class="datei"><i>PDF</i><span><b>Jahresbericht 2026</b><br><span class="klein">Einnahmen, Ausgaben, Rendite</span></span></div></div>
+            <div class="app-knopf">An Steuerberater senden</div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="raster-bereich" aria-labelledby="raster-titel">
+  <div class="wrap">
+    <h2 id="raster-titel" class="sr-only">Weitere Funktionen</h2>
+    <div class="raster">
+      <article><span class="ico"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7V4h3M16 4h3v3M19 15v3h-3M6 18H3v-3M7 11h8"/></svg></span><h3>Dokumente scannen</h3><p>Mietverträge und Belege mit der Kamera erfassen und direkt beim Mieter ablegen.</p></article>
+      <article><span class="ico"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 17l5-5 3 3 6-7"/><path d="M14 8h4v4"/></svg></span><h3>Mieterhöhungen</h3><p>Neue Miete eintragen, der alte Vertrag wandert ins Archiv. Die Historie bleibt lückenlos.</p></article>
+      <article><span class="ico"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2L5 12h5l-1 8 7-10h-5z"/></svg></span><h3>Tarif-Historie</h3><p>Jeder Strompreis bleibt mit seinem Zeitraum gespeichert, damit alte Abrechnungen stimmen.</p></article>
+      <article><span class="ico"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M11 3a8 8 0 0 1 8 8h-8z"/></svg></span><h3>Amortisation</h3><p>Sieh, wie viel deiner Investition schon wieder reingekommen ist.</p></article>
+      <article><span class="ico"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 2h8l4 4v14H5z"/><path d="M13 2v4h4M8 12h6M8 15h6M8 9h3"/></svg></span><h3>PDF-Jahresbericht</h3><p>Alle Zahlen eines Jahres in einem Bericht für deine Unterlagen.</p></article>
+      <article><span class="ico"><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="10" width="14" height="10" rx="2"/><path d="M7 10V7a4 4 0 0 1 8 0v3"/></svg></span><h3>Verschlüsselte Backups</h3><p>Sicherung manuell oder über Google Drive, mit AES verschlüsselt.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="privat" id="datenschutz" aria-labelledby="privat-titel">
+  <div class="wrap privat-grid">
+    <div>
+      <h2 id="privat-titel">Deine Daten gehören dir. Punkt.</h2>
+      <p class="lead">Viele Verwaltungsprogramme speichern alles in ihrer Cloud. Der Garagenmanager nicht. Mieter, Verträge und Zahlen liegen ausschließlich auf deinem Smartphone.</p>
+      <ul>
+        <li><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="6" y="2" width="10" height="18" rx="2.5"/><path d="M10 17h2"/></svg><span><b>100 % offline</b><span>Keine Registrierung und kein Cloud-Zwang.</span></span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="14" height="10" rx="2"/><path d="M7 10V7a4 4 0 0 1 8 0v3"/></svg><span><b>Verschlüsselte Backups</b><span>Manuell oder über Google Drive, geschützt mit AES.</span></span></li>
+        <li><svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M7.5 11.5l2.5 2.5 5-5.5"/></svg><span><b>Kein Abo</b><span>Einmal zahlen, dauerhaft nutzen.</span></span></li>
+      </ul>
+    </div>
+    <div class="tresor" aria-hidden="true">
+      <svg viewBox="0 0 520 520" fill="none">
+        <circle cx="260" cy="260" r="236" stroke="#2C313A" stroke-width="1.5"/>
+        <circle cx="260" cy="260" r="176" stroke="#2C313A" stroke-width="1.5"/>
+        <circle cx="260" cy="260" r="236" stroke="#FF5B14" stroke-width="3" stroke-dasharray="120 1363" stroke-linecap="round"/>
+        <rect x="190" y="120" width="140" height="280" rx="26" fill="#1E2229" stroke="#3A3F47" stroke-width="2"/>
+        <rect x="204" y="134" width="112" height="252" rx="16" fill="#F3F4F6"/>
+        <rect x="216" y="170" width="88" height="38" rx="8" fill="#fff"/>
+        <rect x="216" y="216" width="88" height="70" rx="8" fill="#fff"/>
+        <rect x="224" y="230" width="44" height="6" rx="3" fill="#C9CED5"/>
+        <rect x="224" y="248" width="60" height="6" rx="3" fill="#C9CED5"/>
+        <rect x="224" y="266" width="36" height="6" rx="3" fill="#C9CED5"/>
+        <rect x="224" y="180" width="30" height="6" rx="3" fill="#C9CED5"/>
+        <rect x="224" y="192" width="50" height="9" rx="3" fill="#14171C"/>
+        <rect x="232" y="310" width="56" height="48" rx="10" fill="#FF5B14"/>
+        <path d="M246 310v-10a14 14 0 0 1 28 0v10" stroke="#FF5B14" stroke-width="6"/>
+        <circle cx="260" cy="330" r="5" fill="#14171C"/><path d="M260 333v10" stroke="#14171C" stroke-width="4"/>
+        <g stroke="#3A3F47" stroke-width="1.5" stroke-dasharray="4 6"><path d="M90 150l100 30M80 300h110M110 420l90-60M430 140l-100 40M450 290H330M410 420l-80-60"/></g>
+        <g fill="#2C313A"><circle cx="86" cy="148" r="6"/><circle cx="74" cy="300" r="6"/><circle cx="106" cy="424" r="6"/><circle cx="434" cy="138" r="6"/><circle cx="456" cy="290" r="6"/><circle cx="414" cy="424" r="6"/></g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="vergleich" aria-labelledby="vgl-titel">
+  <div class="wrap">
+    <div class="kopfzeile">
+      <h2 id="vgl-titel">Mehr als eine Excel-Liste.</h2>
+      <p class="lead">Viele Vermieter fangen mit einer Tabelle an. Spätestens bei der ersten Stromabrechnung wird es mühsam.</p>
+    </div>
+    <div class="tabelle" role="region" aria-labelledby="vgl-titel" tabindex="0">
+      <table>
+        <thead><tr><th scope="col">Funktion</th><th scope="col">Excel-Liste</th><th scope="col" class="wir">Garagenmanager</th></tr></thead>
+        <tbody>
+          <tr><td>Offene Mieten auf einen Blick</td><td><span class="nein" aria-label="Nein"><svg viewBox="0 0 14 14" stroke="currentColor" stroke-width="2"><path d="M4 7h6"/></svg></span></td><td class="wir"><span class="ja" aria-label="Ja"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7.5l2.5 2.5L11 4"/></svg></span></td></tr>
+          <tr><td>Vertragshistorie bei Mieterhöhungen</td><td><span class="nein" aria-label="Nein"><svg viewBox="0 0 14 14" stroke="currentColor" stroke-width="2"><path d="M4 7h6"/></svg></span></td><td class="wir"><span class="ja" aria-label="Ja"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7.5l2.5 2.5L11 4"/></svg></span></td></tr>
+          <tr><td>Stromabrechnung mit Tarif-Historie</td><td><span class="nein" aria-label="Nein"><svg viewBox="0 0 14 14" stroke="currentColor" stroke-width="2"><path d="M4 7h6"/></svg></span></td><td class="wir"><span class="ja" aria-label="Ja"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7.5l2.5 2.5L11 4"/></svg></span></td></tr>
+          <tr><td>Rendite und Amortisation automatisch</td><td><span class="nein" aria-label="Nein"><svg viewBox="0 0 14 14" stroke="currentColor" stroke-width="2"><path d="M4 7h6"/></svg></span></td><td class="wir"><span class="ja" aria-label="Ja"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7.5l2.5 2.5L11 4"/></svg></span></td></tr>
+          <tr><td>DATEV-Export (EXTF)</td><td><span class="nein" aria-label="Nein"><svg viewBox="0 0 14 14" stroke="currentColor" stroke-width="2"><path d="M4 7h6"/></svg></span></td><td class="wir"><span class="ja" aria-label="Ja"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7.5l2.5 2.5L11 4"/></svg></span></td></tr>
+          <tr><td>Dokumente per Kamera erfassen</td><td><span class="nein" aria-label="Nein"><svg viewBox="0 0 14 14" stroke="currentColor" stroke-width="2"><path d="M4 7h6"/></svg></span></td><td class="wir"><span class="ja" aria-label="Ja"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7.5l2.5 2.5L11 4"/></svg></span></td></tr>
+          <tr><td>Immer dabei, auch an der Garage</td><td><span class="nein" aria-label="Nein"><svg viewBox="0 0 14 14" stroke="currentColor" stroke-width="2"><path d="M4 7h6"/></svg></span></td><td class="wir"><span class="ja" aria-label="Ja"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7.5l2.5 2.5L11 4"/></svg></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="wer" aria-labelledby="wer-titel">
+  <div class="wrap">
+    <h2 id="wer-titel">Für jeden Bestand.</h2>
+    <div class="wer-grid">
+      <article>
+        <div class="bild" aria-hidden="true"><i style="width:64px;height:54px"></i><i class="o" style="width:64px;height:54px"></i></div>
+        <h3>Einzelvermieter</h3><p>Eine oder zwei Garagen, ordentlich verwaltet statt im Notizbuch.</p>
+      </article>
+      <article>
+        <div class="bild" aria-hidden="true" id="park"></div>
+        <h3>Investoren</h3><p>Ganze Garagenparks mit Rendite und Amortisation für jede Einheit.</p>
+      </article>
+      <article>
+        <div class="bild" aria-hidden="true"><i class="p" style="width:30px;height:60px"></i><i class="p" style="width:30px;height:60px"></i><i class="p" style="width:30px;height:60px"></i><i class="o" style="width:56px;height:46px;margin-left:8px"></i><i style="width:56px;height:46px"></i></div>
+        <h3>Stellplätze und Lager</h3><p>Eine einfache Lösung für Miete und Strom, ohne großes Programm.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="preis" id="preis" aria-labelledby="preis-titel">
+  <div class="wrap">
+    <div class="preis-karte">
+      <div class="preis-links">
+        <h2 id="preis-titel">Einmal kaufen. Für immer nutzen.</h2>
+        <p class="lead">Kein Abo und keine versteckten monatlichen Kosten. Den aktuellen Preis siehst du im Google Play Store.</p>
+        <div class="aktionen">
+          <a class="k k-dunkel play" href="#">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.6v18.8c0 .4.4.6.7.4l10.6-9.4c.2-.2.2-.6 0-.8L4.7 2.2c-.3-.2-.7 0-.7.4zm12.6 7.6 2.9-2.6-11-6.3 8.1 8.9zm0 3.6-8.1 8.9 11-6.3-2.9-2.6zm4.2-3.8-2.9-1.7-3 2.7 3 2.7 2.9-1.7c.8-.5.8-1.5 0-2z"/></svg>
+            <span><small>Jetzt bei</small><b>Google Play</b></span>
+          </a>
+          <span class="klein">Für Android-Smartphones</span>
+        </div>
+      </div>
+      <div class="preis-rechts">
+        <h3>Alles enthalten</h3>
+        <ul>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>Beliebig viele Garagen, Stellplätze und Lager</li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>Mietverträge mit Historie und Dokumenten-Scan</li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>Stromabrechnung pauschal oder nach Zähler</li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>Rendite, Amortisation und Umsatzprognose</li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>DATEV-Export und PDF-Jahresbericht</li>
+          <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg>Verschlüsselte Backups</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fragen" id="fragen" aria-labelledby="fragen-titel">
+  <div class="wrap fragen-grid">
+    <h2 id="fragen-titel">Häufige Fragen</h2>
+    <div>
+      <details open><summary>Wo werden meine Daten gespeichert?</summary><p>Ausschließlich auf deinem Smartphone. Es gibt keine Registrierung und keinen Server, auf dem deine Mieter oder Zahlen liegen.</p></details>
+      <details><summary>Was passiert, wenn ich mein Handy verliere?</summary><p>Deshalb gibt es Backups. Du kannst deine Daten manuell oder über Google Drive sichern. Die Sicherung ist mit AES verschlüsselt und lässt sich auf einem neuen Gerät wiederherstellen.</p></details>
+      <details><summary>Brauche ich Internet?</summary><p>Nein. Die App funktioniert komplett offline, auch direkt an der Garage beim Ablesen des Zählers.</p></details>
+      <details><summary>Gibt es ein Abo?</summary><p>Nein. Du zahlst einmal und nutzt die App dauerhaft.</p></details>
+      <details><summary>Kann mein Steuerberater die Daten verwenden?</summary><p>Ja. Einnahmen und Ausgaben lassen sich im DATEV-Format (EXTF) exportieren. Zusätzlich kannst du einen PDF-Jahresbericht erstellen.</p></details>
+      <details><summary>Gibt es die App für das iPhone?</summary><p>Aktuell ist der Garagenmanager für Android im Google Play Store erhältlich.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="band" aria-labelledby="band-titel">
+  <div class="wrap">
+    <div class="band-innen">
+      <div>
+        <h2 id="band-titel">Schluss mit Zettelwirtschaft.</h2>
+        <p>Lade den Garagenmanager und hab deine Vermietung in wenigen Minuten im Griff.</p>
+      </div>
+      <div class="aktionen">
+        <a class="k k-dunkel play" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2.6v18.8c0 .4.4.6.7.4l10.6-9.4c.2-.2.2-.6 0-.8L4.7 2.2c-.3-.2-.7 0-.7.4zm12.6 7.6 2.9-2.6-11-6.3 8.1 8.9zm0 3.6-8.1 8.9 11-6.3-2.9-2.6zm4.2-3.8-2.9-1.7-3 2.7 3 2.7 2.9-1.7c.8-.5.8-1.5 0-2z"/></svg>
+          <span><small>Jetzt bei</small><b>Google Play</b></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="fuss">
+  <div class="wrap">
+    <div class="fuss-grid">
+      <div>
+        <a class="marke" href="#"><i><svg viewBox="0 0 18 18" fill="none" stroke="#14171C" stroke-width="2" aria-hidden="true"><path d="M2 16V7l7-4 7 4v9"/><path d="M5 16V9.5h8V16M5 12h8M5 14.2h8" stroke-width="1.6"/></svg></i>Garagenmanager</a>
+        <p class="claim">Die App für private Vermieter von Garagen, Stellplätzen und Lagereinheiten.</p>
+      </div>
+      <div><h4>Produkt</h4><ul><li><a href="#funktionen">Funktionen</a></li><li><a href="#datenschutz">Datenschutz</a></li><li><a href="#preis">Preis</a></li></ul></div>
+      <div><h4>Hilfe</h4><ul><li><a href="#fragen">Häufige Fragen</a></li><li><a href="#">Kontakt</a></li></ul></div>
+      <div><h4>Rechtliches</h4><ul><li><a href="https://www.garagenmanager.de/impressum">Impressum</a></li><li><a href="https://www.garagenmanager.de/datenschutzerkl%C3%A4rung">Datenschutzerklärung</a></li></ul></div>
+    </div>
+    <div class="fuss-unten"><span>Entwurf, nicht die offizielle Seite. © Garagenmanager</span><span>Google Play und das Google Play-Logo sind Marken von Google LLC.</span></div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+<script>
+const ruhig=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Navigation bekommt beim Scrollen eine Kante */
+const nav=document.getElementById('nav');
+addEventListener('scroll',()=>nav.classList.toggle('unten',scrollY>48),{passive:true});
+
+/* Garagenpark in "Für wen" */
+const park=document.getElementById('park');
+for(let i=0;i<24;i++){const g=document.createElement('i');g.style.width='26px';g.style.height='22px';if(i===9||i===17)g.className='o';park.appendChild(g)}
+
+/* Produkttour: Reiter mit Laufbalken, wechselt automatisch, bis jemand selbst klickt */
+const tabs=[...document.querySelectorAll('.reiter [role="tab"]')];
+const apps=[...document.querySelectorAll('#tp .app')];
+const DAUER=6000;
+let aktiv=0,auto=!ruhig,start=0,sichtbar=false;
+function zeige(i,vonHand){
+  aktiv=i;
+  tabs.forEach((t,j)=>{t.setAttribute('aria-selected',j===i);t.tabIndex=j===i?0:-1;t.querySelector('.lauf i').style.width='0'});
+  apps.forEach((a,j)=>a.classList.toggle('weg',j!==i));
+  document.getElementById('tp').setAttribute('aria-labelledby','t'+i);
+  if(vonHand)auto=false;
+  start=performance.now();
+}
+tabs.forEach((t,i)=>{
+  t.addEventListener('click',()=>zeige(i,true));
+  t.addEventListener('keydown',e=>{
+    const n=e.key==='ArrowDown'||e.key==='ArrowRight'?1:e.key==='ArrowUp'||e.key==='ArrowLeft'?-1:0;
+    if(n){e.preventDefault();const z=(aktiv+n+tabs.length)%tabs.length;zeige(z,true);tabs[z].focus()}
+  });
+});
+zeige(0,false);
+new IntersectionObserver(es=>{sichtbar=es[0].isIntersecting;start=performance.now()},{threshold:.4}).observe(document.getElementById('tp'));
+(function lauf(t){
+  if(auto&&sichtbar){
+    const p=Math.min(1,(t-start)/DAUER);
+    tabs[aktiv].querySelector('.lauf i').style.width=(p*100)+'%';
+    if(p>=1)zeige((aktiv+1)%tabs.length,false);
+  }
+  requestAnimationFrame(lauf);
+})(performance.now());
+
+/* Hero: ein abgestimmter Auftritt, danach geht die Miete von Garage 3 ein */
+if(window.gsap&&!ruhig){
+  if(window.Lenis){const l=new Lenis({lerp:.1});gsap.ticker.add(t=>l.raf(t*1000));gsap.ticker.lagSmoothing(0);}
+  const tl=gsap.timeline({defaults:{ease:'power3.out'}});
+  tl.from('.flaeche',{scaleY:.6,transformOrigin:'50% 100%',opacity:0,duration:.9})
+    .from('.hero .telefon',{y:80,opacity:0,duration:1},'-=.6')
+    .from('.hinweis',{y:16,opacity:0,duration:.6,stagger:.18},'-=.4')
+    .add(()=>{
+      const c=document.getElementById('chip3');
+      c.textContent='bezahlt';c.className='chip neu';
+      const s=document.getElementById('summe');
+      gsap.to({v:1015},{v:1080,duration:.8,ease:'power2.out',onUpdate(){s.textContent=Math.round(this.targets()[0].v).toLocaleString('de-DE')+' €'}});
+    },'-=.1');
+}else{
+  const c=document.getElementById('chip3');c.textContent='bezahlt';c.className='chip';
+  document.getElementById('summe').textContent='1.080 €';
+}
+</script>
+</body>
+</html>
