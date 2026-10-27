@@ -212,12 +212,10 @@ h3{font-size:22px;letter-spacing:-.02em;line-height:1.2;font-weight:650}
 /* Für wen */
 .wer{padding:0 0 clamp(88px,10vw,140px)}
 .wer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:clamp(36px,4vw,56px)}
-.wer-grid article{background:var(--grau);border-radius:var(--r-gross);padding:30px 28px 32px;display:flex;flex-direction:column;min-height:330px}
-.wer-grid .bild{height:120px;display:flex;align-items:flex-end;gap:6px;margin-bottom:auto;flex-wrap:wrap;align-content:flex-end}
-.wer-grid .bild i{display:block;background:repeating-linear-gradient(var(--ink) 0 5px,#2A2F37 5px 7px);border-radius:5px 5px 2px 2px}
-.wer-grid .bild i.o{background:repeating-linear-gradient(var(--orange) 0 5px,var(--orange-tief) 5px 7px)}
-.wer-grid .bild i.p{background:none;border-left:3px solid var(--ink-3);border-right:3px solid var(--ink-3);border-radius:0}
-.wer-grid h3{margin-top:28px}
+.wer-grid article{background:var(--grau);border-radius:var(--r-gross);padding:30px 28px 32px;display:flex;flex-direction:column;min-height:380px}
+.wer-grid .bild{height:210px;margin:-6px -8px auto;display:flex;align-items:center;justify-content:center}
+.wer-grid .bild svg{width:100%;height:100%;overflow:visible}
+.wer-grid h3{margin-top:22px}
 .wer-grid p{color:var(--ink-2);margin-top:8px}
 @media (max-width:900px){.wer-grid{grid-template-columns:1fr}.wer-grid article{min-height:0}}
 
@@ -473,15 +471,15 @@ h3{font-size:22px;letter-spacing:-.02em;line-height:1.2;font-weight:650}
     <h2 id="wer-titel">Für jeden Bestand.</h2>
     <div class="wer-grid">
       <article>
-        <div class="bild" aria-hidden="true"><i style="width:64px;height:54px"></i><i class="o" style="width:64px;height:54px"></i></div>
+        <div class="bild" aria-hidden="true"><svg id="iso-einzel"></svg></div>
         <h3>Einzelvermieter</h3><p>Eine oder zwei Garagen, ordentlich verwaltet statt im Notizbuch.</p>
       </article>
       <article>
-        <div class="bild" aria-hidden="true" id="park"></div>
+        <div class="bild" aria-hidden="true"><svg id="iso-park"></svg></div>
         <h3>Investoren</h3><p>Ganze Garagenparks mit Rendite und Amortisation für jede Einheit.</p>
       </article>
       <article>
-        <div class="bild" aria-hidden="true"><i class="p" style="width:30px;height:60px"></i><i class="p" style="width:30px;height:60px"></i><i class="p" style="width:30px;height:60px"></i><i class="o" style="width:56px;height:46px;margin-left:8px"></i><i style="width:56px;height:46px"></i></div>
+        <div class="bild" aria-hidden="true"><svg id="iso-platz"></svg></div>
         <h3>Stellplätze und Lager</h3><p>Eine einfache Lösung für Miete und Strom, ohne großes Programm.</p>
       </article>
     </div>
@@ -573,9 +571,84 @@ const ruhig=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const nav=document.getElementById('nav');
 addEventListener('scroll',()=>nav.classList.toggle('unten',scrollY>48),{passive:true});
 
-/* Garagenpark in "Für wen" */
-const park=document.getElementById('park');
-for(let i=0;i<24;i++){const g=document.createElement('i');g.style.width='26px';g.style.height='22px';if(i===9||i===17)g.className='o';park.appendChild(g)}
+/* Isometrische Illustrationen für "Für jeden Bestand" */
+(function(){
+  const NS='http://www.w3.org/2000/svg',C=Math.cos(Math.PI/6),S=11;
+  const F={dach:'#FFFFFF',dachKante:'#D9DCE1',links:'#E8EAEE',rechts:'#C9CED6',boden:'#E3E6EA',bodenL:'#D3D7DD',bodenR:'#BFC5CD',
+           weg:'#D6DAE0',ink:'#14171C',inkHell:'#2B3038',inkLinie:'#3A4049',o:'#FF5B14',oTief:'#C9400A',oLinie:'#FF7A3D',weiss:'#FFFFFF',strich:'#FFFFFF'};
+  const P=(x,y,z)=>[(x-y)*C*S,(x+y)*.5*S-z*S];
+  const pts=a=>a.map(p=>P(...p).map(v=>v.toFixed(1)).join(',')).join(' ');
+  function szene(id){
+    const svg=document.getElementById(id),g=document.createElementNS(NS,'g');svg.appendChild(g);
+    const add=(tag,attr)=>{const e=document.createElementNS(NS,tag);for(const k in attr)e.setAttribute(k,attr[k]);g.appendChild(e);return e};
+    const poly=(a,fill)=>add('polygon',{points:pts(a),fill});
+    const linie=(a,b,stroke,w)=>{const p=P(...a),q=P(...b);add('line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke,'stroke-width':w||1,'stroke-linecap':'round'})};
+    // Quader: Oberseite, Vorderseite (+y) und rechte Seite (+x)
+    function quader(x,y,z,w,d,h,f){
+      poly([[x,y+d,z],[x+w,y+d,z],[x+w,y+d,z+h],[x,y+d,z+h]],f.links);
+      poly([[x+w,y,z],[x+w,y+d,z],[x+w,y+d,z+h],[x+w,y,z+h]],f.rechts);
+      poly([[x,y,z+h],[x+w,y,z+h],[x+w,y+d,z+h],[x,y+d,z+h]],f.dach);
+    }
+    // Garage mit überstehendem Flachdach und Sektionaltor auf der Vorderseite
+    function garage(x,y,w,d,tor){
+      quader(x,y,0,w,d,2.5,{links:F.links,rechts:F.rechts,dach:F.dach});
+      quader(x-.12,y-.12,2.5,w+.24,d+.24,.28,{links:F.dachKante,rechts:F.rechts,dach:F.dach});
+      const u=.32,tw=w-.64,th=2.05,yy=y+d+.002,o=tor==='o';
+      poly([[x+u,yy,0],[x+u+tw,yy,0],[x+u+tw,yy,th],[x+u,yy,th]],o?F.o:F.ink);
+      for(let k=1;k<4;k++){const z=th*k/4;linie([x+u+.08,yy,z],[x+u+tw-.08,yy,z],o?F.oLinie:F.inkLinie,1.2)}
+      poly([[x+u+tw/2-.3,yy,.28],[x+u+tw/2+.3,yy,.28],[x+u+tw/2+.3,yy,.4],[x+u+tw/2-.3,yy,.4]],o?F.oTief:F.inkHell);
+    }
+    // Lagerbox mit Rolltor
+    function lager(x,y,w,d,tor){
+      quader(x,y,0,w,d,2.1,{links:F.links,rechts:F.rechts,dach:F.dach});
+      const u=.25,tw=w-.5,th=1.75,yy=y+d+.002,o=tor==='o';
+      poly([[x+u,yy,0],[x+u+tw,yy,0],[x+u+tw,yy,th],[x+u,yy,th]],o?F.o:F.ink);
+      for(let z=.18;z<th;z+=.18)linie([x+u+.05,yy,z],[x+u+tw-.05,yy,z],o?F.oLinie:F.inkLinie,.8);
+    }
+    function platte(x,y,w,d){quader(x,y,-.35,w,d,.35,{links:F.bodenL,rechts:F.bodenR,dach:F.boden})}
+    function flaeche(a,fill){poly(a.map(p=>[p[0],p[1],0]),fill)}
+    function rahmen(){const b=g.getBBox(),r=10;svg.setAttribute('viewBox',`${b.x-r} ${b.y-r} ${b.width+2*r} ${b.height+2*r}`)}
+    return {quader,garage,lager,platte,flaeche,linie,poly,add,rahmen};
+  }
+
+  // Einzelvermieter: Doppelgarage mit Zufahrt
+  let s=szene('iso-einzel');
+  s.platte(0,0,10,13);
+  s.flaeche([[1.2,7.4],[9,7.4],[9,13],[1.2,13]],F.weg);
+  s.linie([5.1,7.6,0],[5.1,12.8,0],F.strich,1.4);
+  s.garage(1.2,1.4,3.9,6,'');
+  s.garage(5.1,1.4,3.9,6,'o');
+  s.rahmen();
+
+  // Investoren: Garagenpark, zwei Reihen
+  s=szene('iso-park');
+  s.platte(0,0,25,19);
+  s.flaeche([[.8,6.6],[24.2,6.6],[24.2,18.2],[.8,18.2]],F.weg);
+  for(let i=0;i<7;i++)s.garage(.9+i*3.3,.6,3.3,5.8,i===4?'o':'');
+  for(let x=1.4;x<24;x+=1.6)s.linie([x,12.4,0],[x+.8,12.4,0],F.strich,1.2);
+  s.rahmen();
+  // zweite Reihe vorne, damit die Reihenfolge stimmt (hinten zuerst gezeichnet)
+  const park=document.getElementById('iso-park');
+  // vordere Reihe in eigener Gruppe, damit sie über der Zufahrt liegt
+  s=szene('iso-park');
+  for(let i=0;i<7;i++)s.garage(.9+i*3.3,13.2,3.3,5.4,i===1||i===5?'o':'');
+  const b1=park.getBBox(),r=10;park.setAttribute('viewBox',`${b1.x-r} ${b1.y-r} ${b1.width+2*r} ${b1.height+2*r}`);
+
+  // Stellplätze und Lager: Lagerboxen hinten, Stellplätze davor
+  s=szene('iso-platz');
+  s.platte(0,0,21,15);
+  s.flaeche([[.6,6.6],[20.4,6.6],[20.4,14.4],[.6,14.4]],F.weg);
+  for(let i=0;i<5;i++)s.lager(.9+i*3.84,.7,3.84,5.6,i===2?'o':'');
+  for(let i=0;i<=5;i++){const x=1.4+i*3.1;s.poly([[x,9,0],[x+.16,9,0],[x+.16,14,0],[x,14,0]],F.strich)}
+  s.poly([[1.4,9,0],[16.96,9,0],[16.96,9.16,0],[1.4,9.16,0]],F.strich);
+  // P-Schild rechts vorne
+  s.quader(18.6,11.2,0,.16,.16,3.1,{links:'#8B929C',rechts:'#6B727C',dach:'#8B929C'});
+  s.quader(18.0,11.38,2.25,1.4,.08,1.4,{links:F.ink,rechts:F.inkHell,dach:F.inkHell});
+  const q=P(18.0,11.46,3.65);
+  const t=s.add('text',{transform:`matrix(${C} .5 0 1 ${q[0].toFixed(1)} ${q[1].toFixed(1)})`,x:3.2,y:13.4,fill:'#fff','font-size':13,'font-weight':700,'font-family':'Geist, system-ui, sans-serif'});
+  t.textContent='P';
+  s.rahmen();
+})();
 
 /* Produkttour: Reiter mit Laufbalken, wechselt automatisch, bis jemand selbst klickt */
 const tabs=[...document.querySelectorAll('.reiter [role="tab"]')];
