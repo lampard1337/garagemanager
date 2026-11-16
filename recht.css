@@ -1,0 +1,58 @@
+/* Gemeinsame Gestaltung für Impressum und Datenschutzerklärung (passend zu entwurf-7-marke.html) */
+:root{
+  --orange:#FF5B14; --orange-hell:#FFE6DA; --orange-tief:#C9400A;
+  --ink:#14171C; --ink-2:#5C636E; --ink-3:#8B929C; --linie:#E4E6EA;
+  --grau:#F3F4F6; --weiss:#FFFFFF;
+  --r-mittel:18px;
+  --font:"Geist",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --rand:clamp(16px,4vw,56px); --breite:1200px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:90px}
+body{font-family:var(--font);font-size:17px;line-height:1.6;color:var(--ink);background:var(--weiss);-webkit-font-smoothing:antialiased;font-feature-settings:"ss01"}
+a{color:inherit}
+svg{display:block}
+::selection{background:var(--orange);color:var(--ink)}
+:focus-visible{outline:2.5px solid var(--orange-tief);outline-offset:3px;border-radius:6px}
+.wrap{width:min(var(--breite),calc(100% - 2*var(--rand)));margin:0 auto}
+
+.nav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid var(--linie)}
+.nav .wrap{display:flex;align-items:center;gap:24px;height:68px}
+.marke{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:-.03em;text-decoration:none}
+.marke i{width:30px;height:30px;border-radius:9px;background:var(--orange);display:grid;place-items:center}
+.marke i svg{width:18px;height:18px}
+.zurueck{margin-left:auto;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 18px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;box-shadow:inset 0 0 0 1px var(--linie)}
+.zurueck svg{width:16px;height:16px}
+@media (hover:hover){.zurueck:hover{box-shadow:inset 0 0 0 1px var(--ink-3)}}
+
+.recht{padding:clamp(40px,6vw,88px) 0 clamp(64px,8vw,120px)}
+.recht-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:clamp(32px,5vw,80px);align-items:start}
+.pille{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;background:var(--orange-hell);color:var(--orange-tief);padding:6px 14px;border-radius:999px;margin-bottom:20px}
+.pille i{width:7px;height:7px;border-radius:50%;background:var(--orange);display:block}
+h1{font-size:clamp(40px,4.6vw,64px);font-weight:750;letter-spacing:-.045em;line-height:1.02;hyphens:manual}
+.unter{margin-top:18px;color:var(--ink-2);font-size:18px;max-width:30ch}
+.seite-nav{position:sticky;top:100px}
+.seite-nav ul{list-style:none;margin-top:32px;display:grid;gap:8px;font-size:15px;color:var(--ink-2)}
+.seite-nav a{text-decoration:none}
+@media (hover:hover){.seite-nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}}
+
+.block{padding:28px 0;border-top:1px solid var(--linie)}
+.block:last-child{border-bottom:1px solid var(--linie)}
+.block h2{font-size:clamp(22px,2vw,26px);font-weight:650;letter-spacing:-.025em;line-height:1.2;margin-bottom:12px;display:flex;gap:14px;align-items:baseline}
+.block h2 .nr{font-size:15px;font-weight:600;color:var(--orange-tief);font-variant-numeric:tabular-nums;min-width:1.2em}
+.block p{color:var(--ink-2);max-width:66ch}
+.block p+p{margin-top:10px}
+.block ul{list-style:none;display:grid;gap:12px;margin-top:14px}
+.block li{color:var(--ink-2);padding-left:22px;position:relative;max-width:64ch}
+.block li::before{content:"";position:absolute;left:2px;top:.68em;width:7px;height:7px;border-radius:50%;background:var(--orange)}
+.block li b,.block p b{color:var(--ink);font-weight:600}
+.block a{text-decoration:underline;text-decoration-color:var(--orange);text-underline-offset:3px;text-decoration-thickness:2px;overflow-wrap:anywhere}
+.karte{background:var(--grau);border-radius:var(--r-mittel);padding:22px 24px;color:var(--ink);font-style:normal;line-height:1.55}
+.karte b{display:block;font-weight:650;font-size:18px;margin-bottom:2px}
+@media (max-width:860px){.recht-grid{grid-template-columns:1fr}.seite-nav{position:static}.seite-nav ul{display:none}}
+
+.fuss{border-top:1px solid var(--linie);padding:32px 0 40px;font-size:14px;color:var(--ink-3)}
+.fuss .wrap{display:flex;flex-wrap:wrap;gap:12px 24px}
+.fuss span{margin-right:auto}
+.fuss a{text-decoration:none;color:var(--ink-2)}
+@media (hover:hover){.fuss a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}}
