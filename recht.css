@@ -41,7 +41,7 @@ h1{font-size:clamp(40px,4.6vw,64px);font-weight:750;letter-spacing:-.045em;line-
 .block h2{font-size:clamp(22px,2vw,26px);font-weight:650;letter-spacing:-.025em;line-height:1.2;margin-bottom:12px;display:flex;gap:14px;align-items:baseline}
 .block h2 .nr{font-size:15px;font-weight:600;color:var(--orange-tief);font-variant-numeric:tabular-nums;min-width:1.2em}
 .block p{color:var(--ink-2);max-width:66ch}
-.block p+p{margin-top:10px}
+.block p+p,.block ul+p{margin-top:12px}
 .block ul{list-style:none;display:grid;gap:12px;margin-top:14px}
 .block li{color:var(--ink-2);padding-left:22px;position:relative;max-width:64ch}
 .block li::before{content:"";position:absolute;left:2px;top:.68em;width:7px;height:7px;border-radius:50%;background:var(--orange)}
@@ -49,6 +49,14 @@ h1{font-size:clamp(40px,4.6vw,64px);font-weight:750;letter-spacing:-.045em;line-
 .block a{text-decoration:underline;text-decoration-color:var(--orange);text-underline-offset:3px;text-decoration-thickness:2px;overflow-wrap:anywhere}
 .karte{background:var(--grau);border-radius:var(--r-mittel);padding:22px 24px;color:var(--ink);font-style:normal;line-height:1.55}
 .karte b{display:block;font-weight:650;font-size:18px;margin-bottom:2px}
+.block h3{font-size:18px;font-weight:650;letter-spacing:-.015em;margin:20px 0 6px}
+.teil{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);padding:36px 0 10px}
+.teil:first-child{padding-top:0}
+.stand{margin-top:28px;font-size:15px;color:var(--ink-3)}
+/* Offene Stellen, die vor Veröffentlichung geklärt werden müssen */
+.offen{background:#FFF1B8;color:#5C4A00;border-radius:4px;padding:0 4px;font-weight:500;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.offen-box{background:#FFF8D6;border:1px solid #F2DC7A;border-radius:14px;padding:16px 18px;margin-top:14px;color:#5C4A00;font-size:15px}
+.offen-box b{color:#3D3100}
 @media (max-width:860px){.recht-grid{grid-template-columns:1fr}.seite-nav{position:static}.seite-nav ul{display:none}}
 
 .fuss{border-top:1px solid var(--linie);padding:32px 0 40px;font-size:14px;color:var(--ink-3)}
