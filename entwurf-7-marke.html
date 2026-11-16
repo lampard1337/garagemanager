@@ -427,23 +427,30 @@ h3{font-size:22px;letter-spacing:-.02em;line-height:1.2;font-weight:650}
     </div>
     <div class="tresor" aria-hidden="true">
       <svg viewBox="0 0 520 520" fill="none">
-        <circle cx="260" cy="260" r="236" stroke="#2C313A" stroke-width="1.5"/>
-        <circle cx="260" cy="260" r="176" stroke="#2C313A" stroke-width="1.5"/>
-        <circle cx="260" cy="260" r="236" stroke="#FF5B14" stroke-width="3" stroke-dasharray="120 1363" stroke-linecap="round"/>
-        <rect x="190" y="120" width="140" height="280" rx="26" fill="#1E2229" stroke="#3A3F47" stroke-width="2"/>
-        <rect x="204" y="134" width="112" height="252" rx="16" fill="#F3F4F6"/>
-        <rect x="216" y="170" width="88" height="38" rx="8" fill="#fff"/>
-        <rect x="216" y="216" width="88" height="70" rx="8" fill="#fff"/>
-        <rect x="224" y="230" width="44" height="6" rx="3" fill="#C9CED5"/>
-        <rect x="224" y="248" width="60" height="6" rx="3" fill="#C9CED5"/>
-        <rect x="224" y="266" width="36" height="6" rx="3" fill="#C9CED5"/>
-        <rect x="224" y="180" width="30" height="6" rx="3" fill="#C9CED5"/>
-        <rect x="224" y="192" width="50" height="9" rx="3" fill="#14171C"/>
-        <rect x="232" y="310" width="56" height="48" rx="10" fill="#FF5B14"/>
-        <path d="M246 310v-10a14 14 0 0 1 28 0v10" stroke="#FF5B14" stroke-width="6"/>
-        <circle cx="260" cy="330" r="5" fill="#14171C"/><path d="M260 333v10" stroke="#14171C" stroke-width="4"/>
-        <g stroke="#3A3F47" stroke-width="1.5" stroke-dasharray="4 6"><path d="M90 150l100 30M80 300h110M110 420l90-60M430 140l-100 40M450 290H330M410 420l-80-60"/></g>
-        <g fill="#2C313A"><circle cx="86" cy="148" r="6"/><circle cx="74" cy="300" r="6"/><circle cx="106" cy="424" r="6"/><circle cx="434" cy="138" r="6"/><circle cx="456" cy="290" r="6"/><circle cx="414" cy="424" r="6"/></g>
+        <circle class="t-ring" cx="260" cy="260" r="236" stroke="#2C313A" stroke-width="1.5"/>
+        <circle class="t-ring" id="t-innen" cx="260" cy="260" r="176" stroke="#2C313A" stroke-width="1.5"/>
+        <circle id="t-bogen" cx="260" cy="260" r="236" stroke="#FF5B14" stroke-width="3" stroke-dasharray="120 1363" stroke-linecap="round"/>
+        <circle id="t-schild" cx="260" cy="260" r="176" stroke="#FF5B14" stroke-width="3" stroke-dasharray="44 1062" stroke-linecap="round" opacity="0"/>
+        <g id="t-linien" stroke="#3A3F47" stroke-width="1.5" stroke-dasharray="4 6">
+          <path d="M90 150L190 180"/><path d="M80 300H190"/><path d="M110 420L200 360"/><path d="M430 140L330 180"/><path d="M450 290H330"/><path d="M410 420L330 360"/>
+        </g>
+        <g id="t-punkte" fill="#2C313A"><circle cx="86" cy="148" r="6"/><circle cx="74" cy="300" r="6"/><circle cx="106" cy="424" r="6"/><circle cx="434" cy="138" r="6"/><circle cx="456" cy="290" r="6"/><circle cx="414" cy="424" r="6"/></g>
+        <g id="t-tel">
+          <rect x="190" y="120" width="140" height="280" rx="26" fill="#1E2229" stroke="#3A3F47" stroke-width="2"/>
+          <rect x="204" y="134" width="112" height="252" rx="16" fill="#F3F4F6"/>
+          <g class="t-karte"><rect x="216" y="170" width="88" height="38" rx="8" fill="#fff"/>
+            <rect class="t-zeile" x="224" y="180" width="30" height="6" rx="3" fill="#C9CED5"/>
+            <rect class="t-zeile" x="224" y="192" width="50" height="9" rx="3" fill="#14171C"/></g>
+          <g class="t-karte"><rect x="216" y="216" width="88" height="70" rx="8" fill="#fff"/>
+            <rect class="t-zeile" x="224" y="230" width="44" height="6" rx="3" fill="#C9CED5"/>
+            <rect class="t-zeile" x="224" y="248" width="60" height="6" rx="3" fill="#C9CED5"/>
+            <rect class="t-zeile" x="224" y="266" width="36" height="6" rx="3" fill="#C9CED5"/></g>
+          <path id="t-buegel" d="M246 310v-10a14 14 0 0 1 28 0v10" stroke="#FF5B14" stroke-width="6"/>
+          <g id="t-schloss">
+            <rect x="232" y="310" width="56" height="48" rx="10" fill="#FF5B14"/>
+            <circle cx="260" cy="330" r="5" fill="#14171C"/><path d="M260 333v10" stroke="#14171C" stroke-width="4"/>
+          </g>
+        </g>
       </svg>
     </div>
   </div>
@@ -692,6 +699,86 @@ new IntersectionObserver(es=>{sichtbar=es[0].isIntersecting;start=performance.no
   }
   requestAnimationFrame(lauf);
 })(performance.now());
+
+/* Datenschutz: Handy mit Schloss. Beim Hineinscrollen bauen sich Ringe und Handy auf, das Schloss schnappt zu.
+   Danach laufen immer wieder Zugriffe von außen auf das Handy zu und prallen am inneren Schutzring ab. */
+(function(){
+  const svg=document.querySelector('.tresor svg');
+  if(!svg||!window.gsap||ruhig)return;
+  const NS='http://www.w3.org/2000/svg',M=260,R=176;
+  const q=s=>svg.querySelector(s),qa=s=>[...svg.querySelectorAll(s)];
+  const ringe=qa('.t-ring'),bogen=q('#t-bogen'),schild=q('#t-schild'),tel=q('#t-tel'),
+        karten=qa('.t-karte'),zeilen=qa('.t-zeile'),schloss=q('#t-schloss'),buegel=q('#t-buegel'),
+        linien=qa('#t-linien path'),punkte=qa('#t-punkte circle');
+
+  // Ausgangszustand (erst per Skript, ohne Skript bleibt die Grafik vollständig sichtbar)
+  ringe.forEach(r=>{const u=2*Math.PI*r.r.baseVal.value;gsap.set(r,{attr:{'stroke-dasharray':u,'stroke-dashoffset':u}})});
+  gsap.set(bogen,{opacity:0});
+  gsap.set(tel,{y:40,opacity:0});
+  gsap.set(karten,{opacity:0,y:8});
+  gsap.set(zeilen,{scaleX:0,transformOrigin:'0% 50%'});
+  gsap.set(schloss,{scale:.4,opacity:0,transformOrigin:'50% 50%'});
+  gsap.set(buegel,{y:-16,opacity:0});
+  gsap.set([...linien,...punkte],{opacity:0});
+
+  function kreis(cx,cy,r,attr){
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',cx);c.setAttribute('cy',cy);c.setAttribute('r',r);
+    for(const k in attr)c.setAttribute(k,attr[k]);
+    svg.appendChild(c);return c;
+  }
+  // Ring, der vom Schloss ausgeht, wenn es zuschnappt
+  function puls(){
+    const c=kreis(260,334,26,{stroke:'#FF5B14','stroke-width':2.5,fill:'none'});
+    gsap.to(c,{attr:{r:84},opacity:0,duration:.9,ease:'power2.out',onComplete:()=>c.remove()});
+  }
+  // Ein Datenpaket will vom Handy nach außen, prallt am inneren Schutzring ab und fällt zurück
+  const reihe=[0,3,1,5,2,4];let n=0;
+  function zugriff(){
+    const L=linien[reihe[n++%reihe.length]];
+    const a=L.getPointAtLength(L.getTotalLength()),b=L.getPointAtLength(0); // a: am Handy, b: außen
+    const dx=b.x-a.x,dy=b.y-a.y,fx=a.x-M,fy=a.y-M;
+    const A=dx*dx+dy*dy,B=2*(fx*dx+fy*dy),Cc=fx*fx+fy*fy-R*R;
+    const t=(-B+Math.sqrt(B*B-4*A*Cc))/(2*A);
+    const ex=a.x+dx*t,ey=a.y+dy*t;
+    const p=kreis(a.x,a.y,4.5,{fill:'#E4E6EA',opacity:0});
+    const winkel=Math.atan2(ey-M,ex-M)*180/Math.PI;
+    gsap.timeline({onComplete:()=>p.remove()})
+      .to(p,{opacity:1,duration:.2})
+      .to(p,{attr:{cx:ex,cy:ey},duration:1,ease:'power1.in'},0)
+      .add(()=>{
+        p.setAttribute('fill','#FF5B14');
+        gsap.set(schild,{rotation:winkel-8,svgOrigin:'260 260'});
+        gsap.fromTo(schild,{opacity:1},{opacity:0,duration:.8,ease:'power2.out'});
+        const f=kreis(ex,ey,4,{stroke:'#FF5B14','stroke-width':2,fill:'none'});
+        gsap.to(f,{attr:{r:18},opacity:0,duration:.55,ease:'power2.out',onComplete:()=>f.remove()});
+      })
+      .to(p,{attr:{cx:ex-(ex-a.x)*.35,cy:ey-(ey-a.y)*.35,r:0},opacity:0,duration:.45,ease:'power2.out'});
+  }
+
+  const dreh=gsap.to(bogen,{rotation:360,svgOrigin:'260 260',duration:18,ease:'none',repeat:-1,paused:true});
+  const takt=gsap.timeline({repeat:-1,paused:true}).add(zugriff).add(()=>{},1.9);
+  let fertig=false,sichtbar=false;
+  const auftritt=gsap.timeline({paused:true,defaults:{ease:'power3.out'},onComplete(){fertig=true;if(sichtbar){dreh.play();takt.play()}}})
+    .to(ringe,{attr:{'stroke-dashoffset':0},duration:1.4,ease:'power2.inOut',stagger:.15},0)
+    .to(tel,{y:0,opacity:1,duration:.9},.2)
+    .to(karten,{opacity:1,y:0,duration:.5,stagger:.12},.6)
+    .to(zeilen,{scaleX:1,duration:.45,stagger:.06},.75)
+    .to(schloss,{scale:1,opacity:1,duration:.6,ease:'back.out(2.2)'},1.05)
+    .to(buegel,{opacity:1,duration:.25},1.25)
+    .to(buegel,{y:0,duration:.3,ease:'power4.in'},1.6)
+    .add(puls,1.9)
+    .to(schloss,{scale:1.08,duration:.12,yoyo:true,repeat:1,ease:'power2.out'},1.9)
+    .to(punkte,{opacity:1,duration:.4,stagger:.06},1.4)
+    .to(linien,{opacity:1,duration:.4,stagger:.06},1.55)
+    .to(bogen,{opacity:1,duration:.6},1.9);
+
+  new IntersectionObserver(es=>{
+    sichtbar=es[0].isIntersecting;
+    if(sichtbar){auftritt.play();if(fertig){dreh.play();takt.play()}}
+    else{dreh.pause();takt.pause()}
+  },{threshold:.35}).observe(svg);
+})();
 
 /* Hero: ein abgestimmter Auftritt, danach geht die Miete von Garage 3 ein */
 if(window.gsap&&!ruhig){
