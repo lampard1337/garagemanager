@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Garagenmanager Werbevideo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap">
+<style>
+:root{
+  --orange:#FF5B14; --orange-hell:#FFE6DA; --orange-tief:#C9400A;
+  --ink:#14171C; --ink-2:#5C636E; --ink-3:#8B929C; --linie:#E4E6EA;
+  --grau:#F3F4F6; --weiss:#FFFFFF; --gruen:#15803D; --gruen-hell:#DCF5E5;
+  --font:"Geist",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;overflow:hidden}
+body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;font-feature-settings:"ss01"}
+svg{display:block}
+#stage{position:absolute;left:0;top:0;overflow:hidden;transform-origin:0 0;background:var(--weiss)}
+.ebene{position:absolute;inset:0}
+.abs{position:absolute;will-change:transform,opacity}
+
+/* Hintergruende */
+#bg-grau{background:var(--grau)}
+#bg-dunkel{background:var(--ink)}
+
+/* Typo */
+.gross{font-weight:750;letter-spacing:-.045em;line-height:1.02}
+.ln{display:block;overflow:hidden;padding:.04em 0 .1em;margin:-.04em 0 -.1em}
+.ln>span{display:inline-block;will-change:transform}
+.pille{display:inline-flex;align-items:center;gap:.5em;font-weight:600;letter-spacing:-.01em;background:var(--orange-hell);color:var(--orange-tief);padding:.35em .9em;border-radius:999px;margin-bottom:.7em}
+.pille i{width:.5em;height:.5em;border-radius:50%;background:var(--orange);display:block}
+
+/* Hook */
+.hook .zeile-h{position:relative;display:block;width:max-content}
+.hook .strich{position:absolute;left:-.05em;top:54%;height:.11em;background:var(--orange);border-radius:.06em;transform-origin:0 50%}
+
+/* Garagentor */
+#tor{background:var(--orange);overflow:hidden}
+#tor .lamellen{position:absolute;left:0;right:0;bottom:0;height:44%;background:repeating-linear-gradient(var(--orange) 0 52px,var(--orange-tief) 52px 56px);opacity:.38}
+#tor .griff{position:absolute;left:50%;bottom:5%;width:180px;height:22px;margin-left:-90px;border-radius:11px;background:var(--ink);opacity:.85}
+.marke{display:flex;align-items:center;gap:.45em;font-weight:700;letter-spacing:-.03em}
+.marke i{width:1.55em;height:1.55em;border-radius:.46em;background:var(--ink);display:grid;place-items:center}
+.marke i svg{width:62%;height:62%}
+.play{display:inline-flex;align-items:center;gap:.55em;background:var(--ink);color:var(--weiss);border-radius:.6em;padding:.45em 1.1em .45em .8em;line-height:1.1}
+.play svg{width:1.4em;height:1.4em}
+.play small{display:block;font-size:.5em;font-weight:500;opacity:.75}
+.play b{font-size:.82em;font-weight:600;letter-spacing:-.01em}
+
+/* Telefon */
+.telefon{--b:500px;position:absolute;width:var(--b);height:calc(var(--b)*19.4/9);background:#1B1E23;border-radius:calc(var(--b)*.15);padding:calc(var(--b)*.032);box-shadow:0 0 0 1.5px #3A3F47 inset,0 60px 120px -30px rgba(20,23,28,.45)}
+.telefon::before{content:"";position:absolute;top:calc(var(--b)*.055);left:50%;width:26%;height:calc(var(--b)*.07);margin-left:-13%;background:#000;border-radius:999px;z-index:3}
+.schirm{position:relative;width:100%;height:100%;border-radius:calc(var(--b)*.12);overflow:hidden;background:var(--grau)}
+.app{position:absolute;inset:0;padding:calc(var(--b)*.18) calc(var(--b)*.055) calc(var(--b)*.05);display:flex;flex-direction:column;gap:calc(var(--b)*.03);font-size:calc(var(--b)*.044)}
+.app .oben{display:flex;justify-content:space-between;align-items:baseline}
+.app .titel{font-size:1.9em;font-weight:700;letter-spacing:-.04em;line-height:1}
+.app .klein{color:var(--ink-3);font-size:.86em}
+.kachel{background:var(--weiss);border-radius:1em;padding:.9em 1em}
+.kachel .wert{display:block;font-size:2em;font-weight:700;letter-spacing:-.045em;line-height:1.1;font-variant-numeric:tabular-nums}
+.zeile{display:flex;justify-content:space-between;align-items:center;padding:.62em 0;border-bottom:1px solid #EEF0F2}
+.zeile:last-child{border-bottom:0}
+.zeile b{font-weight:600}
+.chip{font-size:.78em;font-weight:600;padding:.18em .65em;border-radius:1em;background:var(--gruen-hell);color:var(--gruen);display:inline-block}
+.chip.offen{background:var(--orange-hell);color:var(--orange-tief)}
+.balken{display:flex;align-items:flex-end;gap:5%;height:4.6em;margin-top:.7em}
+.balken span{flex:1;background:#E7E9EC;border-radius:.35em .35em .15em .15em;transform-origin:50% 100%}
+.balken span.an{background:var(--orange)}
+.verlauf{position:relative;padding-left:1.4em}
+.verlauf::before{content:"";position:absolute;left:.38em;top:.8em;bottom:.8em;width:2px;background:#E1E4E8}
+.verlauf .v{position:relative;padding:.55em 0}
+.verlauf .v::before{content:"";position:absolute;left:-1.25em;top:1em;width:.7em;height:.7em;border-radius:50%;background:#C9CED5}
+.verlauf .v.an::before{background:var(--orange);box-shadow:0 0 0 .28em var(--orange-hell)}
+.verlauf b{display:block;font-weight:600}
+.ziffern{font-size:2.4em;font-weight:700;letter-spacing:-.04em;text-align:center;padding:.3em 0 .15em;font-variant-numeric:tabular-nums}
+.ziffern.leer{color:#C9CED5}
+.tasten{display:grid;grid-template-columns:repeat(3,1fr);gap:.5em}
+.tasten span{background:var(--weiss);border-radius:.7em;text-align:center;padding:.5em 0;font-size:1.15em;font-weight:500}
+.tasten span.druck{background:var(--ink);color:var(--weiss)}
+.app-knopf{margin-top:.4em;background:var(--ink);color:var(--weiss);text-align:center;border-radius:.9em;padding:.85em;font-weight:600;white-space:nowrap}
+.datei{display:flex;align-items:center;gap:.8em}
+.datei i{flex:none;width:2.4em;height:2.9em;border-radius:.4em;background:var(--grau);display:grid;place-items:center;font-style:normal;font-size:.68em;font-weight:700;color:var(--orange-tief)}
+
+/* Hinweise */
+.hinweis{background:var(--weiss);border-radius:.7em;padding:.55em .8em .55em .55em;display:flex;align-items:center;gap:.55em;box-shadow:0 1px 2px rgba(20,23,28,.06),0 24px 50px -18px rgba(20,23,28,.35);line-height:1.3;white-space:nowrap}
+.hinweis b{display:block;font-weight:600}
+.hinweis span span{color:var(--ink-2);font-size:.92em}
+.hinweis .ico{flex:none;width:1.75em;height:1.75em;border-radius:.5em;display:grid;place-items:center;background:var(--gruen-hell);color:var(--gruen)}
+.hinweis .ico.o{background:var(--orange-hell);color:var(--orange-tief)}
+.hinweis .ico svg{width:55%;height:55%}
+
+/* Datenschutz */
+.versprechen{color:var(--weiss)}
+.versprechen .p{display:flex;align-items:center;gap:.32em}
+.versprechen .haken{flex:none;width:.78em;height:.78em;border-radius:50%;background:var(--orange);display:grid;place-items:center}
+.versprechen .haken svg{width:56%;height:56%}
+.versprechen .unter{color:#B4BAC3;font-weight:500;letter-spacing:-.01em;line-height:1.35}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="ebene" id="bg-grau"></div>
+  <div class="ebene" id="bg-dunkel"></div>
+
+  <!-- Szene 1: Hook -->
+  <div class="abs hook gross" id="hook">
+    <span class="zeile-h"><span class="ln"><span>Mieten auf Zetteln.</span></span><i class="strich"></i></span>
+    <span class="zeile-h"><span class="ln"><span>Strom in Excel.</span></span><i class="strich"></i></span>
+    <span class="zeile-h"><span class="ln"><span>Belege im Schuhkarton.</span></span><i class="strich"></i></span>
+  </div>
+
+  <!-- Bildunterschriften -->
+  <div class="abs cap" id="cap0" data-in="5.6" data-out="9.15"><div class="pille"><i></i>Übersicht</div><div class="gross"><span class="ln"><span>Offene Mieten</span></span><span class="ln"><span>sofort im Blick.</span></span></div></div>
+  <div class="abs cap" id="cap1" data-in="9.45" data-out="12.8"><div class="pille"><i></i>Stromabrechnung</div><div class="gross"><span class="ln"><span>Strom abrechnen.</span></span><span class="ln"><span>Direkt an der Garage.</span></span></div></div>
+  <div class="abs cap" id="cap2" data-in="13.05" data-out="15.95"><div class="pille"><i></i>Verträge</div><div class="gross"><span class="ln"><span>Mieterhöhung?</span></span><span class="ln"><span>Historie bleibt.</span></span></div></div>
+  <div class="abs cap" id="cap3" data-in="16.25" data-out="19.1"><div class="pille"><i></i>Steuer</div><div class="gross"><span class="ln"><span>DATEV-Export für</span></span><span class="ln"><span>den Steuerberater.</span></span></div></div>
+
+  <!-- Telefon -->
+  <div class="telefon" id="tel"><div class="schirm">
+    <div class="app" id="s0">
+      <div class="oben"><span class="titel">Übersicht</span><span class="klein">Okt. 2026</span></div>
+      <div class="kachel"><span class="klein">Eingegangen im Oktober</span><span class="wert" id="summe">0 €</span>
+        <div class="balken" id="balken"><span style="height:46%"></span><span style="height:58%"></span><span style="height:52%"></span><span style="height:64%"></span><span style="height:70%"></span><span class="an" style="height:84%"></span></div>
+      </div>
+      <div class="kachel">
+        <div class="zeile"><b>Garage 1</b><span class="chip">bezahlt</span></div>
+        <div class="zeile"><b>Garage 2</b><span class="chip">bezahlt</span></div>
+        <div class="zeile"><b>Garage 3</b><span class="chip offen" id="chip3">offen</span></div>
+        <div class="zeile"><b>Stellplatz 4</b><span class="chip">bezahlt</span></div>
+      </div>
+    </div>
+    <div class="app" id="s1">
+      <div class="oben"><span class="titel">Strom</span><span class="klein">Garage 3</span></div>
+      <div class="kachel"><span class="klein">Neuer Zählerstand in kWh</span><div class="ziffern leer" id="ziffern">4.812</div></div>
+      <div class="tasten" id="tasten"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>,</span><span>0</span><span>⌫</span></div>
+      <div class="app-knopf" id="stromknopf">Abrechnen</div>
+    </div>
+    <div class="app" id="s2">
+      <div class="oben"><span class="titel">Verträge</span><span class="klein">Garage 1</span></div>
+      <div class="kachel"><span class="klein">Mieter</span><span class="wert" style="font-size:1.5em">K. Brandt</span></div>
+      <div class="kachel verlauf">
+        <div class="v an" id="v0"><b>Vertrag 2026</b><span class="klein">65 € im Monat, aktiv</span></div>
+        <div class="v" id="v1"><b>Vertrag 2023</b><span class="klein">58 €, archiviert</span></div>
+        <div class="v" id="v2"><b>Vertrag 2020</b><span class="klein">52 €, archiviert</span></div>
+      </div>
+      <div class="kachel" id="pdf"><div class="datei"><i>PDF</i><span><b>Mietvertrag_2026.pdf</b><br><span class="klein">gescannt</span></span></div></div>
+    </div>
+    <div class="app" id="s3">
+      <div class="oben"><span class="titel">Export</span><span class="klein">2026</span></div>
+      <div class="kachel" id="ex0"><div class="datei"><i>CSV</i><span><b>EXTF_Buchungen_2026</b><br><span class="klein">DATEV-Format</span></span></div></div>
+      <div class="kachel" id="ex1"><div class="datei"><i>PDF</i><span><b>Jahresbericht 2026</b><br><span class="klein">Einnahmen, Ausgaben, Rendite</span></span></div></div>
+      <div class="app-knopf" id="exknopf">An Steuerberater senden</div>
+    </div>
+  </div></div>
+
+  <!-- Hinweise -->
+  <div class="abs hinweis" id="n0"><span class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span><b>Miete eingegangen</b><span>Garage 3, S. Okafor, 65 €</span></span></div>
+  <div class="abs hinweis" id="n1"><span class="ico o"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M11 2L4 11h5l-1 7 7-9h-5z"/></svg></span><span><b>Stromabrechnung fertig</b><span>295 kWh, 100,30 €</span></span></div>
+  <div class="abs hinweis" id="n2"><span class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span><b>Neuer Vertrag angelegt</b><span>Garage 1, 58 € auf 65 €</span></span></div>
+  <div class="abs hinweis" id="n3"><span class="ico o"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 2h7l4 4v12H5z"/><path d="M12 2v4h4M8 11h6M8 14h4"/></svg></span><span><b>DATEV-Export bereit</b><span>Buchungen 2026, EXTF</span></span></div>
+
+  <!-- Szene 7: Datenschutz -->
+  <div class="abs versprechen" id="vers">
+    <div class="gross p" id="p0"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>100 % offline.</span></span></div>
+    <div class="gross p" id="p1"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>Kein Konto.</span></span></div>
+    <div class="gross p" id="p2"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>Kein Abo.</span></span></div>
+    <div class="unter" id="p3">Deine Daten bleiben auf deinem Handy.</div>
+  </div>
+
+  <!-- Garagentor -->
+  <div class="ebene" id="tor">
+    <div class="lamellen"></div>
+    <div class="griff"></div>
+    <div class="abs" id="torA">
+      <div class="marke" id="markeA"><i><svg viewBox="0 0 18 18" fill="none" stroke="#FF5B14" stroke-width="2"><path d="M2 16V7l7-4 7 4v9"/><path d="M5 16V9.5h8V16M5 12h8M5 14.2h8" stroke-width="1.6"/></svg></i>Garagenmanager</div>
+      <div class="gross" id="titelA"><span class="ln"><span>Garagen vermieten.</span></span><span class="ln"><span>Ohne Papierkram.</span></span></div>
+    </div>
+    <div class="abs" id="torB">
+      <div class="marke" id="markeB"><i><svg viewBox="0 0 18 18" fill="none" stroke="#FF5B14" stroke-width="2"><path d="M2 16V7l7-4 7 4v9"/><path d="M5 16V9.5h8V16M5 12h8M5 14.2h8" stroke-width="1.6"/></svg></i>Garagenmanager</div>
+      <div class="gross" id="titelB"><span class="ln"><span>Schluss mit</span></span><span class="ln"><span>Zettelwirtschaft.</span></span></div>
+      <div id="playB"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 2.6v18.8c0 .4.4.6.7.4l10.6-9.4c.2-.2.2-.6 0-.8L4.7 2.2c-.3-.2-.7 0-.7.4zm12.6 7.6 2.9-2.6-11-6.3 8.1 8.9zm0 3.6-8.1 8.9 11-6.3-2.9-2.6zm4.2-3.8-2.9-1.7-3 2.7 3 2.7 2.9-1.7c.8-.5.8-1.5 0-2z"/></svg><span><small>Jetzt bei</small><b>Google Play</b></span></span></div>
+      <div id="infoB">Für Android · Einmal zahlen · Kein Abo</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- Format ----------
+const Q = new URLSearchParams(location.search);
+const FORMATE = {
+  '9x16':[1080,1920], '4x5':[1080,1350], '1x1':[1080,1080], '16x9':[1920,1080]
+};
+const F = FORMATE[Q.get('format')] ? Q.get('format') : '9x16';
+const [W,H] = FORMATE[F];
+const DAUER = 26;
+const $ = s => document.querySelector(s);
+const stage = $('#stage');
+stage.style.width = W+'px'; stage.style.height = H+'px';
+
+// Layout je Format (alle Werte in px, kurze Seite ist immer 1080)
+const L = {
+  '9x16': {hook:{x:80,fs:86}, cap:{x:80,y:250,fs:84,pill:30}, tel:{b:540,x:(W-540)/2,y:640},
+           n:{fs:28,innen:200,rechtsMax:W-140}, vers:{x:80,fs:110,unter:38}, torA:{x:80,y:430,fs:96,marke:46},
+           torB:{x:80,y:360,fs:104,marke:46,play:58,info:32}},
+  '4x5':  {hook:{x:80,fs:80}, cap:{x:80,y:90,fs:70,pill:26}, tel:{b:390,x:(W-390)/2,y:400},
+           n:{fs:23,innen:170,rechtsMax:W-60}, vers:{x:80,fs:100,unter:34}, torA:{x:80,y:250,fs:88,marke:40},
+           torB:{x:80,y:200,fs:96,marke:40,play:52,info:28}},
+  '1x1':  {hook:{x:80,fs:74}, cap:{x:80,y:76,fs:60,pill:24}, tel:{b:330,x:(W-330)/2,y:330},
+           n:{fs:21,innen:150,rechtsMax:W-50}, vers:{x:80,fs:92,unter:32}, torA:{x:80,y:200,fs:80,marke:38},
+           torB:{x:80,y:150,fs:88,marke:38,play:48,info:26}},
+  '16x9': {hook:{x:150,fs:104}, cap:{x:150,y:330,fs:92,pill:30}, tel:{b:410,x:1330,y:150},
+           n:{fs:24,innen:220,rechtsMax:W-80}, vers:{x:150,fs:112,unter:38}, torA:{x:150,y:290,fs:110,marke:46},
+           torB:{x:150,y:230,fs:116,marke:46,play:58,info:32}}
+}[F];
+
+// Layout anwenden
+const hook = $('#hook'); hook.style.left = L.hook.x+'px'; hook.style.fontSize = L.hook.fs+'px';
+document.querySelectorAll('.cap').forEach(c=>{
+  c.style.left=L.cap.x+'px'; c.style.top=L.cap.y+'px';
+  c.querySelector('.gross').style.fontSize=L.cap.fs+'px';
+  c.querySelector('.pille').style.fontSize=L.cap.pill+'px';
+});
+const tel = $('#tel'); tel.style.setProperty('--b', L.tel.b+'px');
+tel.style.left = L.tel.x+'px'; tel.style.top = L.tel.y+'px';
+const TELH = L.tel.b*19.4/9;
+document.querySelectorAll('.hinweis').forEach(n=>n.style.fontSize=L.n.fs+'px');
+const vers = $('#vers'); vers.style.left=L.vers.x+'px'; vers.style.fontSize=L.vers.fs+'px';
+$('#p3').style.fontSize = L.vers.unter+'px'; $('#p3').style.marginTop = '.9em';
+const torA=$('#torA'); torA.style.left=L.torA.x+'px'; torA.style.top=L.torA.y+'px';
+$('#titelA').style.fontSize=L.torA.fs+'px'; $('#markeA').style.fontSize=L.torA.marke+'px'; $('#markeA').style.marginBottom='.9em';
+const torB=$('#torB'); torB.style.left=L.torB.x+'px'; torB.style.top=L.torB.y+'px';
+$('#titelB').style.fontSize=L.torB.fs+'px'; $('#markeB').style.fontSize=L.torB.marke+'px'; $('#markeB').style.marginBottom='.9em';
+$('#playB').style.fontSize=L.torB.play+'px'; $('#playB').style.marginTop='.8em';
+$('#infoB').style.cssText=`font-size:${L.torB.info}px;margin-top:1.1em;font-weight:500;color:var(--ink)`;
+if(F==='16x9'){ $('#tor .lamellen').style.height='40%'; }
+
+// vertikal zentrieren, wo sinnvoll
+function mitte(el, oben=0, unten=0){ el.style.top = Math.round(oben + (H-oben-unten-el.offsetHeight)/2)+'px'; }
+
+// Hinweise neben dem Telefon platzieren (abwechselnd links/rechts)
+const NPOS = [['l',.24],['r',.40],['l',.66],['r',.42]];
+function hinweisPos(i){
+  const n = $('#n'+i), w = n.offsetWidth;
+  const [seite, fy] = NPOS[i];
+  let x = seite==='l' ? L.tel.x - (w - L.n.innen) : L.tel.x + L.tel.b - L.n.innen;
+  if(F==='16x9') x = L.tel.x - w + L.n.innen*(seite==='l'?1:.35);
+  x = Math.max(F==='16x9'?1110:40, Math.min(x, L.n.rechtsMax - w));
+  n.style.left = Math.round(x)+'px';
+  n.style.top = Math.round(L.tel.y + TELH*fy)+'px';
+}
+
+// ---------- Hilfen ----------
+const cl = x => x<0?0:x>1?1:x;
+const p = (t,a,b) => cl((t-a)/(b-a));
+const eo = x => 1-Math.pow(1-x,4);
+const eio = x => x<.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2;
+const back = x => { const c1=1.6,c3=c1+1; return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2); };
+const de = n => n.toLocaleString('de-DE');
+function sicht(el, an){ el.style.visibility = an ? '' : 'hidden'; }
+
+// Zeilen einblenden (Maske) und ausblenden
+function zeilen(el, tIn, tOut, t, stagger=.09, dur=.7){
+  const spans = el.querySelectorAll('.ln>span');
+  spans.forEach((s,i)=>{
+    const a = eo(p(t, tIn+i*stagger, tIn+i*stagger+dur));
+    const b = tOut==null ? 0 : eio(p(t, tOut+i*.05, tOut+i*.05+.45));
+    s.style.transform = `translateY(${((1-a) - b)*115}%)`;
+  });
+}
+function pop(el, t0, t, out=null){
+  const a = back(p(t,t0,t0+.55)), o = out==null?0:eio(p(t,out,out+.35));
+  el.style.opacity = cl(p(t,t0,t0+.2)) * (1-o);
+  el.style.transform = `translateY(${(1-a)*30 - o*20}px) scale(${.85+.15*a})`;
+}
+
+// ---------- Zeitachse ----------
+function render(t){
+  // Hintergruende
+  sicht($('#bg-grau'), t>=3.2);
+  $('#bg-dunkel').style.opacity = eio(p(t,19.3,19.8));
+
+  // Szene 1: Hook
+  sicht(hook, t<3.4);
+  if(t<3.4){
+    zeilen(hook, .15, null, t, .45, .6);
+    hook.querySelectorAll('.zeile-h').forEach((z,i)=>{
+      const s = eo(p(t, .75+i*.45, 1.15+i*.45));
+      z.querySelector('.strich').style.width = `calc(${s*100}% + .1em)`;
+      z.style.color = s>0.5 ? 'var(--ink-3)' : 'var(--ink)';
+      z.querySelector('.strich').style.opacity = s>0?1:0;
+    });
+  }
+
+  // Garagentor
+  let ty;
+  if(t<4) ty = -(1-eio(p(t,2.55,3.2)))*H;
+  else if(t<15) ty = -eio(p(t,5.0,5.85))*H;
+  else ty = -(1-eio(p(t,22.0,22.65)))*H;
+  const torAn = ty > -H+1;
+  sicht($('#tor'), torAn);
+  $('#tor').style.transform = `translateY(${ty}px)`;
+  sicht(torA, t<10); sicht(torB, t>15);
+  if(t<10){
+    const m = eo(p(t,3.25,3.8));
+    $('#markeA').style.opacity = m; $('#markeA').style.transform=`translateY(${(1-m)*24}px)`;
+    zeilen($('#titelA'), 3.4, null, t, .12, .7);
+  } else {
+    const m = eo(p(t,22.65,23.2));
+    $('#markeB').style.opacity = m; $('#markeB').style.transform=`translateY(${(1-m)*24}px)`;
+    zeilen($('#titelB'), 22.8, null, t, .12, .7);
+    pop($('#playB'), 23.4, t);
+    const i = eo(p(t,23.8,24.4)); $('#infoB').style.opacity=i; $('#infoB').style.transform=`translateY(${(1-i)*16}px)`;
+    // dezentes "Atmen" des Knopfes am Ende
+    if(t>24.6){ const s = 1+.03*Math.sin((t-24.6)*4.2); $('#playB').style.transform=`scale(${s})`; $('#playB').style.transformOrigin='0 50%'; }
+  }
+
+  // Bildunterschriften
+  document.querySelectorAll('.cap').forEach(c=>{
+    const a=+c.dataset.in, b=+c.dataset.out;
+    const an = t>a-.05 && t<b+.8;
+    sicht(c, an); if(!an) return;
+    zeilen(c, a+.08, b, t);
+    const pl = c.querySelector('.pille');
+    const pi = eo(p(t,a,a+.5)), po = eio(p(t,b,b+.4));
+    pl.style.opacity = pi*(1-po); pl.style.transform=`translateY(${(1-pi)*14 - po*14}px)`;
+  });
+
+  // Telefon
+  const telAn = t>5.0 && t<20.2;
+  sicht(tel, telAn);
+  if(telAn){
+    const ein = eo(p(t,5.25,6.4)), aus = eio(p(t,19.15,19.95));
+    const schweb = Math.sin(t*1.3)*6;
+    tel.style.transform = `translateY(${(1-ein)*(H*.55) + aus*(H*.9) + schweb}px) rotate(${(1-ein)*7 - aus*4}deg)`;
+  }
+  const S=[0,9.45,13.05,16.25,99];
+  for(let i=0;i<4;i++){
+    const el=$('#s'+i);
+    const a = i===0?1:eo(p(t,S[i]-.15,S[i]+.35));
+    const b = i===3?0:eio(p(t,S[i+1]-.2,S[i+1]+.15));
+    el.style.opacity = a*(1-b);
+    el.style.transform = `translateY(${(1-a)*24 - b*16}px)`;
+    sicht(el, a*(1-b)>0.001);
+  }
+
+  // Szene 3: Übersicht
+  if(t<10){
+    const z = eo(p(t,6.0,7.1));
+    const bez = t>=7.8;
+    $('#summe').textContent = de(bez ? 1015 : Math.round(950*z)) + ' €';
+    const sp = eo(p(t,7.8,8.2));
+    $('#summe').style.transform = `scale(${1+ .08*Math.sin(sp*Math.PI)})`;
+    $('#summe').style.transformOrigin='0 60%';
+    $('#summe').style.color = bez && sp<1 ? 'var(--orange-tief)' : 'var(--ink)';
+    $('#balken').querySelectorAll('span').forEach((s,i)=>{
+      let h = eo(p(t,6.0+i*.08,6.9+i*.08));
+      if(i===5) h = h*(.9 + .1*eo(p(t,7.8,8.3)));
+      s.style.transform = `scaleY(${h})`;
+    });
+    const c=$('#chip3');
+    c.textContent = bez?'bezahlt':'offen'; c.classList.toggle('offen',!bez);
+    const cp = back(p(t,7.8,8.3)); c.style.transform = bez?`scale(${.6+.4*cp})`:'none';
+  }
+
+  // Szene 4: Strom
+  if(t>9 && t<14){
+    const ZT=[10.0,10.3,10.6,10.9], ZW=['5','51','510','5.107'], TASTE=[4,0,10,6];
+    let k=-1; ZT.forEach((zt,i)=>{ if(t>=zt) k=i; });
+    const zf=$('#ziffern');
+    zf.textContent = k<0 ? '4.812' : ZW[k]; zf.classList.toggle('leer', k<0);
+    $('#tasten').querySelectorAll('span').forEach((s,i)=>{
+      const an = ZT.some((zt,j)=>TASTE[j]===i && t>=zt-.02 && t<zt+.2);
+      s.classList.toggle('druck', an);
+    });
+    const kn=$('#stromknopf');
+    const dr = t>11.25 && t<11.45;
+    kn.style.transform = dr?'scale(.95)':'none';
+    kn.textContent = t>=11.45 ? '295 kWh = 100,30 €' : 'Abrechnen';
+    kn.style.background = t>=11.45 ? 'var(--orange)' : 'var(--ink)';
+    kn.style.color = t>=11.45 ? 'var(--ink)' : 'var(--weiss)';
+  }
+
+  // Szene 5: Verträge
+  if(t>12.5 && t<17){
+    [['#v2',13.45],['#v1',13.7],['#v0',13.95],['#pdf',14.45]].forEach(([s,a])=>pop($(s),a,t));
+  }
+
+  // Szene 6: Export
+  if(t>15.8 && t<20){
+    pop($('#ex0'),16.65,t); pop($('#ex1'),16.9,t);
+    const kn=$('#exknopf');
+    kn.style.transform = (t>17.45&&t<17.65)?'scale(.95)':'none';
+    kn.textContent = t>=17.65 ? 'Gesendet ✓' : 'An Steuerberater senden';
+    kn.style.background = t>=17.65 ? 'var(--gruen)' : 'var(--ink)';
+  }
+
+  // Hinweise
+  [[7.65,9.1],[11.65,12.75],[14.75,15.9],[17.8,19.05]].forEach(([a,b],i)=>{
+    const n=$('#n'+i); const an = t>a && t<b+.4;
+    sicht(n, an); if(an) pop(n,a,t,b);
+  });
+
+  // Szene 7: Datenschutz
+  const vAn = t>19.4 && t<23;
+  sicht(vers, vAn);
+  if(vAn){
+    ['#p0','#p1','#p2'].forEach((s,i)=>{
+      const a = 19.75+i*.42;
+      zeilen($(s), a, null, t, 0, .65);
+      const h = back(p(t,a+.1,a+.55)); $(s+' .haken').style.transform=`scale(${h})`;
+    });
+    const u = eo(p(t,21.2,21.8)); $('#p3').style.opacity=u; $('#p3').style.transform=`translateY(${(1-u)*16}px)`;
+  }
+}
+
+// Positionen, die gemessene Größen brauchen
+function messen(){
+  for(let i=0;i<4;i++){ sicht($('#n'+i),true); hinweisPos(i); }
+  if(F==='16x9' || F==='9x16') mitte(hook); else mitte(hook);
+  mitte(vers);
+  if(F==='16x9'){ document.querySelectorAll('.cap').forEach(c=>{ c.style.maxWidth='980px'; mitte(c); }); }
+  mitte(torA, 0, F==='16x9'?120:H*.18);
+  mitte(torB, 0, F==='16x9'?120:H*.14);
+}
+
+// Kurzfassung (?schnitt=15): Abschnitte der Langfassung [von, bis, Tempo]
+// Hook schneller, dann Übersicht, Strom, Datenschutz, Schlussbild. Verträge und Export fallen weg.
+const SCHNITTE = { '15': [[0,5.2,1.5],[5.2,8.9,1],[9.3,12.6,1],[19.85,21.9,1],[21.9,24.4,1]] };
+const SCHNITT = SCHNITTE[Q.get('schnitt')];
+const renderLang = render; // window.render überschreibt die globale Funktion, daher sichern
+let renderAus = renderLang, dauerAus = DAUER;
+if(SCHNITT){
+  dauerAus = SCHNITT.reduce((s,[a,b,v])=>s+(b-a)/v, 0);
+  renderAus = t => {
+    for(const [a,b,v] of SCHNITT){ const d=(b-a)/v; if(t<d) return renderLang(a+t*v); t-=d; }
+    const [,b] = SCHNITT[SCHNITT.length-1]; return renderLang(b);
+  };
+}
+window.DAUER = dauerAus; window.W=W; window.H=H;
+window.render = renderAus;
+window.bereit = document.fonts.ready.then(()=>{ messen(); renderLang(0); return true; });
+
+// Vorschau im Browser: skalieren und abspielen
+if(!Q.has('render')){
+  const fit=()=>{ const s=Math.min(innerWidth/W, innerHeight/H); stage.style.transform=`scale(${s})`; };
+  addEventListener('resize',fit); fit();
+  window.bereit.then(()=>{
+    if(Q.has('t')) return renderAus(+Q.get('t'));
+    const t0=performance.now();
+    const loop=()=>{ renderAus(((performance.now()-t0)/1000)%dauerAus); requestAnimationFrame(loop); };
+    loop();
+  });
+}
+</script>
+</body>
+</html>
