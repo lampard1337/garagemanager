@@ -1,0 +1,4 @@
+node_modules/
+out/still-*
+out/ton/
+out/*.tmp.mp4

@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Garagenmanager Werbevideo (echte App)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+<style>
+:root{
+  --orange:#FF5B14; --orange-hell:#FFE6DA; --orange-tief:#C9400A;
+  --ink:#14171C; --ink-2:#5C636E; --ink-3:#8B929C; --linie:#E4E6EA;
+  --grau:#F3F4F6; --weiss:#FFFFFF; --gruen:#15803D; --gruen-hell:#DCF5E5;
+  --font:"Geist",system-ui,sans-serif;
+  /* Farben der echten App */
+  --a-bg:#F2F8F7; --a-text:#191C1C; --a-text-2:#3F4948; --a-text-3:#6F7978;
+  --a-petrol:#1F6B66; --a-petrol-grau:#4A6360; --a-cyan:#80F2EE; --a-cyan-hell:#D3FAF8;
+  --a-blau:#D6E3FF; --a-rot:#C62828; --a-rot-hell:#FCE4E2; --a-gruen:#43A047; --a-linie:#DCE4E3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#000;overflow:hidden}
+body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;font-feature-settings:"ss01"}
+svg{display:block}
+#stage{position:absolute;left:0;top:0;overflow:hidden;transform-origin:0 0;background:var(--weiss)}
+.ebene{position:absolute;inset:0}
+.abs{position:absolute;will-change:transform,opacity}
+#bg-grau{background:var(--grau)}
+#bg-dunkel{background:var(--ink)}
+
+.gross{font-weight:750;letter-spacing:-.045em;line-height:1.02}
+.ln{display:block;overflow:hidden;padding:.04em 0 .1em;margin:-.04em 0 -.1em}
+.ln>span{display:inline-block;will-change:transform}
+.pille{display:inline-flex;align-items:center;gap:.5em;font-weight:600;letter-spacing:-.01em;background:var(--orange-hell);color:var(--orange-tief);padding:.35em .9em;border-radius:999px;margin-bottom:.7em}
+.pille i{width:.5em;height:.5em;border-radius:50%;background:var(--orange);display:block}
+
+.hook .zeile-h{position:relative;display:block;width:max-content}
+.hook .strich{position:absolute;left:-.05em;top:54%;height:.11em;background:var(--orange);border-radius:.06em;transform-origin:0 50%}
+
+#tor{background:var(--orange);overflow:hidden}
+#tor .lamellen{position:absolute;left:0;right:0;bottom:0;height:44%;background:repeating-linear-gradient(var(--orange) 0 52px,var(--orange-tief) 52px 56px);opacity:.38}
+#tor .griff{position:absolute;left:50%;bottom:5%;width:180px;height:22px;margin-left:-90px;border-radius:11px;background:var(--ink);opacity:.85}
+.marke{display:flex;align-items:center;gap:.45em;font-weight:700;letter-spacing:-.03em}
+.marke i{width:1.55em;height:1.55em;border-radius:.46em;background:var(--ink);display:grid;place-items:center}
+.marke i svg{width:62%;height:62%}
+.play{display:inline-flex;align-items:center;gap:.55em;background:var(--ink);color:var(--weiss);border-radius:.6em;padding:.45em 1.1em .45em .8em;line-height:1.1}
+.play svg{width:1.4em;height:1.4em}
+.play small{display:block;font-size:.5em;font-weight:500;opacity:.75}
+.play b{font-size:.82em;font-weight:600;letter-spacing:-.01em}
+
+/* Telefon */
+.telefon{--b:500px;position:absolute;width:var(--b);height:calc(var(--b)*19.4/9);background:#1B1E23;border-radius:calc(var(--b)*.15);padding:calc(var(--b)*.032);box-shadow:0 0 0 1.5px #3A3F47 inset,0 60px 120px -30px rgba(20,23,28,.45)}
+.telefon::before{content:"";position:absolute;top:calc(var(--b)*.055);left:50%;width:26%;height:calc(var(--b)*.07);margin-left:-13%;background:#000;border-radius:999px;z-index:3}
+.schirm{position:relative;width:100%;height:100%;border-radius:calc(var(--b)*.12);overflow:hidden;background:var(--a-bg)}
+
+/* ---------- Echte App (in 400 px Breite gebaut, per scale eingepasst) ---------- */
+.ui{position:absolute;left:0;top:0;width:360px;transform-origin:0 0;font-family:Roboto,system-ui,sans-serif;color:var(--a-text);-webkit-font-smoothing:antialiased}
+.ansicht{position:absolute;inset:0;background:var(--a-bg)}
+.status{height:44px;display:flex;justify-content:space-between;align-items:center;padding:6px 30px 0 34px;font-size:14px;font-weight:500}
+.status .rechts{display:flex;gap:5px;align-items:center}
+.status .akku{width:22px;height:11px;border:1.5px solid var(--a-text);border-radius:3px;padding:1px}
+.status .akku i{display:block;height:100%;width:75%;background:var(--a-text);border-radius:1px}
+.leiste{height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.leiste svg{width:24px;height:24px;fill:var(--a-text)}
+.leiste .titel{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:500}
+.inhalt{padding:6px 18px 0;display:flex;flex-direction:column;gap:16px}
+.karte{background:#fff;border-radius:16px;padding:20px 20px 18px;box-shadow:0 1px 3px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.03)}
+.karte h2{font-size:21px;font-weight:700;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.karte h2 svg{width:22px;height:22px;fill:#424848}
+.karte h2 .neu{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:500;color:var(--a-petrol)}
+.karte h2 .neu svg{fill:var(--a-petrol);width:20px;height:20px}
+.zr{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:var(--a-text-2);margin-bottom:12px}
+.zr .wahl{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--a-text)}
+.rund{width:32px;height:32px;border-radius:50%;border:1.5px solid #6F7978;display:grid;place-items:center}
+.rund svg{width:20px;height:20px;fill:var(--a-text)}
+.pill-dd{display:inline-flex;align-items:center;gap:2px;border:1.5px solid #6F7978;border-radius:16px;padding:3px 6px 3px 12px;font-size:14px;font-weight:500;color:var(--a-text)}
+.pill-dd svg{width:20px;height:20px;fill:var(--a-text)}
+.wz{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;color:var(--a-text-2);padding:5px 0}
+.wz b{color:var(--a-text);font-weight:700;font-variant-numeric:tabular-nums}
+.wz b.gruen{color:#1E8E3E}
+.trenn{height:1px;background:var(--a-linie);margin:7px 0}
+.balk{height:9px;border-radius:5px;background:#E3EEED;overflow:hidden;margin:8px 0 6px}
+.balk i{display:block;height:100%;background:var(--a-petrol);border-radius:5px;width:0}
+.klein{font-size:12.5px;color:var(--a-text-2)}
+/* Einnahmen */
+.donut-reihe{display:flex;align-items:center;gap:16px;margin:6px 0 10px}
+.donut{position:relative;width:122px;height:122px;flex:none}
+.donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.donut .mitte{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.donut .mitte small{font-size:10px;letter-spacing:.06em;color:var(--a-text-2);font-weight:500}
+.donut .mitte b{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+.legende{display:grid;gap:10px;font-size:12.5px;white-space:nowrap;color:var(--a-text-2);flex:1}
+.legende div{display:flex;align-items:center;gap:8px}
+.legende i{width:11px;height:11px;border-radius:2px;flex:none}
+.legende b{margin-left:auto;color:var(--a-text);font-variant-numeric:tabular-nums}
+.liste-kopf{font-size:15px;font-weight:700;padding:12px 0 4px;border-top:1px solid var(--a-linie)}
+.ez{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #EEF3F2;font-size:14px}
+.ez:last-child{border-bottom:0}
+.ez span small{display:block;font-size:12px;color:var(--a-text-3)}
+.ez .rechts{display:flex;align-items:center;gap:8px;font-weight:600;font-variant-numeric:tabular-nums}
+.chip{font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:#DDF3E1;color:#1E7B34;display:inline-block}
+.chip.offen{background:var(--a-rot-hell);color:var(--a-rot)}
+/* Mieter */
+.tab-kopf{display:grid;grid-template-columns:40px 1fr 1.1fr;font-size:12px;font-weight:700;letter-spacing:.05em;color:var(--a-text-2);padding:6px 0 8px;border-bottom:1.5px solid var(--a-linie)}
+.mz{display:grid;grid-template-columns:40px 1fr 1.1fr;align-items:center;padding:10px 0;border-bottom:1px solid #EEF3F2;font-size:14.5px}
+.mz svg{width:22px;height:22px;fill:#2B3131}
+.mz b{font-weight:700}
+.mz span{color:var(--a-text-2);font-size:13px}
+.vz{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;margin:0 -12px;border-radius:10px;font-size:14px}
+.vz b{display:block;font-weight:700}
+.vz small{color:var(--a-text-3);font-size:12.5px}
+.vz .betrag{font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+/* Dialog */
+.dialog-bg{position:absolute;inset:0;background:#2F3333}
+.blatt{position:absolute;left:10px;right:10px;top:48px;bottom:0;background:var(--a-bg);border-radius:18px 18px 0 0;padding:26px 20px}
+.blatt h3{font-size:24px;font-weight:400;display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.blatt h3 svg{width:24px;height:24px;fill:#2B3131}
+.feld{position:relative;border:1.3px solid #6F7978;border-radius:5px;height:54px;display:flex;align-items:center;padding:0 16px;font-size:16.5px;margin-bottom:12px;background:transparent}
+.feld.aktiv{border:2px solid var(--a-petrol)}
+.feld label{position:absolute;left:12px;top:-8px;padding:0 4px;background:var(--a-bg);font-size:11.5px;letter-spacing:.06em;color:var(--a-text-2);text-transform:uppercase}
+.feld.aktiv label{color:var(--a-petrol)}
+.feld.leer label{top:50%;transform:translateY(-50%);font-size:16px;background:none;left:12px}
+.feld .dd{margin-left:auto;width:24px;height:24px;fill:#424848}
+.feld .wert{white-space:nowrap}
+.feld .cursor{display:inline-block;width:1.5px;height:20px;background:var(--a-petrol);margin-left:1px;vertical-align:-3px}
+.dok-kopf{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:500;letter-spacing:.05em;margin:18px 0 10px;text-transform:uppercase;color:var(--a-text-2)}
+.dok-kopf span{color:var(--a-petrol);text-transform:none;letter-spacing:0;font-size:13.5px;font-weight:500}
+.dok{display:flex;align-items:center;gap:10px;background:#fff;border-radius:10px;padding:9px 12px;font-size:14px;box-shadow:0 0 0 1px var(--a-linie)}
+.dok i{width:28px;height:34px;border-radius:4px;background:var(--a-rot-hell);color:var(--a-rot);font-style:normal;font-size:9.5px;font-weight:700;display:grid;place-items:center}
+.knoepfe{display:flex;justify-content:flex-end;align-items:center;gap:24px;margin-top:22px;font-size:15px;font-weight:500}
+.speichern{background:#D8E0DF;color:#fff;border-radius:22px;padding:13px 30px}
+.speichern.an{background:var(--a-petrol)}
+/* Berichte */
+.ber-label{font-size:15.5px;color:var(--a-text-2);margin:4px 0 10px}
+.monat-wahl{display:flex;justify-content:center;align-items:center;gap:16px;font-size:16px;font-weight:700;margin-bottom:12px}
+.ak{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--a-petrol-grau);color:#fff;border-radius:24px;height:46px;font-size:16px;font-weight:500}
+.ak svg{width:22px;height:22px;fill:#fff}
+.ak.petrol{background:var(--a-petrol)}
+.hinw{background:var(--a-blau);border-radius:12px;padding:14px 16px;margin-top:16px}
+.hinw b{display:flex;align-items:center;gap:8px;font-size:15px;margin-bottom:6px}
+.hinw b svg{width:18px;height:18px;fill:#2B3131}
+.hinw p{font-size:13px;font-style:italic;line-height:1.38;color:#2B3131;margin-bottom:12px}
+
+/* Hinweise */
+.hinweis{background:var(--weiss);border-radius:.7em;padding:.55em .8em .55em .55em;display:flex;align-items:center;gap:.55em;box-shadow:0 1px 2px rgba(20,23,28,.06),0 24px 50px -18px rgba(20,23,28,.35);line-height:1.3;white-space:nowrap}
+.hinweis b{display:block;font-weight:600}
+.hinweis span span{color:var(--ink-2);font-size:.92em}
+.hinweis .ico{flex:none;width:1.75em;height:1.75em;border-radius:.5em;display:grid;place-items:center;background:var(--gruen-hell);color:var(--gruen)}
+.hinweis .ico.o{background:var(--orange-hell);color:var(--orange-tief)}
+.hinweis .ico svg{width:55%;height:55%}
+
+.versprechen{color:var(--weiss)}
+.versprechen .p{display:flex;align-items:center;gap:.32em}
+.versprechen .haken{flex:none;width:.78em;height:.78em;border-radius:50%;background:var(--orange);display:grid;place-items:center}
+.versprechen .haken svg{width:56%;height:56%}
+.versprechen .unter{color:#B4BAC3;font-weight:500;letter-spacing:-.01em;line-height:1.35}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></symbol>
+  <symbol id="i-dash" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></symbol>
+  <symbol id="i-geld" viewBox="0 0 24 24"><path d="M19 14V6c0-1.1-.9-2-2-2H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-9-1c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-6v11c0 1.1-.9 2-2 2H4v-2h17V7h2z"/></symbol>
+  <symbol id="i-leute" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></symbol>
+  <symbol id="i-stift" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></symbol>
+  <symbol id="i-werkzeug" viewBox="0 0 24 24"><path d="M13.78 15.17l2.05-2.05 6.06 6.06-2.05 2.05zM17.5 10c1.93 0 3.5-1.57 3.5-3.5 0-.58-.16-1.12-.41-1.6l-2.7 2.7-1.49-1.49 2.7-2.7c-.48-.25-1.02-.41-1.6-.41C15.57 3 14 4.57 14 6.5c0 .41.08.8.21 1.16l-1.85 1.85-1.78-1.78.71-.71-1.41-1.41L12 3.49a3 3 0 0 0-4.24 0L4.22 7.03l1.41 1.41H2.81l-.71.71 3.54 3.54.71-.71V9.15l1.41 1.41.71-.71 1.78 1.78-7.41 7.41 2.12 2.12L16.34 9.79c.36.13.75.21 1.16.21z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></symbol>
+  <symbol id="i-li" viewBox="0 0 24 24"><path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></symbol>
+  <symbol id="i-re" viewBox="0 0 24 24"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></symbol>
+  <symbol id="i-dd" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></symbol>
+  <symbol id="i-pdf" viewBox="0 0 24 24"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></symbol>
+  <symbol id="i-recht" viewBox="0 0 24 24"><path d="M1 21h12v2H1zM5.24 8.07l2.83-2.83 14.14 14.14-2.83 2.83zM12.32 1l5.66 5.66-2.83 2.83-5.66-5.66zM3.83 9.48l5.66 5.66-2.83 2.83L1 12.31z"/></symbol>
+</svg>
+
+<div id="stage">
+  <div class="ebene" id="bg-grau"></div>
+  <div class="ebene" id="bg-dunkel"></div>
+
+  <div class="abs hook gross" id="hook">
+    <span class="zeile-h"><span class="ln"><span>Mieten auf Zetteln.</span></span><i class="strich"></i></span>
+    <span class="zeile-h"><span class="ln"><span>Ausgaben in Excel.</span></span><i class="strich"></i></span>
+    <span class="zeile-h"><span class="ln"><span>Belege im Schuhkarton.</span></span><i class="strich"></i></span>
+  </div>
+
+  <div class="abs cap" id="cap0"><div class="pille"><i></i>Überblick</div><div class="gross"><span class="ln"><span>Deine Garagen.</span></span><span class="ln"><span>Auf einen Blick.</span></span></div></div>
+  <div class="abs cap" id="cap1"><div class="pille"><i></i>Einnahmen</div><div class="gross"><span class="ln"><span>Wer hat gezahlt?</span></span><span class="ln"><span>Siehst du sofort.</span></span></div></div>
+  <div class="abs cap" id="cap2"><div class="pille"><i></i>Mieter &amp; Verträge</div><div class="gross"><span class="ln"><span>Mieter und Verträge.</span></span><span class="ln"><span>An einem Ort.</span></span></div></div>
+  <div class="abs cap" id="cap3"><div class="pille"><i></i>Ausgaben</div><div class="gross"><span class="ln"><span>Ausgaben erfasst.</span></span><span class="ln"><span>In Sekunden.</span></span></div></div>
+  <div class="abs cap" id="cap4"><div class="pille"><i></i>Berichte</div><div class="gross"><span class="ln"><span>DATEV-Export für</span></span><span class="ln"><span>den Steuerberater.</span></span></div></div>
+
+  <!-- Telefon mit nachgebauter echter App -->
+  <div class="telefon" id="tel"><div class="schirm"><div class="ui" id="ui">
+
+    <!-- A: Überblick -->
+    <div class="ansicht" id="s0">
+      <div class="status"><span>9:41</span><span class="rechts"><span class="akku"><i></i></span></span></div>
+      <div class="leiste"><svg><use href="#i-menu"/></svg><span class="titel"><svg><use href="#i-dash"/></svg>Überblick</span><svg><use href="#i-stift"/></svg></div>
+      <div class="inhalt">
+        <div class="karte">
+          <h2>Monatsübersicht<svg><use href="#i-info"/></svg></h2>
+          <div class="zr">Zeitraum:<span class="wahl"><span class="rund"><svg><use href="#i-li"/></svg></span>September 2026<span class="rund"><svg><use href="#i-re"/></svg></span></span></div>
+          <div class="zr">Immobilie:<span class="pill-dd" style="margin-right:auto;margin-left:8px">alle<svg><use href="#i-dd"/></svg></span></div>
+          <div class="wz">Miete<b data-z="780">0,00 €</b></div>
+          <div class="wz">Sonstige Einnahmen<b data-z="40">0,00 €</b></div>
+          <div class="wz">Ausgaben<b data-z="152.4">0,00 €</b></div>
+          <div class="trenn"></div>
+          <div class="wz">Nettogewinn<b data-z="667.6">0,00 €</b></div>
+          <div class="wz">Jahresnettorendite (monatsbasiert)<b class="gruen" data-z="6.8" data-pz="1">0,00 %</b></div>
+          <div class="wz">Ø monatl. Nettogewinn<b data-z="641.2">0,00 €</b></div>
+          <div style="height:10px"></div>
+          <div class="wz">Offene Mietzahlungen<b data-z="65">0,00 €</b></div>
+          <div class="wz">Vermietete Einheiten<b id="einheiten">0 von 12 (0,0 %)</b></div>
+        </div>
+        <div class="karte">
+          <h2>Amortisationsfortschritt<svg><use href="#i-info"/></svg></h2>
+          <div class="wz" style="font-size:13.5px;font-weight:700;color:var(--a-text)">Gesamt<span class="klein" style="font-weight:400">Amortisiert</span></div>
+          <div class="balk"><i id="amort"></i></div>
+          <div class="wz" style="padding:0">Amortisiert: <span id="amort-eur" style="margin-right:auto;margin-left:4px">0,00 €</span><b id="amort-pz">0,0 %</b></div>
+          <div class="klein">Gesamtinvestition: 64.800,00 €</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B: Einnahmen -->
+    <div class="ansicht" id="s1">
+      <div class="status"><span>9:41</span><span class="rechts"><span class="akku"><i></i></span></span></div>
+      <div class="leiste"><svg><use href="#i-menu"/></svg><span class="titel"><svg><use href="#i-geld"/></svg>Einnahmen</span><svg><use href="#i-werkzeug"/></svg></div>
+      <div class="inhalt">
+        <div class="karte">
+          <h2>Einnahmen je Monat<span class="neu"><svg><use href="#i-plus"/></svg></span></h2>
+          <div class="zr">Zeitraum:<span class="wahl"><span class="rund"><svg><use href="#i-li"/></svg></span>September 2026<span class="rund"><svg><use href="#i-re"/></svg></span></span></div>
+          <div class="donut-reihe">
+            <div class="donut">
+              <svg viewBox="0 0 160 160"><circle cx="80" cy="80" r="64" fill="none" stroke="#E6ECEB" stroke-width="22"/>
+                <circle id="d-rot" cx="80" cy="80" r="64" fill="none" stroke="#C62828" stroke-width="22"/>
+                <circle id="d-gruen" cx="80" cy="80" r="64" fill="none" stroke="#43A047" stroke-width="22"/></svg>
+              <div class="mitte"><small>ERWARTET</small><b>780,00 €</b></div>
+            </div>
+            <div class="legende">
+              <div><i style="background:#43A047"></i>Eingegangen<b id="l-ein">0,00 €</b></div>
+              <div><i style="background:#C62828"></i>Ausstehend<b id="l-aus">0,00 €</b></div>
+            </div>
+          </div>
+          <div class="liste-kopf">Miete</div>
+          <div class="ez"><span>Garage 1<small>K. Brandt</small></span><span class="rechts">65,00 €<span class="chip">eingegangen</span></span></div>
+          <div class="ez"><span>Garage 2<small>T. Wagner</small></span><span class="rechts">65,00 €<span class="chip">eingegangen</span></span></div>
+          <div class="ez"><span>Garage 3<small>M. Yilmaz</small></span><span class="rechts">70,00 €<span class="chip">eingegangen</span></span></div>
+          <div class="ez" id="ez7"><span>Garage 7<small>S. Okafor</small></span><span class="rechts">65,00 €<span class="chip offen" id="chip7">ausstehend</span></span></div>
+          <div class="ez"><span>Stellplatz 9<small>J. Becker</small></span><span class="rechts">40,00 €<span class="chip">eingegangen</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C: Mieter & Mietverträge -->
+    <div class="ansicht" id="s2">
+      <div class="status"><span>9:41</span><span class="rechts"><span class="akku"><i></i></span></span></div>
+      <div class="leiste"><svg><use href="#i-menu"/></svg><span class="titel"><svg><use href="#i-leute"/></svg>Mieter &amp; Mietverträge</span><svg><use href="#i-stift"/></svg></div>
+      <div class="inhalt">
+        <div class="karte">
+          <h2>Mieter (12)<span class="neu"><svg><use href="#i-plus"/></svg>Neu</span></h2>
+          <div class="tab-kopf"><span></span><span>NAME</span><span>KONTAKT</span></div>
+          <div class="mz" id="m0"><svg><use href="#i-info"/></svg><b>K. Brandt</b><span>0171 2384419</span></div>
+          <div class="mz" id="m1"><svg><use href="#i-info"/></svg><b>J. Becker</b><span>j.becker@web.de</span></div>
+          <div class="mz" id="m2"><svg><use href="#i-info"/></svg><b>S. Okafor</b><span>0152 9930174</span></div>
+          <div class="mz" id="m3" style="border-bottom:0"><svg><use href="#i-info"/></svg><b>T. Wagner</b><span>0160 4417702</span></div>
+        </div>
+        <div class="karte">
+          <h2>Mietverträge (12)<span class="neu"><svg><use href="#i-plus"/></svg>Neu</span></h2>
+          <div class="vz" id="v0"><span><b>Garage 1 · K. Brandt</b><small>seit 01.03.2023</small></span><span class="betrag">65,00 €<br><small>monatlich</small></span></div>
+          <div class="vz" id="v1"><span><b>Garage 7 · S. Okafor</b><small>seit 01.06.2024</small></span><span class="betrag">65,00 €<br><small>monatlich</small></span></div>
+          <div class="vz" id="v2"><span><b>Garage 12 · M. Yilmaz</b><small>seit 01.10.2026</small></span><span class="betrag">70,00 €<br><small>monatlich</small></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D: Ausgabe erfassen -->
+    <div class="ansicht" id="s3">
+      <div class="dialog-bg"></div>
+      <div class="blatt">
+        <h3>Ausgabe erfassen<svg><use href="#i-info"/></svg></h3>
+        <div class="feld"><label>Immobilie</label><span class="wert">Garagenhof Nord</span><svg class="dd"><use href="#i-dd"/></svg></div>
+        <div class="feld"><label>Kategorie</label><span class="wert">Grundsteuer</span><svg class="dd"><use href="#i-dd"/></svg></div>
+        <div class="feld"><label>Datum</label><span class="wert">15.09.2026</span></div>
+        <div class="feld leer" id="f-betrag"><label>Betrag (€)</label><span class="wert"></span></div>
+        <div class="feld leer" id="f-beschr"><label>Beschreibung</label><span class="wert"></span></div>
+        <div class="feld"><label>Wiederholung</label><span class="wert" id="f-wdh">einmalig</span><svg class="dd"><use href="#i-dd"/></svg></div>
+        <div class="dok-kopf">Dokumente<span>+ Hinzufügen</span></div>
+        <div class="klein" id="dok-leer">Keine Dokumente vorhanden.</div>
+        <div class="dok" id="dok"><i>PDF</i><span>Bescheid_Grundsteuer_2026.pdf</span></div>
+        <div class="knoepfe"><span>Abbrechen</span><span class="speichern" id="speichern">Speichern</span></div>
+      </div>
+    </div>
+
+    <!-- E: Berichte & Sicherung -->
+    <div class="ansicht" id="s4">
+      <div class="status"><span>9:41</span><span class="rechts"><span class="akku"><i></i></span></span></div>
+      <div class="leiste"><svg><use href="#i-menu"/></svg><span class="titel"><svg><use href="#i-chart"/></svg>Berichte &amp; Sicherung</span><svg><use href="#i-werkzeug"/></svg></div>
+      <div class="inhalt">
+        <div class="karte">
+          <h2>Berichte &amp; Steuern</h2>
+          <div class="ber-label">Monatsbericht</div>
+          <div class="monat-wahl"><span class="rund"><svg><use href="#i-li"/></svg></span>September 2026<span class="rund"><svg><use href="#i-re"/></svg></span></div>
+          <div class="ak" id="k-monat"><svg><use href="#i-pdf"/></svg>Monatsbericht generieren</div>
+          <div class="trenn" style="margin:18px 0 10px"></div>
+          <div class="ber-label">Jahresbericht</div>
+          <div class="monat-wahl"><span class="rund"><svg><use href="#i-li"/></svg></span>2026<span class="rund"><svg><use href="#i-re"/></svg></span></div>
+          <div class="ak" id="k-jahr"><svg><use href="#i-pdf"/></svg>Jahresbericht generieren</div>
+          <div class="hinw">
+            <b><svg><use href="#i-recht"/></svg>Steuerlicher Hinweis</b>
+            <p>Die App ist ein Werkzeug zur Datenverwaltung und ersetzt keine Steuerberatung.</p>
+            <div class="ak petrol" id="k-datev"><svg><use href="#i-doc"/></svg>DATEV Steuer-Report erstellen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div></div></div>
+
+  <!-- Hinweise -->
+  <div class="abs hinweis" id="n0"><span class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span><b>Miete eingegangen</b><span>Garage 7, S. Okafor, 65,00 €</span></span></div>
+  <div class="abs hinweis" id="n1"><span class="ico"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span><b>Mietvertrag angelegt</b><span>Garage 12, M. Yilmaz, 70,00 €</span></span></div>
+  <div class="abs hinweis" id="n2"><span class="ico o"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 2h7l4 4v12H5z"/><path d="M12 2v4h4M8 11h6M8 14h4"/></svg></span><span><b>Ausgabe gespeichert</b><span>Grundsteuer, 186,40 €, vierteljährlich</span></span></div>
+  <div class="abs hinweis" id="n3"><span class="ico o"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 2h7l4 4v12H5z"/><path d="M12 2v4h4M8 11h6M8 14h4"/></svg></span><span><b>DATEV Steuer-Report erstellt</b><span>Buchungen 2026, EXTF</span></span></div>
+
+  <div class="abs versprechen" id="vers">
+    <div class="gross p" id="p0"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>100 % offline.</span></span></div>
+    <div class="gross p" id="p1"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>Kein Konto.</span></span></div>
+    <div class="gross p" id="p2"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>Keine Cloud.</span></span></div>
+    <div class="unter" id="p3">Deine Daten bleiben auf deinem Handy.</div>
+  </div>
+
+  <div class="ebene" id="tor">
+    <div class="lamellen"></div>
+    <div class="griff"></div>
+    <div class="abs" id="torA">
+      <div class="marke" id="markeA"><i><svg viewBox="0 0 18 18" fill="none" stroke="#FF5B14" stroke-width="2"><path d="M2 16V7l7-4 7 4v9"/><path d="M5 16V9.5h8V16M5 12h8M5 14.2h8" stroke-width="1.6"/></svg></i>Garagenmanager</div>
+      <div class="gross" id="titelA"><span class="ln"><span>Garagen vermieten.</span></span><span class="ln"><span>Ohne Papierkram.</span></span></div>
+    </div>
+    <div class="abs" id="torB">
+      <div class="marke" id="markeB"><i><svg viewBox="0 0 18 18" fill="none" stroke="#FF5B14" stroke-width="2"><path d="M2 16V7l7-4 7 4v9"/><path d="M5 16V9.5h8V16M5 12h8M5 14.2h8" stroke-width="1.6"/></svg></i>Garagenmanager</div>
+      <div class="gross" id="titelB"><span class="ln"><span>Schluss mit</span></span><span class="ln"><span>Zettelwirtschaft.</span></span></div>
+      <div id="playB"><span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 2.6v18.8c0 .4.4.6.7.4l10.6-9.4c.2-.2.2-.6 0-.8L4.7 2.2c-.3-.2-.7 0-.7.4zm12.6 7.6 2.9-2.6-11-6.3 8.1 8.9zm0 3.6-8.1 8.9 11-6.3-2.9-2.6zm4.2-3.8-2.9-1.7-3 2.7 3 2.7 2.9-1.7c.8-.5.8-1.5 0-2z"/></svg><span><small>Jetzt bei</small><b>Google Play</b></span></span></div>
+      <div id="infoB">Für Android · Kostenlos starten</div>
+    </div>
+  </div>
+</div>
+
+<script src="zusatz.js"></script>
+<script>
+const Q = new URLSearchParams(location.search);
+const FORMATE = { '9x16':[1080,1920], '4x5':[1080,1350], '1x1':[1080,1080], '16x9':[1920,1080] };
+const F = FORMATE[Q.get('format')] ? Q.get('format') : '9x16';
+const [W,H] = FORMATE[F];
+// Einschübe: Wortwechsel am Tor (D1) und Preis-Szene (D2), zusammen genau 2 Musiktakte
+const D1 = 2.0, D2 = 2*60/105*4 - D1;
+const DAUER = 29.5 + D1 + D2;
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+const stage = $('#stage');
+stage.style.width = W+'px'; stage.style.height = H+'px';
+
+// Zeitpunkte: Szenenwechsel im Telefon und Bildunterschriften [ein, aus]
+const S = [0, 9.0, 12.5, 15.9, 19.9];
+const CAP = [[5.6,8.7],[9.15,12.2],[12.65,15.6],[16.05,19.6],[20.05,22.85]];
+const T_AUS = 22.95, T_DUNKEL = 23.1, T_VERS = 23.6, T_TOR = 25.75, T_ENDE = 26.4;
+
+const L = {
+  '9x16': {hook:{x:80,fs:86}, cap:{x:80,y:250,fs:84,pill:30}, tel:{b:540,x:(W-540)/2,y:640},
+           n:{fs:28,innen:200,rechtsMax:W-140}, vers:{x:80,fs:104,unter:38}, torA:{x:80,y:430,fs:96,marke:46},
+           torB:{x:80,y:360,fs:104,marke:46,play:58,info:32}},
+  '4x5':  {hook:{x:80,fs:80}, cap:{x:80,y:90,fs:70,pill:26}, tel:{b:390,x:(W-390)/2,y:400},
+           n:{fs:23,innen:170,rechtsMax:W-60}, vers:{x:80,fs:96,unter:34}, torA:{x:80,y:250,fs:88,marke:40},
+           torB:{x:80,y:200,fs:96,marke:40,play:52,info:28}},
+  '1x1':  {hook:{x:80,fs:74}, cap:{x:80,y:76,fs:60,pill:24}, tel:{b:330,x:(W-330)/2,y:330},
+           n:{fs:21,innen:150,rechtsMax:W-50}, vers:{x:80,fs:88,unter:32}, torA:{x:80,y:200,fs:80,marke:38},
+           torB:{x:80,y:150,fs:88,marke:38,play:48,info:26}},
+  '16x9': {hook:{x:150,fs:104}, cap:{x:150,y:330,fs:92,pill:30}, tel:{b:440,x:1320,y:115},
+           n:{fs:24,innen:220,rechtsMax:W-80}, vers:{x:150,fs:112,unter:38}, torA:{x:150,y:290,fs:110,marke:46},
+           torB:{x:150,y:230,fs:116,marke:46,play:58,info:32}}
+}[F];
+
+const hook = $('#hook'); hook.style.left = L.hook.x+'px'; hook.style.fontSize = L.hook.fs+'px';
+$$('.cap').forEach(c=>{
+  c.style.left=L.cap.x+'px'; c.style.top=L.cap.y+'px';
+  c.querySelector('.gross').style.fontSize=L.cap.fs+'px';
+  c.querySelector('.pille').style.fontSize=L.cap.pill+'px';
+});
+const tel = $('#tel'); tel.style.setProperty('--b', L.tel.b+'px');
+tel.style.left = L.tel.x+'px'; tel.style.top = L.tel.y+'px';
+const TELH = L.tel.b*19.4/9;
+// App-Oberfläche einpassen
+const sw = L.tel.b*(1-2*.032), sh = TELH - 2*L.tel.b*.032, sk = sw/360;
+const ui = $('#ui'); ui.style.transform = `scale(${sk})`; ui.style.height = (sh/sk)+'px';
+
+$$('.hinweis').forEach(n=>n.style.fontSize=L.n.fs+'px');
+const vers = $('#vers'); vers.style.left=L.vers.x+'px'; vers.style.fontSize=L.vers.fs+'px';
+$('#p3').style.fontSize = L.vers.unter+'px'; $('#p3').style.marginTop = '.9em';
+const torA=$('#torA'); torA.style.left=L.torA.x+'px'; torA.style.top=L.torA.y+'px';
+$('#titelA').style.fontSize=L.torA.fs+'px'; $('#markeA').style.fontSize=L.torA.marke+'px'; $('#markeA').style.marginBottom='.9em';
+const torB=$('#torB'); torB.style.left=L.torB.x+'px'; torB.style.top=L.torB.y+'px';
+$('#titelB').style.fontSize=L.torB.fs+'px'; $('#markeB').style.fontSize=L.torB.marke+'px'; $('#markeB').style.marginBottom='.9em';
+$('#playB').style.fontSize=L.torB.play+'px'; $('#playB').style.marginTop='.8em';
+$('#infoB').style.cssText=`font-size:${L.torB.info}px;margin-top:1.1em;font-weight:500;color:var(--ink)`;
+if(F==='16x9'){ $('#tor .lamellen').style.height='40%'; }
+Zusatz.einrichten({F, W, H, L, i1:4.5, D1, i2:25.45, D2, torZu:25.75, ende:26.4});
+
+function mitte(el, oben=0, unten=0){ el.style.top = Math.round(oben + (H-oben-unten-el.offsetHeight)/2)+'px'; }
+const NPOS = [['l',.50],['l',.30],['l',.42],['r',.74]];
+function hinweisPos(i){
+  const n = $('#n'+i), w = n.offsetWidth;
+  const [seite, fy] = NPOS[i];
+  let x = seite==='l' ? L.tel.x - (w - L.n.innen) : L.tel.x + L.tel.b - L.n.innen;
+  if(F==='16x9') x = L.tel.x - w + L.n.innen*(seite==='l'?1:.35);
+  x = Math.max(F==='16x9'?1110:40, Math.min(x, L.n.rechtsMax - w));
+  n.style.left = Math.round(x)+'px';
+  n.style.top = Math.round(L.tel.y + TELH*fy)+'px';
+}
+
+const cl = x => x<0?0:x>1?1:x;
+const p = (t,a,b) => cl((t-a)/(b-a));
+const eo = x => 1-Math.pow(1-x,4);
+const eio = x => x<.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2;
+const back = x => { const c1=1.6,c3=c1+1; return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2); };
+const eur = n => n.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+function sicht(el, an){ el.style.visibility = an ? '' : 'hidden'; }
+function zeilen(el, tIn, tOut, t, stagger=.09, dur=.7){
+  el.querySelectorAll('.ln>span').forEach((s,i)=>{
+    const a = eo(p(t, tIn+i*stagger, tIn+i*stagger+dur));
+    const b = tOut==null ? 0 : eio(p(t, tOut+i*.05, tOut+i*.05+.45));
+    s.style.transform = `translateY(${((1-a) - b)*115}%)`;
+  });
+}
+function pop(el, t0, t, out=null){
+  const a = back(p(t,t0,t0+.55)), o = out==null?0:eio(p(t,out,out+.35));
+  el.style.opacity = cl(p(t,t0,t0+.2)) * (1-o);
+  el.style.transform = `translateY(${(1-a)*30 - o*20}px) scale(${.85+.15*a})`;
+}
+function tippen(el, text, a, b, t){
+  const n = Math.round(text.length*p(t,a,b));
+  const cursor = t>=a && t<b+.4 && Math.floor(t*3)%2===0;
+  el.innerHTML = text.slice(0,n) + (t>=a && t<b+.4 ? `<span class="cursor" style="opacity:${cursor?1:0}"></span>` : '');
+}
+function druck(el, a, t){ el.style.transform = (t>a && t<a+.18) ? 'scale(.95)' : 'none'; el.style.filter = (t>a && t<a+.18) ? 'brightness(1.15)' : 'none'; }
+
+function render(t){
+  const ta = Zusatz.altZeit(t);
+  renderAlt(ta);
+  Zusatz.render(t, ta);
+}
+
+function renderAlt(t){
+  sicht($('#bg-grau'), t>=3.2);
+  $('#bg-dunkel').style.opacity = eio(p(t,T_DUNKEL,T_DUNKEL+.5));
+
+  // Hook
+  sicht(hook, t<3.4);
+  if(t<3.4){
+    zeilen(hook, .15, null, t, .45, .6);
+    hook.querySelectorAll('.zeile-h').forEach((z,i)=>{
+      const s = eo(p(t, .75+i*.45, 1.15+i*.45));
+      z.querySelector('.strich').style.width = `calc(${s*100}% + .1em)`;
+      z.style.color = s>0.5 ? 'var(--ink-3)' : 'var(--ink)';
+      z.querySelector('.strich').style.opacity = s>0?1:0;
+    });
+  }
+
+  // Garagentor
+  let ty;
+  if(t<4) ty = -(1-eio(p(t,2.55,3.2)))*H;
+  else if(t<T_TOR-1) ty = -eio(p(t,5.0,5.85))*H;
+  else ty = -(1-eio(p(t,T_TOR,T_TOR+.65)))*H;
+  sicht($('#tor'), ty > -H+1);
+  $('#tor').style.transform = `translateY(${ty}px)`;
+  sicht(torA, t<10); sicht(torB, t>15);
+  if(t<10){
+    const m = eo(p(t,3.25,3.8));
+    $('#markeA').style.opacity = m; $('#markeA').style.transform=`translateY(${(1-m)*24}px)`;
+    zeilen($('#titelA'), 3.4, null, t, .12, .7);
+  } else {
+    const e = T_ENDE;
+    const m = eo(p(t,e,e+.55));
+    $('#markeB').style.opacity = m; $('#markeB').style.transform=`translateY(${(1-m)*24}px)`;
+    zeilen($('#titelB'), e+.15, null, t, .12, .7);
+    pop($('#playB'), e+.75, t);
+    const i = eo(p(t,e+1.15,e+1.75)); $('#infoB').style.opacity=i; $('#infoB').style.transform=`translateY(${(1-i)*16}px)`;
+    if(t>e+1.95){ const s = 1+.03*Math.sin((t-e-1.95)*4.2); $('#playB').style.transform=`scale(${s})`; $('#playB').style.transformOrigin='0 50%'; }
+  }
+
+  // Bildunterschriften
+  $$('.cap').forEach((c,k)=>{
+    const [a,b] = CAP[k];
+    const an = t>a-.05 && t<b+.8;
+    sicht(c, an); if(!an) return;
+    zeilen(c, a+.08, b, t);
+    const pl = c.querySelector('.pille');
+    const pi = eo(p(t,a,a+.5)), po = eio(p(t,b,b+.4));
+    pl.style.opacity = pi*(1-po); pl.style.transform=`translateY(${(1-pi)*14 - po*14}px)`;
+  });
+
+  // Telefon
+  const telAn = t>5.0 && t<T_AUS+1.1;
+  sicht(tel, telAn);
+  if(telAn){
+    const ein = eo(p(t,5.25,6.4)), aus = eio(p(t,T_AUS,T_AUS+.8));
+    tel.style.transform = `translateY(${(1-ein)*(H*.55) + aus*(H*.9) + Math.sin(t*1.3)*6}px) rotate(${(1-ein)*7 - aus*4}deg)`;
+  }
+  // Ansichten: neue schiebt sich von rechts herein
+  const SS = [...S, 99];
+  for(let i=0;i<5;i++){
+    const el=$('#s'+i);
+    const a = i===0?1:eo(p(t,SS[i]-.15,SS[i]+.35));
+    const b = eio(p(t,SS[i+1]-.2,SS[i+1]+.15));
+    el.style.opacity = a*(1-b);
+    el.style.transform = `translateX(${(1-a)*40 - b*30}px)`;
+    sicht(el, a*(1-b)>0.001);
+  }
+
+  // A: Überblick – Zahlen zählen hoch
+  if(t<9.6){
+    const z = eo(p(t,6.0,7.1));
+    $$('#s0 [data-z]').forEach(b=>{
+      const v = +b.dataset.z*z;
+      b.textContent = b.dataset.pz ? v.toLocaleString('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2})+' %' : eur(v);
+    });
+    const e = Math.round(12*z);
+    $('#einheiten').textContent = `${e} von 12 (${(e/12*100).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})} %)`;
+    const am = eo(p(t,6.3,7.6));
+    $('#amort').style.width = (62*am)+'%';
+    $('#amort-eur').textContent = eur(40176*am);
+    $('#amort-pz').textContent = (62*am).toLocaleString('de-DE',{minimumFractionDigits:1,maximumFractionDigits:1})+' %';
+  }
+
+  // B: Einnahmen – Donut, dann Mieteingang
+  if(t>8.5 && t<13){
+    const U = 2*Math.PI*64, ERW = 780;
+    const d = eo(p(t,9.4,10.3)), zahl = eo(p(t,10.95,11.5));
+    const ein = (715 + 65*zahl)*d, aus = (65 - 65*zahl)*d;
+    const g = ein/ERW*U, r = aus/ERW*U;
+    $('#d-gruen').setAttribute('stroke-dasharray', `${g} ${U}`);
+    $('#d-rot').setAttribute('stroke-dasharray', `0 ${g} ${r} ${U}`);
+    $('#l-ein').textContent = eur(ein); $('#l-aus').textContent = eur(aus);
+    const bez = t>=10.95, c=$('#chip7');
+    c.textContent = bez?'eingegangen':'ausstehend'; c.classList.toggle('offen',!bez);
+    c.style.transform = bez ? `scale(${.6+.4*back(p(t,10.95,11.45))})` : 'none';
+    $('#ez7').style.background = `rgba(128,242,238,${bez ? .55*(1-p(t,11.3,12.2)) : 0})`;
+  }
+
+  // C: Mieter & Verträge
+  if(t>12 && t<16.4){
+    ['#m0','#m1','#m2','#m3'].forEach((s,i)=>pop($(s),12.85+i*.13,t));
+    ['#v0','#v1'].forEach((s,i)=>pop($(s),13.5+i*.15,t));
+    pop($('#v2'),14.3,t);
+    $('#v2').style.background = `rgba(128,242,238,${.6*(1-p(t,14.9,15.8))*cl(p(t,14.3,14.5))})`;
+  }
+
+  // D: Ausgabe erfassen
+  if(t>15.4 && t<20.4){
+    const fb=$('#f-betrag'), fs=$('#f-beschr');
+    fb.classList.toggle('leer', t<16.45); fb.classList.toggle('aktiv', t>=16.45 && t<17.05);
+    tippen(fb.querySelector('.wert'), '186,40', 16.5, 16.95, t);
+    fs.classList.toggle('leer', t<17.05); fs.classList.toggle('aktiv', t>=17.05 && t<17.8);
+    tippen(fs.querySelector('.wert'), 'Grundsteuer Q3', 17.1, 17.65, t);
+    $('#f-wdh').textContent = t>=17.95 ? 'vierteljährlich' : 'einmalig';
+    $('#f-wdh').parentElement.classList.toggle('aktiv', t>=17.85 && t<18.25);
+    sicht($('#dok-leer'), t<18.25); $('#dok-leer').style.display = t<18.25 ? '' : 'none';
+    $('#dok').style.display = t>=18.25 ? '' : 'none'; pop($('#dok'),18.25,t);
+    const sp=$('#speichern'); sp.classList.toggle('an', t>=17.0); druck(sp, 18.55, t);
+  }
+
+  // E: Berichte
+  if(t>19.4 && t<23.5){
+    druck($('#k-datev'), 21.0, t);
+  }
+
+  // Hinweise
+  [[11.0,12.15],[14.45,15.55],[18.75,19.75],[21.2,22.8]].forEach(([a,b],i)=>{
+    const n=$('#n'+i); const an = t>a && t<b+.4;
+    sicht(n, an); if(an) pop(n,a,t,b);
+  });
+
+  // Datenschutz
+  const vAn = t>T_DUNKEL && t<T_TOR+1;
+  sicht(vers, vAn);
+  if(vAn){
+    ['#p0','#p1','#p2'].forEach((s,i)=>{
+      const a = T_VERS+i*.42;
+      zeilen($(s), a, null, t, 0, .65);
+      $(s+' .haken').style.transform=`scale(${back(p(t,a+.1,a+.55))})`;
+    });
+    const u = eo(p(t,T_VERS+1.45,T_VERS+2.05)); $('#p3').style.opacity=u; $('#p3').style.transform=`translateY(${(1-u)*16}px)`;
+  }
+}
+
+function messen(){
+  for(let i=0;i<4;i++){ sicht($('#n'+i),true); hinweisPos(i); }
+  mitte(hook); mitte(vers);
+  if(F==='16x9'){ $$('.cap').forEach(c=>{ c.style.maxWidth='1000px'; mitte(c); }); }
+  mitte(torA, 0, F==='16x9'?120:H*.18);
+  mitte(torB, 0, F==='16x9'?120:H*.14);
+  Zusatz.messen();
+}
+
+// Kurzfassung (?schnitt=15): [von, bis, Tempo]
+const SCHNITTE = { '15': [[0,3.3,1.5],[3.3,8.7,1.2],[11.0,13.7,1],[27.8,33.3,1]] };
+const SCHNITT = SCHNITTE[Q.get('schnitt')];
+const renderLang = render;
+let renderAus = renderLang, dauerAus = DAUER;
+if(SCHNITT){
+  dauerAus = SCHNITT.reduce((s,[a,b,v])=>s+(b-a)/v, 0);
+  renderAus = t => {
+    for(const [a,b,v] of SCHNITT){ const d=(b-a)/v; if(t<d) return renderLang(a+t*v); t-=d; }
+    return renderLang(SCHNITT[SCHNITT.length-1][1]);
+  };
+}
+function tippTakte(a, b, text){ return [...text].map((_,k)=>['tap', a+(b-a)*(k+.5)/text.length]); }
+
+const SFX_LANG = [
+  ['tuer_zu',3.2], ['tuer_auf',5.05], ['whoosh',5.4],
+  ['pling',11.0],
+  ['pling',14.45],
+  ...tippTakte(16.5,16.95,'186,40'), ...tippTakte(17.1,17.65,'Grundsteuer Q3'),
+  ['klick',18.55], ['pling',18.8],
+  ['klick',21.0], ['pling',21.25],
+  ['swoosh',23.1],
+  ['tuer_zu',26.4],
+];
+// Soundeffekte: Bildmomente der Langfassung, für die Kurzfassung umgerechnet (mix.py legt die Pixabay-Sounds dorthin)
+function zielZeit(ts){
+  if(!SCHNITT) return ts;
+  let o = 0;
+  for(const [a,b,v] of SCHNITT){ if(ts>=a && ts<b) return o+(ts-a)/v; o += (b-a)/v; }
+  return null;
+}
+const SFX_NEU = [...SFX_LANG.map(([typ,t,ex])=>[typ, Zusatz.neuZeit(t), ex]), ...Zusatz.sfx()];
+window.SFX = SFX_NEU.flatMap(([typ, t, extra={}])=>{
+  const z = zielZeit(t); if(z==null) return [];
+  const ev = {typ, t:+z.toFixed(4), ...extra};
+  if(extra.bis!=null){ const zb = zielZeit(extra.bis-1e-6); if(zb==null) return []; ev.bis = +zb.toFixed(4); }
+  return [ev];
+});
+window.MUSIK_TAKTE = SCHNITT ? 0 : 2; // Langfassung: 2 Takte Musik einschieben
+window.DAUER = dauerAus; window.W=W; window.H=H;
+window.render = renderAus;
+window.bereit = document.fonts.ready.then(()=>{ messen(); renderLang(0); return true; });
+
+if(!Q.has('render')){
+  const fit=()=>{ const s=Math.min(innerWidth/W, innerHeight/H); stage.style.transform=`scale(${s})`; };
+  addEventListener('resize',fit); fit();
+  window.bereit.then(()=>{
+    if(Q.has('t')) return renderAus(+Q.get('t'));
+    const t0=performance.now();
+    const loop=()=>{ renderAus(((performance.now()-t0)/1000)%dauerAus); requestAnimationFrame(loop); };
+    loop();
+  });
+}
+</script>
+</body>
+</html>
