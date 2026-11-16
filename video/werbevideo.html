@@ -163,7 +163,7 @@ svg{display:block}
   <div class="abs versprechen" id="vers">
     <div class="gross p" id="p0"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>100 % offline.</span></span></div>
     <div class="gross p" id="p1"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>Kein Konto.</span></span></div>
-    <div class="gross p" id="p2"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>Kein Abo.</span></span></div>
+    <div class="gross p" id="p2"><span class="haken"><svg viewBox="0 0 20 20" fill="none" stroke="#14171C" stroke-width="3"><path d="M4.5 10.5l3.5 3.5 7.5-8"/></svg></span><span class="ln"><span>Keine Cloud.</span></span></div>
     <div class="unter" id="p3">Deine Daten bleiben auf deinem Handy.</div>
   </div>
 
@@ -184,6 +184,7 @@ svg{display:block}
   </div>
 </div>
 
+<script src="zusatz.js"></script>
 <script>
 // ---------- Format ----------
 const Q = new URLSearchParams(location.search);
@@ -192,7 +193,9 @@ const FORMATE = {
 };
 const F = FORMATE[Q.get('format')] ? Q.get('format') : '9x16';
 const [W,H] = FORMATE[F];
-const DAUER = 26;
+// Einschübe: Wortwechsel am Tor (D1) und Preis-Szene (D2), zusammen genau 2 Musiktakte
+const D1 = 2.0, D2 = 2*60/105*4 - D1;
+const DAUER = 26 + D1 + D2;
 const $ = s => document.querySelector(s);
 const stage = $('#stage');
 stage.style.width = W+'px'; stage.style.height = H+'px';
@@ -233,6 +236,7 @@ $('#titelB').style.fontSize=L.torB.fs+'px'; $('#markeB').style.fontSize=L.torB.m
 $('#playB').style.fontSize=L.torB.play+'px'; $('#playB').style.marginTop='.8em';
 $('#infoB').style.cssText=`font-size:${L.torB.info}px;margin-top:1.1em;font-weight:500;color:var(--ink)`;
 if(F==='16x9'){ $('#tor .lamellen').style.height='40%'; }
+Zusatz.einrichten({F, W, H, L, i1:4.5, D1, i2:21.65, D2, torZu:22.0, ende:22.65});
 
 // vertikal zentrieren, wo sinnvoll
 function mitte(el, oben=0, unten=0){ el.style.top = Math.round(oben + (H-oben-unten-el.offsetHeight)/2)+'px'; }
@@ -275,6 +279,12 @@ function pop(el, t0, t, out=null){
 
 // ---------- Zeitachse ----------
 function render(t){
+  const ta = Zusatz.altZeit(t);
+  renderAlt(ta);
+  Zusatz.render(t, ta);
+}
+
+function renderAlt(t){
   // Hintergruende
   sicht($('#bg-grau'), t>=3.2);
   $('#bg-dunkel').style.opacity = eio(p(t,19.3,19.8));
@@ -421,11 +431,13 @@ function messen(){
   if(F==='16x9'){ document.querySelectorAll('.cap').forEach(c=>{ c.style.maxWidth='980px'; mitte(c); }); }
   mitte(torA, 0, F==='16x9'?120:H*.18);
   mitte(torB, 0, F==='16x9'?120:H*.14);
+  Zusatz.messen();
 }
 
 // Kurzfassung (?schnitt=15): Abschnitte der Langfassung [von, bis, Tempo]
-// Hook schneller, dann Übersicht, Strom, Datenschutz, Schlussbild. Verträge und Export fallen weg.
-const SCHNITTE = { '15': [[0,5.2,1.5],[5.2,8.9,1],[9.3,12.6,1],[19.85,21.9,1],[21.9,24.4,1]] };
+// Hook schneller, Wortwechsel, Übersicht, dann Preise und Schlussbild. Strom, Verträge, Export und Datenschutz fallen weg.
+// Zeiten in der neuen Zeitachse (mit Einschüben).
+const SCHNITTE = { '15': [[0,3.3,1.5],[3.3,10.9,1.1],[23.95,29.8,1]] };
 const SCHNITT = SCHNITTE[Q.get('schnitt')];
 const renderLang = render; // window.render überschreibt die globale Funktion, daher sichern
 let renderAus = renderLang, dauerAus = DAUER;
@@ -436,6 +448,32 @@ if(SCHNITT){
     const [,b] = SCHNITT[SCHNITT.length-1]; return renderLang(b);
   };
 }
+function tippTakte(a, b, text){ return [...text].map((_,k)=>['tap', a+(b-a)*(k+.5)/text.length]); }
+
+const SFX_LANG = [
+  ['tuer_zu',3.2], ['tuer_auf',5.05], ['whoosh',5.4],
+  ['pling',7.75],
+  ['tap',10.0],['tap',10.3],['tap',10.6],['tap',10.9], ['klick',11.25], ['pling',11.65],
+  ['pling',14.75],
+  ['klick',17.45], ['pling',17.8],
+  ['swoosh',19.3],
+  ['tuer_zu',22.65],
+];
+// Soundeffekte: Bildmomente der Langfassung, für die Kurzfassung umgerechnet (mix.py legt die Pixabay-Sounds dorthin)
+function zielZeit(ts){
+  if(!SCHNITT) return ts;
+  let o = 0;
+  for(const [a,b,v] of SCHNITT){ if(ts>=a && ts<b) return o+(ts-a)/v; o += (b-a)/v; }
+  return null;
+}
+const SFX_NEU = [...SFX_LANG.map(([typ,t,ex])=>[typ, Zusatz.neuZeit(t), ex]), ...Zusatz.sfx()];
+window.SFX = SFX_NEU.flatMap(([typ, t, extra={}])=>{
+  const z = zielZeit(t); if(z==null) return [];
+  const ev = {typ, t:+z.toFixed(4), ...extra};
+  if(extra.bis!=null){ const zb = zielZeit(extra.bis-1e-6); if(zb==null) return []; ev.bis = +zb.toFixed(4); }
+  return [ev];
+});
+window.MUSIK_TAKTE = SCHNITT ? 0 : 2; // Langfassung: 2 Takte Musik einschieben
 window.DAUER = dauerAus; window.W=W; window.H=H;
 window.render = renderAus;
 window.bereit = document.fonts.ready.then(()=>{ messen(); renderLang(0); return true; });
