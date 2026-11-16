@@ -6,12 +6,14 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#FFFFFF">
 <title>Datenschutzerklärung – Garagenmanager</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/schrift/geist.css">
 <link rel="stylesheet" href="recht.css">
 </head>
 <body>
+<!--
+  ENTWURF – vor Veröffentlichung rechtlich prüfen lassen.
+  Gelb markierte Stellen (class="offen") sind offen und müssen ergänzt oder entschieden werden.
+-->
 
 <header class="nav">
   <div class="wrap">
@@ -28,35 +30,86 @@
     <nav class="seite-nav" aria-label="Abschnitte">
       <div class="pille"><i></i>Rechtliches</div>
       <h1>Datenschutz&shy;erklärung</h1>
-      <p class="unter">Datenschutzerklärung für die App „Garagenmanager“.</p>
+      <p class="unter">Für diese Webseite und die App „Garagenmanager“.</p>
       <ul>
         <li><a href="#verantwortlicher">1. Verantwortlicher</a></li>
-        <li><a href="#grundsatz">2. Grundsatz der Datenminimierung</a></li>
-        <li><a href="#daten">3. Arten der verarbeiteten Daten</a></li>
-        <li><a href="#berechtigungen">4. App-Berechtigungen</a></li>
-        <li><a href="#backup">5. Datensicherung (Backup)</a></li>
-        <li><a href="#dritte">6. Weitergabe an Dritte</a></li>
-        <li><a href="#rechte">7. Ihre Rechte (DSGVO)</a></li>
+        <li><a href="#ueberblick">2. Überblick</a></li>
+        <li><a href="#hosting">3. Hosting und Server-Logfiles</a></li>
+        <li><a href="#kontakt">4. Kontakt per E-Mail</a></li>
+        <li><a href="#cookies">5. Keine Cookies, kein Tracking</a></li>
+        <li><a href="#app">6. Die App: Offline-First</a></li>
+        <li><a href="#daten">7. Daten in der App</a></li>
+        <li><a href="#berechtigungen">8. App-Berechtigungen</a></li>
+        <li><a href="#backup">9. Datensicherung</a></li>
+        <li><a href="#abo">10. Abo und Abrechnung</a></li>
+        <li><a href="#dritte">11. Weitergabe an Dritte</a></li>
+        <li><a href="#dauer">12. Speicherdauer</a></li>
+        <li><a href="#rechte">13. Ihre Rechte</a></li>
+        <li><a href="#sicherheit">14. Datensicherheit</a></li>
+        <li><a href="#aenderungen">15. Änderungen</a></li>
       </ul>
     </nav>
     <div>
       <section class="block" id="verantwortlicher">
         <h2><span class="nr">1</span>Verantwortlicher</h2>
-        <address class="karte"><b>Christopher Neumann</b>Winzenburgerstraße 50<br>31061 Alfeld<br><a href="mailto:garagenmanager@gmail.com">garagenmanager@gmail.com</a></address>
+        <p>Verantwortlich für die Datenverarbeitung auf dieser Webseite und in der App „Garagenmanager“ im Sinne der Datenschutz-Grundverordnung (DSGVO) ist:</p>
+        <address class="karte" style="margin-top:14px"><b>Christopher Neumann</b>Winzenburgerstraße 50<br>31061 Alfeld<br>Deutschland<br><a href="mailto:garagenmanager@gmail.com">garagenmanager@gmail.com</a></address>
+        <p style="margin-top:14px">Ein Datenschutzbeauftragter ist nicht bestellt, da hierzu keine gesetzliche Pflicht besteht.</p>
       </section>
 
-      <section class="block" id="grundsatz">
-        <h2><span class="nr">2</span>Grundsatz der Datenminimierung (Offline-First)</h2>
-        <p>Die App „Garagenmanager“ ist als lokale Anwendung konzipiert. Der Schutz Ihrer persönlichen Daten und der Daten Ihrer Mieter hat für uns höchste Priorität.</p>
+      <section class="block" id="ueberblick">
+        <h2><span class="nr">2</span>Überblick</h2>
+        <p>Der Schutz Ihrer Daten und der Daten Ihrer Mieter hat für uns höchste Priorität. Diese Erklärung gliedert sich in zwei Teile:</p>
         <ul>
-          <li><b>Keine Übertragung:</b> Sämtliche von Ihnen eingegebenen Daten (Objekte, Mieterdaten, Finanzen, Zählerstände) werden ausschließlich lokal in einer Datenbank auf Ihrem Endgerät gespeichert.</li>
+          <li><b>Webseite (Abschnitte 3 bis 5):</b> Welche Daten beim Besuch dieser Seite anfallen.</li>
+          <li><b>App (Abschnitte 6 bis 11):</b> Wie die App mit Ihren Daten umgeht. Kurz gesagt: Ihre Daten bleiben auf Ihrem Gerät.</li>
+        </ul>
+        <p>Die Abschnitte 12 bis 15 gelten für beide.</p>
+      </section>
+
+      <p class="teil">Teil A · Webseite</p>
+
+      <section class="block" id="hosting">
+        <h2><span class="nr">3</span>Hosting und Server-Logfiles</h2>
+        <p>Diese Webseite wird über GitHub Pages bereitgestellt, einen Dienst der GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.</p>
+        <p>Beim Aufruf der Seite verarbeitet der Hoster technisch notwendige Daten, die Ihr Browser automatisch übermittelt, sogenannte Server-Logfiles:</p>
+        <ul>
+          <li>IP-Adresse des anfragenden Geräts</li>
+          <li>Datum und Uhrzeit des Zugriffs</li>
+          <li>aufgerufene Seite bzw. Datei und übertragene Datenmenge</li>
+          <li>Browsertyp, Betriebssystem und ggf. die zuvor besuchte Seite (Referrer)</li>
+        </ul>
+        <p>Die Verarbeitung ist erforderlich, um die Webseite auszuliefern und ihre Sicherheit und Stabilität zu gewährleisten. Rechtsgrundlage ist unser berechtigtes Interesse an einem sicheren und funktionsfähigen Webauftritt (Art. 6 Abs. 1 lit. f DSGVO). Wir selbst haben keinen Zugriff auf diese Logfiles und führen sie nicht mit anderen Daten zusammen.</p>
+        <p>Dabei können Daten in die USA übermittelt werden. GitHub ist nach dem EU-US Data Privacy Framework zertifiziert; die Übermittlung stützt sich auf den Angemessenheitsbeschluss der EU-Kommission (Art. 45 DSGVO). Weitere Informationen: <a href="https://docs.github.com/de/site-policy/privacy-policies/github-general-privacy-statement">Datenschutzerklärung von GitHub</a>.</p>
+      </section>
+
+      <section class="block" id="kontakt">
+        <h2><span class="nr">4</span>Kontakt per E-Mail</h2>
+        <p>Wenn Sie uns per E-Mail schreiben, verarbeiten wir Ihre E-Mail-Adresse, Ihren Namen (sofern angegeben) und den Inhalt Ihrer Nachricht, um Ihre Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn Ihre Anfrage mit einem Vertrag oder dessen Anbahnung zusammenhängt, ansonsten unser berechtigtes Interesse an der Beantwortung von Anfragen (Art. 6 Abs. 1 lit. f DSGVO).</p>
+        <p>Für unser E-Mail-Postfach nutzen wir Gmail, einen Dienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Eine Übermittlung in die USA ist möglich; Google ist nach dem EU-US Data Privacy Framework zertifiziert. Ihre Nachricht wird daher auf Servern von Google gespeichert. Wir löschen Ihre Anfrage, sobald sie erledigt ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
+      </section>
+
+      <section class="block" id="cookies">
+        <h2><span class="nr">5</span>Keine Cookies, kein Tracking</h2>
+        <p>Diese Webseite setzt keine Cookies, speichert keine Informationen in Ihrem Browser und verwendet keine Analyse-, Tracking- oder Werbedienste. Schriftarten und Skripte werden direkt von unserer Webseite ausgeliefert; es werden keine Inhalte von Drittanbietern nachgeladen.</p>
+      </section>
+
+      <p class="teil">Teil B · App „Garagenmanager“</p>
+
+      <section class="block" id="app">
+        <h2><span class="nr">6</span>Grundsatz der Datenminimierung (Offline-First)</h2>
+        <p>Die App „Garagenmanager“ ist als lokale Anwendung konzipiert.</p>
+        <ul>
+          <li><b>Keine Übertragung:</b> Sämtliche von Ihnen eingegebenen Daten (Objekte, Mieterdaten, Finanzen, Zählerstände) werden ausschließlich lokal in einer Datenbank auf Ihrem Endgerät gespeichert. Wir haben keinen Zugriff darauf.</li>
+          <li><b>Kein Konto:</b> Für die Nutzung ist keine Registrierung erforderlich.</li>
           <li><b>Kein Tracking:</b> Wir verwenden keine Analyse-Tools (wie Google Analytics oder Firebase) und schalten keine Werbung, die Ihr Nutzerverhalten auswertet.</li>
         </ul>
+        <p>Wenn Sie in der App Daten Ihrer Mieter erfassen, sind Sie selbst für deren Verarbeitung verantwortlich (Art. 4 Nr. 7 DSGVO). Da wir keinen Zugriff auf diese Daten haben, verarbeiten wir sie nicht in Ihrem Auftrag.</p>
       </section>
 
       <section class="block" id="daten">
-        <h2><span class="nr">3</span>Arten der verarbeiteten Daten</h2>
-        <p>Im Rahmen der Nutzung der App werden folgende Datenkategorien lokal verarbeitet:</p>
+        <h2><span class="nr">7</span>Arten der verarbeiteten Daten</h2>
+        <p>Im Rahmen der Nutzung der App werden folgende Datenkategorien ausschließlich lokal auf Ihrem Gerät verarbeitet:</p>
         <ul>
           <li><b>Objekt- und Einheiteninformationen:</b> Adressen, Beschreibungen, Kaufpreise.</li>
           <li><b>Mieter- und Vertragsdaten:</b> Namen, E-Mail-Adressen, Telefonnummern, Mietbeträge, Laufzeiten.</li>
@@ -66,39 +119,95 @@
       </section>
 
       <section class="block" id="berechtigungen">
-        <h2><span class="nr">4</span>App-Berechtigungen</h2>
+        <h2><span class="nr">8</span>App-Berechtigungen</h2>
         <p>Die App fordert Berechtigungen nur an, wenn sie für die Funktion zwingend erforderlich sind:</p>
         <ul>
           <li><b>Kamera:</b> Zum Scannen von Verträgen oder Abfotografieren von Belegen.</li>
           <li><b>Speicher:</b> Zum Erstellen und Exportieren von PDF-Berichten, DATEV-Dateien und Datensicherungen auf Ihrem Gerät.</li>
-          <li><b>Internet:</b> Wird ausschließlich für die optionale Google Drive Backup-Funktion benötigt (sofern vom Nutzer aktiviert).</li>
+          <li><b>Internet:</b> Wird ausschließlich benötigt für: <span class="offen">[Zweck hier eintragen, z. B. „die Prüfung Ihres Abos über Google Play“ und ggf. „die optionale Sicherung in Google Drive“]</span>.</li>
         </ul>
       </section>
 
       <section class="block" id="backup">
-        <h2><span class="nr">5</span>Datensicherung (Backup)</h2>
+        <h2><span class="nr">9</span>Datensicherung (Backup)</h2>
         <ul>
           <li><b>Lokale Sicherung:</b> Wenn Sie die Backup-Funktion nutzen, wird eine verschlüsselte Datei auf Ihrem Gerät erstellt. Sie sind selbst für die sichere Verwahrung des Passworts verantwortlich.</li>
-          <li><b>Manuelle Cloud-Sicherung:</b> Sofern Sie die Export-Funktion nutzen, um die Sicherungsdatei manuell auf externe Dienste (z. B. Google Drive, Dropbox, E-Mail-Versand) zu übertragen, erfolgt dies über die Systemfunktionen Ihres Betriebssystems. Die App „Garagenmanager“ baut zu keinem Zeitpunkt eine eigene Verbindung zu Cloud-Diensten auf. Die Verantwortung für die Sicherheit und den Datenschutz bei der Nutzung von Drittanbieter-Speicherdiensten liegt beim jeweiligen Anbieter und dem Nutzer.</li>
+          <li><b>Sicherung bei Cloud-Diensten:</b> Sofern Sie die Sicherungsdatei auf externe Dienste (z. B. Google Drive, Dropbox, E-Mail-Versand) übertragen, erfolgt dies auf Ihre Veranlassung über die Systemfunktionen Ihres Betriebssystems. Für die Verarbeitung durch diese Dienste gelten deren Datenschutzbestimmungen.</li>
         </ul>
+        <p>Die Sicherungsdatei ist mit Ihrem Passwort verschlüsselt. Ohne dieses Passwort können weder wir noch der Speicheranbieter ihren Inhalt lesen.</p>
+      </section>
+
+      <section class="block" id="abo">
+        <h2><span class="nr">10</span>Abo und Abrechnung über Google Play</h2>
+        <p>Die App ist bis einschließlich 2 Garagen kostenlos. Für eine größere Anzahl bieten wir ein kostenpflichtiges Abo an. Kauf, Bezahlung, Verlängerung und Kündigung des Abos laufen ausschließlich über Google Play, einen Dienst der Google Ireland Limited (Anschrift siehe Abschnitt 4).</p>
+        <h3>Was Google verarbeitet</h3>
+        <p>Ihr Google-Konto, Ihre Zahlungsdaten und Ihre Rechnungsanschrift werden ausschließlich von Google verarbeitet. Wir erhalten keine Zahlungsdaten wie Kreditkarten- oder Kontonummern. Es gelten die <a href="https://policies.google.com/privacy">Datenschutzerklärung von Google</a> und die <a href="https://play.google.com/about/play-terms/">Nutzungsbedingungen von Google Play</a>.</p>
+        <h3>Was wir erhalten</h3>
+        <p>Für die Abwicklung stellt Google uns folgende Informationen zur Verfügung:</p>
+        <ul>
+          <li>Bestellnummer und Kauf-Token, gekauftes Produkt bzw. Abo-Stufe</li>
+          <li>Kaufdatum, Abo-Status (aktiv, verlängert, gekündigt, erstattet)</li>
+          <li>Preis, Währung und Land des Kaufs</li>
+          <li>weitere Angaben: <span class="offen">[hier eintragen, was die Google Play Console zusätzlich anzeigt, z. B. Postleitzahl oder Bundesland – sonst Zeile löschen]</span></li>
+        </ul>
+        <h3>Prüfung des Abos in der App</h3>
+        <p>Die App fragt bei Google Play ab, ob ein gültiges Abo besteht, und schaltet die entsprechende Stufe frei. Die Anzahl Ihrer angelegten Garagen wird dabei nur lokal auf Ihrem Gerät geprüft und nicht übermittelt.</p>
+        <p>Eigener Server für die Abo-Prüfung: <span class="offen">[„keiner“ eintragen – oder Anbieter, Serverstandort und dort gespeicherte Daten]</span></p>
+        <h3>Rechtsgrundlage und Speicherdauer</h3>
+        <p>Die Verarbeitung ist für die Erfüllung des Abo-Vertrags erforderlich (Art. 6 Abs. 1 lit. b DSGVO). Kaufbelege und Abrechnungsdaten bewahren wir auf, soweit wir dazu gesetzlich verpflichtet sind (Art. 6 Abs. 1 lit. c DSGVO i. V. m. § 147 AO, § 257 HGB), in der Regel bis zu 10 Jahre.</p>
+        <p>Ihr Abo können Sie jederzeit in Google Play unter „Zahlungen und Abos“ kündigen. Die Kündigung wirkt zum: <span class="offen">[hier eintragen, z. B. „Ende des laufenden Abrechnungszeitraums“]</span>.</p>
+        <p>Abrechnungszeitraum: <span class="offen">[hier eintragen, z. B. „monatlich“]</span> · Kostenloser Probezeitraum: <span class="offen">[Dauer hier eintragen – oder „keiner“]</span></p>
       </section>
 
       <section class="block" id="dritte">
-        <h2><span class="nr">6</span>Weitergabe an Dritte</h2>
-        <p>Eine automatisierte Weitergabe Ihrer Daten an Dritte findet nicht statt. Datenübertragungen finden ausschließlich durch Ihre aktive Handlung statt, z. B. wenn Sie:</p>
+        <h2><span class="nr">11</span>Weitergabe an Dritte</h2>
+        <p>Eine automatisierte Weitergabe Ihrer in der App erfassten Daten an Dritte findet nicht statt. Datenübertragungen finden ausschließlich durch Ihre aktive Handlung statt, z. B. wenn Sie:</p>
         <ul>
-          <li>Einen DATEV-Export an Ihren Steuerberater senden.</li>
-          <li>Einen PDF-Bericht per E-Mail oder Messenger teilen.</li>
+          <li>einen DATEV-Export an Ihren Steuerberater senden,</li>
+          <li>einen PDF-Bericht per E-Mail oder Messenger teilen,</li>
+          <li>eine Sicherungsdatei bei einem Cloud-Dienst ablegen.</li>
+        </ul>
+        <p>Die App selbst laden Sie über Google Play herunter. Dabei gelten die Datenschutzbestimmungen von Google; auf die dort verarbeiteten Daten haben wir keinen Einfluss.</p>
+      </section>
+
+      <p class="teil">Teil C · Allgemeines</p>
+
+      <section class="block" id="dauer">
+        <h2><span class="nr">12</span>Speicherdauer</h2>
+        <ul>
+          <li><b>Daten in der App:</b> bleiben auf Ihrem Gerät, bis Sie sie löschen oder die App deinstallieren.</li>
+          <li><b>Server-Logfiles:</b> werden vom Hoster nach dessen Vorgaben gelöscht; wir haben darauf keinen Zugriff.</li>
+          <li><b>E-Mail-Anfragen:</b> werden gelöscht, sobald sie erledigt sind und keine Aufbewahrungspflichten bestehen.</li>
+          <li><b>Abrechnungsdaten:</b> bis zum Ablauf der gesetzlichen Aufbewahrungsfristen (bis zu 10 Jahre).</li>
         </ul>
       </section>
 
       <section class="block" id="rechte">
-        <h2><span class="nr">7</span>Ihre Rechte (DSGVO)</h2>
-        <p>Da alle Daten lokal auf Ihrem Gerät gespeichert sind, haben Sie die volle Kontrolle:</p>
+        <h2><span class="nr">13</span>Ihre Rechte</h2>
+        <p>Soweit wir personenbezogene Daten von Ihnen verarbeiten, haben Sie folgende Rechte:</p>
         <ul>
-          <li><b>Löschung:</b> Sie können Daten innerhalb der App löschen oder durch Deinstallation der App alle lokalen Datenstände entfernen.</li>
-          <li><b>Auskunft:</b> Alle gespeicherten Daten sind für Sie innerhalb der App jederzeit einsehbar.</li>
+          <li><b>Auskunft</b> über die gespeicherten Daten (Art. 15 DSGVO)</li>
+          <li><b>Berichtigung</b> unrichtiger Daten (Art. 16 DSGVO)</li>
+          <li><b>Löschung</b> (Art. 17 DSGVO) und <b>Einschränkung der Verarbeitung</b> (Art. 18 DSGVO)</li>
+          <li><b>Datenübertragbarkeit</b> (Art. 20 DSGVO)</li>
+          <li><b>Widerspruch</b> gegen Verarbeitungen auf Grundlage berechtigter Interessen (Art. 21 DSGVO)</li>
+          <li><b>Widerruf</b> einer erteilten Einwilligung mit Wirkung für die Zukunft (Art. 7 Abs. 3 DSGVO)</li>
         </ul>
+        <p>Für die Daten in der App haben Sie die volle Kontrolle: Sie sind jederzeit in der App einsehbar, lassen sich dort ändern, löschen oder als DATEV- bzw. PDF-Datei exportieren. Durch Deinstallation der App werden alle lokalen Daten entfernt.</p>
+        <p>Um Ihre Rechte geltend zu machen, genügt eine E-Mail an <a href="mailto:garagenmanager@gmail.com">garagenmanager@gmail.com</a>.</p>
+        <h3>Beschwerderecht</h3>
+        <p>Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren (Art. 77 DSGVO). Für uns zuständig ist: Die Landesbeauftragte für den Datenschutz Niedersachsen, Prinzenstraße 5, 30159 Hannover, <a href="https://www.lfd.niedersachsen.de">www.lfd.niedersachsen.de</a>.</p>
+      </section>
+
+      <section class="block" id="sicherheit">
+        <h2><span class="nr">14</span>Datensicherheit</h2>
+        <p>Diese Webseite wird verschlüsselt über HTTPS übertragen. Sicherungsdateien der App sind mit Ihrem Passwort verschlüsselt.</p>
+      </section>
+
+      <section class="block" id="aenderungen">
+        <h2><span class="nr">15</span>Änderungen dieser Erklärung</h2>
+        <p>Wir passen diese Datenschutzerklärung an, wenn sich die Webseite, die App oder die Rechtslage ändern. Es gilt die jeweils hier veröffentlichte Fassung.</p>
+        <p class="stand">Stand: <span class="offen">[Datum der Veröffentlichung hier eintragen]</span></p>
       </section>
     </div>
   </div>
